@@ -6,19 +6,24 @@ module.exports = {
   },
   'extends': [
     'eslint:recommended',
-    'plugin:react/recommended'
+    'plugin:react/recommended',
+    'react-app',
+    'react-app/jest'
   ],
   'parserOptions': {
     'ecmaFeatures': {
       'jsx': true
     },
-    'ecmaVersion': 12,
+    'ecmaVersion': 2018,
     'sourceType': 'module'
   },
   'plugins': [
     'react'
   ],
+  "parser": '@typescript-eslint/parser',
   'rules': {
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': ['error'],
     'indent': [
       'error',
       2,
