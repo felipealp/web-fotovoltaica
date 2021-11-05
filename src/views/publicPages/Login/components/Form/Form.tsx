@@ -11,7 +11,7 @@ import Link from '@material-ui/core/Link';
 
 const validationSchema = yup.object({
   email: yup
-    .string('Enter your email')
+    .string()
     .trim()
     .email('Please enter a valid email address')
     .required('Email is required.'),
@@ -27,7 +27,7 @@ const Form = () => {
     password: '',
   };
 
-  const onSubmit = (values) => {
+  const onSubmit = (values: any) => {
     return values;
   };
 
