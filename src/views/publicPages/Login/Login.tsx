@@ -20,9 +20,13 @@ class Login extends React.Component<ILogin, Props> {
 
   }
 
+  private handleLoginStatus = () => {
+    this.setState({ action: 'secure' });
+  };
+
   render() {
 
-    if (this.state.action === 'normal') {
+    if (this.state.action === 'secure') {
       return <Redirect to='/page-not-found' />;
     }
 
