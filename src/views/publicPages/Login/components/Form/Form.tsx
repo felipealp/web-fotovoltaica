@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 
+import { base64EncodeString } from '../../../../../helpers/security.helper';
+
 interface Props { }
 
 class Form extends React.Component<Props, IForm> {
@@ -15,24 +17,20 @@ class Form extends React.Component<Props, IForm> {
     password: '',
     action: 'normal',
     errorCode: 200,
-    validation: 'none',
-  }
+    loginText: 'Login',
+    blurErrors: [],
+    apiErrors: [],
+  }   
 
   public validateForm() {
-    this.setState({ action: 'normal', validation: ''});
-    let validation: string[] = [];
+    this.setState({ action: 'normal', blurErrors: []});
+    let blurErrors: string[] = [];
    
-    if (this.state.email.length < 8) {
-      validation.push('email');      
-    }
-
-    if (this.state.password === '')
-    {
-      validation.push('password');  
-    }
-   
-    if (validation.length > 0) {
-      this.setState({ action: 'validation-error', validation: validation.toString()});
+    if (this.state.email.length < 8) blurErrors.push('email'); 
+    if (this.state.password.length < 8) blurErrors.push('password');  
+       
+    if (blurErrors.length > 0) {
+      this.setState({ action: 'validation-error', blurErrors: blurErrors});
       return false;
     }
     
@@ -45,8 +43,11 @@ class Form extends React.Component<Props, IForm> {
     if (!this.validateForm()) {
       return;
     }
-    
-    console.log(this.state);
+
+    this.setState({ action: 'busy', loginText: 'Logging in, please wait...' });
+
+    let loginString = this.state.email + ':' + this.state.password;
+    let hashed: string = base64EncodeString(loginString);
   }
 
   private handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
@@ -54,6 +55,38 @@ class Form extends React.Component<Props, IForm> {
 
     this.setState({ [e.currentTarget.name]: e.currentTarget.value } as unknown as Pick<IForm, keyof IForm>);
   };
+
+  // form onBlur validation
+  private handleInputBlur = (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    let blurErrors: string[] = this.state.blurErrors;  
+
+    if (blurErrors.includes(e.currentTarget.name)) blurErrors.splice(blurErrors.indexOf(e.currentTarget.name), 2);
+
+    switch(e.currentTarget.name) {
+      case 'email':
+        if (this.state.email.length < 8 && ! blurErrors.includes(e.currentTarget.name)) blurErrors.push('email');         
+        break;
+      case 'password':
+        if (this.state.password.length < 8 && ! blurErrors.includes(e.currentTarget.name)) blurErrors.push('password');          
+        break;
+      default:
+        break;
+    }   
+
+    this.setState({ blurErrors: blurErrors });   
+  }
+
+  private setHelperTextMessage = (field: string) => {
+    switch(field) {
+      case 'email':
+        return this.state.blurErrors.includes('email') ? 'valid email address is required' : ' ';
+      case 'password':
+        return this.state.blurErrors.includes('password') ? 'password is required' : ' ';
+      default:
+        return ' ';       
+    }
+  }
 
   render() {
     return (
@@ -94,8 +127,9 @@ class Form extends React.Component<Props, IForm> {
                 fullWidth
                 value={this.state.email}
                 onChange={(e: any) => this.handleInputChanges(e)}
-                error={this.state.validation.includes('email') ? true : false}
-                helperText={this.state.validation.includes('email') ? 'valid email address is required' : 'helper text'}
+                onBlur={(e: any) => this.handleInputBlur(e)}
+                error={this.state.blurErrors.includes('email') ? true : false}
+                helperText={this.setHelperTextMessage('email')}
               />
             </Grid>
             <Grid item xs={12}>
@@ -131,8 +165,9 @@ class Form extends React.Component<Props, IForm> {
                 fullWidth
                 value={this.state.password}
                 onChange={(e: any) => this.handleInputChanges(e)}
-                error={this.state.validation.includes('password') ? true : false}
-                helperText={this.state.validation.includes('password') ? 'password is required' : 'helper text'}
+                onBlur={(e: any) => this.handleInputBlur(e)}
+                error={this.state.blurErrors.includes('password') ? true : false}
+                helperText={this.setHelperTextMessage('password')}
               />
             </Grid>
             <Grid item container xs={12}>
@@ -158,8 +193,8 @@ class Form extends React.Component<Props, IForm> {
                     </Link>
                   </Typography>
                 </Box>
-                <Button size={'large'} variant={'contained'} type={'submit'} onClick={(e: any) => this.handleClick(e)} disabled={this.state.errorCode !== 200 ? true : false}>
-                  Login
+                <Button size={'large'} variant={'contained'} type={'submit'} onClick={(e: any) => this.handleClick(e)} disabled={this.state.blurErrors.length > 0 ? true : false}>
+                  {this.state.loginText}
                 </Button>
               </Box>
             </Grid>
@@ -175,7 +210,9 @@ interface IForm {
   password: string,
   action: string,
   errorCode: number,
-  validation: string,
+  loginText: string,
+  blurErrors: string[],
+  apiErrors: string[]
 }
 
 export default Form;
