@@ -12,11 +12,39 @@ interface Props { }
 class Form extends React.Component<Props, IForm> {
   state: IForm = {
     email: '',
-    password: ''
+    password: '',
+    action: 'normal',
+    errorCode: 200,
+    validation: 'none',
+  }
+
+  public validateForm() {
+    this.setState({ action: 'normal', validation: ''});
+    let validation: string[] = [];
+   
+    if (this.state.email.length < 8) {
+      validation.push('email');      
+    }
+
+    if (this.state.password === '')
+    {
+      validation.push('password');  
+    }
+   
+    if (validation.length > 0) {
+      this.setState({ action: 'validation-error', validation: validation.toString()});
+      return false;
+    }
+    
+    return true;
   }
 
   public handleClick = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    if (!this.validateForm()) {
+      return;
+    }
     
     console.log(this.state);
   }
@@ -24,11 +52,7 @@ class Form extends React.Component<Props, IForm> {
   private handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-    this.setState({ [e.currentTarget.name]: e.currentTarget.value } as Pick<
-      IForm,
-      keyof IForm
-    >);
-
+    this.setState({ [e.currentTarget.name]: e.currentTarget.value } as unknown as Pick<IForm, keyof IForm>);
   };
 
   render() {
@@ -70,8 +94,8 @@ class Form extends React.Component<Props, IForm> {
                 fullWidth
                 value={this.state.email}
                 onChange={(e: any) => this.handleInputChanges(e)}
-                error={false}
-                helperText={'helper text'}
+                error={this.state.validation.includes('email') ? true : false}
+                helperText={this.state.validation.includes('email') ? 'valid email address is required' : 'helper text'}
               />
             </Grid>
             <Grid item xs={12}>
@@ -107,8 +131,8 @@ class Form extends React.Component<Props, IForm> {
                 fullWidth
                 value={this.state.password}
                 onChange={(e: any) => this.handleInputChanges(e)}
-                error={false}
-                helperText={'helper text'}
+                error={this.state.validation.includes('password') ? true : false}
+                helperText={this.state.validation.includes('password') ? 'password is required' : 'helper text'}
               />
             </Grid>
             <Grid item container xs={12}>
@@ -134,7 +158,7 @@ class Form extends React.Component<Props, IForm> {
                     </Link>
                   </Typography>
                 </Box>
-                <Button size={'large'} variant={'contained'} type={'submit'} onClick={(e: any) => this.handleClick(e)}>
+                <Button size={'large'} variant={'contained'} type={'submit'} onClick={(e: any) => this.handleClick(e)} disabled={this.state.errorCode !== 200 ? true : false}>
                   Login
                 </Button>
               </Box>
@@ -148,7 +172,10 @@ class Form extends React.Component<Props, IForm> {
 
 interface IForm {
   email: string,
-  password: string
+  password: string,
+  action: string,
+  errorCode: number,
+  validation: string,
 }
 
 export default Form;
