@@ -6,8 +6,13 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import { Alert, AlertTitle } from '@material-ui/core';
 
-import { base64EncodeString } from '../../../../../helpers/security.helper';
+import { base64EncodeString } from 'helpers/security.helper';
+import AuthService from 'services/auth.service';
+import { ILoginResponse } from 'interfaces/login.interface';
+import { FormCode } from 'helpers/enums';
+import { Redirect } from 'react-router';
 
 interface Props { }
 
@@ -16,10 +21,10 @@ class Form extends React.Component<Props, IForm> {
     email: '',
     password: '',
     action: 'normal',
-    errorCode: 200,
+    formCode: FormCode.Ok,
+    errorMsg: '',
     loginText: 'Login',
-    blurErrors: [],
-    apiErrors: [],
+    blurErrors: []   
   }   
 
   public validateForm() {
@@ -46,8 +51,23 @@ class Form extends React.Component<Props, IForm> {
 
     this.setState({ action: 'busy', loginText: 'Logging in, please wait...' });
 
-    let loginString = this.state.email + ':' + this.state.password;
-    let hashed: string = base64EncodeString(loginString);
+    const loginString = this.state.email + ':' + this.state.password;
+    const hashed: string = base64EncodeString(loginString);
+    const auth = new AuthService();
+
+    auth.Login(hashed).then(async(response: ILoginResponse) => {
+      console.log(response);
+      
+      if (response.success) {
+        //set jwt to local storage item
+        await localStorage.setItem('jwt', response.value);
+
+        this.setState({ action: 'success', loginText: 'Login', formCode: FormCode.Ok });
+      }
+      else {
+        this.setState({ action: 'failed', loginText: 'Login', formCode: FormCode.ApiFail, errorMsg: response.message });
+      }
+    });
   }
 
   private handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
@@ -89,6 +109,10 @@ class Form extends React.Component<Props, IForm> {
   }
 
   render() {
+    if (this.state.action === 'success') {
+      return <Redirect to="/page-not-found" />;
+    }
+
     return (
       <Box>
         <Box marginBottom={4}>
@@ -113,6 +137,12 @@ class Form extends React.Component<Props, IForm> {
           <Typography color="text.secondary">
             Login to manage your account.
           </Typography>
+        </Box>
+        <Box marginBottom={4} display={ this.state.formCode === FormCode.ApiFail ? 'box' : 'none'}>
+          <Alert variant="outlined" severity="error" onClose={() => { this.setState({ action: 'normal', password: '', formCode: FormCode.Ok, errorMsg: '' });}}>
+            <AlertTitle>Authentication Error</AlertTitle>
+            {this.state.errorMsg}
+          </Alert>
         </Box>
         <form>
           <Grid container spacing={4}>
@@ -193,7 +223,7 @@ class Form extends React.Component<Props, IForm> {
                     </Link>
                   </Typography>
                 </Box>
-                <Button size={'large'} variant={'contained'} type={'submit'} onClick={(e: any) => this.handleClick(e)} disabled={this.state.blurErrors.length > 0 ? true : false}>
+                <Button size={'large'} variant={'contained'} type={'submit'} onClick={(e: any) => this.handleClick(e)} disabled={this.state.blurErrors.length > 0 || this.state.action === 'busy' ? true : false}>
                   {this.state.loginText}
                 </Button>
               </Box>
@@ -209,10 +239,10 @@ interface IForm {
   email: string,
   password: string,
   action: string,
-  errorCode: number,
+  formCode: FormCode,
+  errorMsg: string;
   loginText: string,
   blurErrors: string[],
-  apiErrors: string[]
 }
 
 export default Form;
