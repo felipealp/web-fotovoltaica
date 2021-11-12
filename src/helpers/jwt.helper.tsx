@@ -2,7 +2,7 @@ import { IJwt } from '../interfaces/jwt.interface';
 import jwt_decode from 'jwt-decode';
 
 export const fetchJwt = () => {
-  var value = localStorage.getItem('jwt');
+  var value = localStorage.getItem('myapp.jwt');
   return value;
 };
 

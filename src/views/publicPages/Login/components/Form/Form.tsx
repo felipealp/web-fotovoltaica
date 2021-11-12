@@ -12,11 +12,10 @@ import { base64EncodeString } from 'helpers/security.helper';
 import AuthService from 'services/auth.service';
 import { ILoginResponse } from 'interfaces/login.interface';
 import { FormCode } from 'helpers/enums';
-import { Redirect } from 'react-router';
 
-interface Props { }
-
-class Form extends React.Component<Props, IForm> {
+class Form extends React.Component<ILoginFormProps, {}> {
+  static defaultProps: Partial<ILoginFormProps> = {};
+  
   state: IForm = {
     email: '',
     password: '',
@@ -60,9 +59,10 @@ class Form extends React.Component<Props, IForm> {
       
       if (response.success) {
         //set jwt to local storage item
-        await localStorage.setItem('jwt', response.value);
+        await localStorage.setItem('myapp.jwt', response.value);
 
         this.setState({ action: 'success', loginText: 'Login', formCode: FormCode.Ok });
+        this.props.callback();
       }
       else {
         this.setState({ action: 'failed', loginText: 'Login', formCode: FormCode.ApiFail, errorMsg: response.message });
@@ -109,10 +109,6 @@ class Form extends React.Component<Props, IForm> {
   }
 
   render() {
-    if (this.state.action === 'success') {
-      return <Redirect to="/page-not-found" />;
-    }
-
     return (
       <Box>
         <Box marginBottom={4}>
@@ -234,6 +230,11 @@ class Form extends React.Component<Props, IForm> {
     );
   }
 }
+
+interface ILoginFormProps {	
+	callback: () => void;
+}
+
 
 interface IForm {
   email: string,

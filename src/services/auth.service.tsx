@@ -35,8 +35,12 @@ export class AuthService {
     }
   }
 
-  IsAuthorized(jwt: string, role: string = ''): boolean {
+  IsLegitJwt(jwt: string | null, role: string = ''): boolean {
     let decoded: IJwt;
+
+    if (jwt == null) {
+      return false;
+    }
 
     try {
       decoded = jwt_decode(jwt);

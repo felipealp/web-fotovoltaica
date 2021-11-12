@@ -1,33 +1,27 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import Box from '@material-ui/core/Box';
 import Container from '../../../common/Container';
+
 import { Form } from './components';
-import { ILogin } from './ILogin';
-import { Redirect } from 'react-router-dom';
 
-interface Props { }
-
-class Login extends React.Component<ILogin, Props> {
+class Login extends React.Component<ILogin, {}> {
   state: ILogin = {
     action: 'normal'
   };
 
   componentDidMount() {
+    
+  } 
 
-  }
-
-  private handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
-
-  }
-
-  private handleLoginStatus = () => {
-    this.setState({ action: 'secure' });
+  private callbackLoginSuccessfull = () => {    
+    this.setState({ action: 'redirect'});
   };
 
   render() {
 
-    if (this.state.action === 'secure') {
-      return <Redirect to='/page-not-found' />;
+    if (this.state.action === 'redirect') {
+      return (<Redirect to='/page-not-found' push />);
     }
 
     return (
@@ -40,11 +34,15 @@ class Login extends React.Component<ILogin, Props> {
         height={'100%'}
       >
         <Container maxWidth={600}>
-          <Form />
+          <Form callback={this.callbackLoginSuccessfull} />
         </Container>
       </Box>
     );
   }
+}
+
+export interface ILogin {
+  action: string;  
 }
 
 export default Login;

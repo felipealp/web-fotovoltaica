@@ -44,7 +44,7 @@ const SidebarNav = ({ pages, onClose, auth }) => {
                 {item.title}
               </Typography>
               <Grid container spacing={1}>
-                {item.pages.map((p, i) => (                       
+                {item.pages.filter(item => item.authHide !== auth.isAuthenticated).map((p, i) => (                       
                   <Grid item xs={6} key={i}>
                     <Link
                       variant="body2"
@@ -56,7 +56,7 @@ const SidebarNav = ({ pages, onClose, auth }) => {
                         '&:hover': {
                           textDecoration: 'none',
                           color: theme.palette.primary.dark,
-                        },
+                        },                        
                       }}
                       onClick={() => onClose()}                                         
                     >
