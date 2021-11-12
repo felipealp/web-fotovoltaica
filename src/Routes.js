@@ -50,6 +50,10 @@ import {
 //  ForgotPasswordSimple as ForgotPasswordSimpleView,
 //} from './views/authPages';
 
+import {
+  Logout as LogoutView,
+} from './views/myPages';
+
 // Documentation pages
 import {
   Introduction as IntroductionView,
@@ -502,6 +506,18 @@ const Routes = () => {
           <WithLayout
             {...matchProps}
             component={AboutView}
+            layout={MainLayout}
+          />
+        )}
+      />     
+
+      <Route
+        exact
+        path="/logout"
+        render={(matchProps) => (
+          <WithLayout
+            {...matchProps}
+            component={LogoutView}
             layout={MainLayout}
           />
         )}

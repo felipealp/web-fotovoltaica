@@ -33,7 +33,7 @@ HideOnScroll.propTypes = {
 const Authenticate = (authService) => {
   const jwt = fetchJwt(); 
 
-  return { isAuthenticated: authService.IsLegitJwt(jwt), permissions: [] };
+  return { isAuthenticated: authService.IsToken(jwt), permissions: [] };
 };
 
 const Main = ({

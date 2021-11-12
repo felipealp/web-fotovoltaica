@@ -44,8 +44,8 @@ const SidebarNav = ({ pages, onClose, auth }) => {
                 {item.title}
               </Typography>
               <Grid container spacing={1}>
-                {item.pages.filter(item => item.authHide !== auth.isAuthenticated).map((p, i) => (                       
-                  <Grid item xs={6} key={i}>
+                {item.pages.map((p, i) => (                                
+                  <Grid item xs={6} key={i} style={{display: (p.authHide === true && auth.isAuthenticated === true) ? 'none' : 'block'}}>                   
                     <Link
                       variant="body2"
                       component={'a'}
@@ -62,8 +62,7 @@ const SidebarNav = ({ pages, onClose, auth }) => {
                     >
                       {p.title}
                     </Link>
-                  </Grid>
-                  
+                  </Grid>                  
                 ))}
               </Grid>
             </Box>            

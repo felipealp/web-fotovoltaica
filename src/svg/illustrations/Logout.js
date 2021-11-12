@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@material-ui/core/styles';
 
-const NotFound = ({ width = '100%', height = '100%' }) => {
+const Logout = ({ width = '100%', height = '100%' }) => {
   const theme = useTheme();
   const colorPrimaryMain = theme.palette.primary.main;
   return (
@@ -134,9 +134,9 @@ const NotFound = ({ width = '100%', height = '100%' }) => {
   );
 };
 
-NotFound.propTypes = {
+Logout.propTypes = {
   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
-export default NotFound;
+export default Logout;

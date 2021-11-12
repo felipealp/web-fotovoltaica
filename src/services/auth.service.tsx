@@ -35,7 +35,11 @@ export class AuthService {
     }
   }
 
-  IsLegitJwt(jwt: string | null, role: string = ''): boolean {
+  Logout = (): void => {
+    localStorage.removeItem('myapp.jwt');
+  };
+
+  IsToken(jwt: string | null, role: string = ''): boolean {
     let decoded: IJwt;
 
     if (jwt == null) {
@@ -85,11 +89,7 @@ export class AuthService {
     } catch (error) {
       return await Promise.reject(errorResponse);
     }
-  }
-
-  Logout(jwt: string) {
-    localStorage.removeItem('jwt');
-  }
+  }  
 }
 
 export default AuthService;
