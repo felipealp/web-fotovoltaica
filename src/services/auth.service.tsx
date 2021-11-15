@@ -35,8 +35,44 @@ export class AuthService {
     }
   }
 
-  Logout = (): void => {
-    localStorage.removeItem('myapp.jwt');
+  Logout = async (jwt: string | null): Promise<IStandardApiResponse> => {
+    const apiResponse: IStandardApiResponse = {
+      success: false,
+      message: 'unauthorized',
+      messageCode: 500,
+      value: '',
+      count: 0,
+    };   
+
+    // if token is not null, then post to logout rest endpoint to kill token
+    if (jwt !== null) {
+      try {
+        const response = await fetch(identityServiceUrl + '/api/auth/logout', {
+          method: 'post',
+          headers: new Headers({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + jwt,
+            Accept: 'application/json',
+          }),
+        });
+  
+        const results: Response = await Promise.resolve(response);  
+
+        apiResponse.success = true;
+        apiResponse.messageCode = results.status;
+        apiResponse.message = results.statusText; 
+
+        return await Promise.resolve(apiResponse);               
+      } catch (error) {        
+        return await Promise.reject(apiResponse);
+      }
+    }
+
+    // token not found error
+    apiResponse.messageCode = 404;
+    apiResponse.message = 'token not found';
+
+    return await Promise.reject(apiResponse);    
   };
 
   IsToken(jwt: string | null, role: string = ''): boolean {

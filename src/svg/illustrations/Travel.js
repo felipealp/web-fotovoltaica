@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@material-ui/core/styles';
 
-const Travel = ({ width = 159, height = 136 }) => {
+const Travel = ({ width = '100%', height = '100%' }) => {
   const theme = useTheme();
   const colorPrimaryMain = theme.palette.primary.main;
   return (

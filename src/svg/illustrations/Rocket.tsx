@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@material-ui/core/styles';
 
-const Rocket = ({ width = 329, height = 273 }) => {
-  const theme = useTheme();
-  const colorPrimaryMain = theme.palette.primary.main;
+const Rocket = ({ width = '100%', height = '100%' }) => {
+  const theme: any = useTheme();
+  const colorPrimaryMain: any = theme.palette.primary.main;
+  
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

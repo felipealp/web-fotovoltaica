@@ -5,13 +5,13 @@ import WithLayout from './WithLayout.js';
 // Available layouts
 import {
   Main as MainLayout,
+  MainSecure as MainSecureLayout,
   //Fluid as FluidLayout,
   Fixed as FixedLayout,
 } from './layouts';
 
 // Landing pages
-import {
-  Home as HomeView,
+import { 
   Advertisement as AdvertisementView,
   PaymentApp as PaymentAppView,
   Marketing as MarketingView,
@@ -52,6 +52,7 @@ import {
 
 import {
   Logout as LogoutView,
+  Home as HomeSecureView,
 } from './views/myPages';
 
 // Documentation pages
@@ -72,6 +73,7 @@ import {
 
 // public pages
 import {
+  Home as HomeView,
   Contact as ContactView,
   About as AboutView,
   Login as LoginView,
@@ -519,6 +521,18 @@ const Routes = () => {
             {...matchProps}
             component={LogoutView}
             layout={MainLayout}
+          />
+        )}
+      />     
+
+      <Route
+        exact
+        path="/secure/home"
+        render={(matchProps) => (
+          <WithLayout
+            {...matchProps}
+            component={HomeSecureView}
+            layout={MainSecureLayout}
           />
         )}
       />     

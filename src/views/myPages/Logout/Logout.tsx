@@ -7,9 +7,11 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Container from '../../../common/Container';
-import NotFoundIllustration from '../../../svg/illustrations/NotFound';
+import TravelIllustration from '../../../svg/illustrations/Travel';
 
 import AuthService from 'services/auth.service';
+import { fetchJwt } from 'helpers/jwt.helper';
+import { IStandardApiResponse } from 'interfaces/api-response.interface';
 
 const Logout = () => {
   const theme: any = useTheme();
@@ -19,8 +21,17 @@ const Logout = () => {
 
   const handleLogout = () => {
     const auth: AuthService = new AuthService();
+    const jwt: string | null = fetchJwt();
 
-    auth.Logout();
+    auth.Logout(jwt).then(async(response: IStandardApiResponse) => {
+      console.log('logged out');        
+    }).catch((error: Error) => {
+      
+    });
+
+    // remove token from local storage
+    // do this regardless if we get an error back from post 
+    localStorage.removeItem('myapp.jwt');
   };
 
   useEffect(() => {
@@ -43,7 +54,7 @@ const Logout = () => {
               width={'100%'}
               maxWidth={{ xs: 500, md: '100%' }}
             >
-              <NotFoundIllustration width={'100%'} height={'100%'} />
+              <TravelIllustration width={'100%'} height={'100%'} />
             </Box>
           </Grid>
           <Grid
@@ -61,7 +72,7 @@ const Logout = () => {
                 align={isMd ? 'left' : 'center'}
                 sx={{ fontWeight: 700 }}
               >
-                404
+                Come back soon!
               </Typography>
               <Typography
                 variant="h6"
@@ -69,12 +80,8 @@ const Logout = () => {
                 color="textSecondary"
                 align={isMd ? 'left' : 'center'}
               >
-                Oops! Looks like you followed a bad link.
-                <br />
-                If you think this is a problem with us, please{' '}
-                <Link href={'#0'} underline="none">
-                  tell us
-                </Link>
+                We have logged you out, made the bed, and put away the dishes. Come back and see us any time!
+                <br />               
               </Typography>
               <Box
                 marginTop={4}
@@ -88,8 +95,8 @@ const Logout = () => {
                   size="large"
                   href={'/'}
                 >
-                  Back home
-                </Button>
+                  Login page
+                </Button>                
               </Box>
             </Box>
           </Grid>

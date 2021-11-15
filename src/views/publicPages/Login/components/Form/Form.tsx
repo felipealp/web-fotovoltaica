@@ -54,9 +54,7 @@ class Form extends React.Component<ILoginFormProps, {}> {
     const hashed: string = base64EncodeString(loginString);
     const auth = new AuthService();
 
-    auth.Login(hashed).then(async(response: ILoginResponse) => {
-      console.log(response);
-      
+    auth.Login(hashed).then(async(response: ILoginResponse) => {      
       if (response.success) {
         //set jwt to local storage item
         await localStorage.setItem('myapp.jwt', response.value);
