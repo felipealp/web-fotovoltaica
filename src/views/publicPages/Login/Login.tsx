@@ -21,7 +21,7 @@ class Login extends React.Component<ILogin, {}> {
   render() {
 
     if (this.state.action === 'redirect') {
-      return (<Redirect to='/page-not-found' push />);
+      return (<Redirect to='/secure/home' push />);
     }
 
     return (

@@ -10,12 +10,6 @@ import { Topbar, Sidebar, Footer } from './components';
 import Container from '../../common/Container';
 import { pages } from '../navigation';
 
-import AuthService from 'services/auth.service';
-import { fetchJwt } from 'helpers/jwt.helper';
-
-let auth = { isAuthenticated: false, permissions: [] };
-const authService = new AuthService();
-
 const HideOnScroll = ({ children }) => {
   const trigger = useScrollTrigger();
 
@@ -30,25 +24,18 @@ HideOnScroll.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const Authenticate = (authService) => {
-  const jwt = fetchJwt(); 
-
-  return { isAuthenticated: authService.IsToken(jwt), permissions: [] };
-};
-
 const MainSecure = ({ children, themeToggler, themeMode, setThemePalette, paletteType, }) => {
   const theme = useTheme();
-  const [openSidebar, setOpenSidebar] = useState(false);
+  const [openSidebar, setOpenSidebar] = useState(false);  
+  const auth = { isAuthenticated: true, permissions: [] };
   
-  auth = Authenticate(authService);
-
   const handleSidebarOpen = () => {
     setOpenSidebar(true);
   };
 
   const handleSidebarClose = () => {
     setOpenSidebar(false);
-  };
+  };    
 
   return (
     <div>

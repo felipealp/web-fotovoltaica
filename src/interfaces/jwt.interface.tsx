@@ -3,4 +3,4 @@ export interface IJwt {
     email: string;
     role: string;
     token: string;
-  }
+}

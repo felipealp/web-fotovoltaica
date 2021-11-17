@@ -96,36 +96,68 @@ export class AuthService {
     }
   }
 
-  async Validate(): Promise<IStandardApiResponse> {
-    const errorResponse: IStandardApiResponse = {
-      success: false,
-      message: 'unauthorized',
-      messageCode: 500,
-      value: '',
-      count: 0,
-    };
+  async IsValidateToken(jwt: string | null): Promise<boolean> {
+    let isValid: boolean = false;
 
-    try {
-      const response = await fetch(identityServiceUrl + '/api/auth/validate', {
-        method: 'get',
-        headers: new Headers({
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + fetchJwt(),
-          Accept: 'application/json',
-        }),
-      });
+    if (jwt === null || jwt === undefined) return Promise.resolve(isValid);
 
-      const results = await Promise.resolve(response);
+    const status: number = await fetch(identityServiceUrl + '/api/auth/validate', {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + jwt,
+        Accept: 'application/json',
+      }),
+    }).then(response => {
+      return Promise.resolve(response.status);
+    }).catch(error => {
+      return Promise.reject(error.status);
+    });
 
-      if (results.status === 401) {
-        return await errorResponse;
-      } else {
-        return await results.json();
-      }
-    } catch (error) {
-      return await Promise.reject(errorResponse);
-    }
-  }  
+    isValid = (status === 200 || status === 201) ? true : false;
+
+    return Promise.resolve(isValid);
+  } 
+
+  IsValidateTokenMe(jwt: string | null, callBack: (data: any) => void) {
+    let isValid: boolean = false;    
+
+    if (jwt === null || jwt === undefined) return isValid;
+
+    fetch(identityServiceUrl + '/api/auth/validate', {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + jwt,
+        Accept: 'application/json',
+      }),
+    }).then(res => res.json()).then(function(data) {
+      return data.succes;
+    });        
+    
+    return true;
+  }
 }
+
+export interface IAuthCheck {
+  isAuthenticated: boolean,
+  permissions: []
+}
+
+export const authCheck = async (role: string | ''): Promise<IAuthCheck> => {
+  const jwt: string | null = fetchJwt();
+  const authService = new AuthService();
+  let isValidToken =  (jwt === null || jwt === undefined) ? false : true;
+
+  const status = await authService.IsValidateToken(jwt).then(async (response) => {
+    return response;
+  }).catch((error) => {
+    return error;
+  });
+
+  isValidToken = status;
+
+  return { isAuthenticated: isValidToken, permissions: [] };
+};
 
 export default AuthService;

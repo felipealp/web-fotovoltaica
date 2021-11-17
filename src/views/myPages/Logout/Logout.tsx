@@ -72,7 +72,7 @@ const Logout = () => {
                 align={isMd ? 'left' : 'center'}
                 sx={{ fontWeight: 700 }}
               >
-                Come back soon!
+                You are now logged out
               </Typography>
               <Typography
                 variant="h6"
@@ -80,7 +80,7 @@ const Logout = () => {
                 color="textSecondary"
                 align={isMd ? 'left' : 'center'}
               >
-                We have logged you out, made the bed, and put away the dishes. Come back and see us any time!
+                Thank you for coming. Come back and see us any time!
                 <br />               
               </Typography>
               <Box
