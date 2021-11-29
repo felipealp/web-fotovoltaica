@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router';
+//import { Redirect } from 'react-router';
 import Box from '@material-ui/core/Box';
 import Container from '../../../common/Container';
 
@@ -14,6 +14,7 @@ class Login extends React.Component<ILogin, {}> {
     
   } 
 
+  
   private callbackLoginSuccessfull = () => {    
     this.setState({ action: 'redirect'});
   };
@@ -21,7 +22,7 @@ class Login extends React.Component<ILogin, {}> {
   render() {
 
     if (this.state.action === 'redirect') {
-      return (<Redirect to='/secure/home' push />);
+      window.location.href = '/secure/home';
     }
 
     return (

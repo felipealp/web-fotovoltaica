@@ -1,0 +1,58 @@
+### Register
+POST https://localhost:44399/api/user/register HTTP/1.1
+content-type: application/json
+
+{
+    "name": "joe samples",
+    "email": "joe@world.com",
+    "password": "password123",
+    "ipaddress": "172.28.112.1"
+}
+
+
+### Hash Login
+POST https://localhost:44399/api/auth/hash HTTP/1.1
+content-type: application/json
+
+{    
+    "email": "joe@world.com",
+    "password": "password123"    
+}
+
+### Login
+POST https://localhost:44399/api/auth/login HTTP/1.1
+content-type: application/json
+
+{    
+    "login": "am9lQHdvcmxkLmNvbTpwYXNzd29yZDEyMw=="     
+}
+
+### Bad confirmation Code
+
+POST https://localhost:44399/api/users/confirm HTTP/1.1
+content-type: application/json
+
+{    
+    "email": "joe@world.com",
+    "code": "c32eca47-b55f-466f-a6d3-495812b91bbf"     
+}
+
+### Resend code
+
+POST https://localhost:44399/api/codes/resend HTTP/1.1
+content-type: application/json
+
+{    
+    "email": "joe@world.com",
+    "status": 0   
+}
+
+### Confirmation Code
+
+POST https://localhost:44399/api/user/confirm HTTP/1.1
+content-type: application/json
+
+{    
+    "email": "joe@world.com",
+    "code": "c32eca47-b55f-466f-a6d3-495812b91bbf"     
+}

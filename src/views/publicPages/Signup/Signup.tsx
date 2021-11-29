@@ -3,7 +3,7 @@ import Box from '@material-ui/core/Box';
 import Container from '../../../common/Container';
 import { Form } from './components';
 
-const Signup = () => {
+const SignUp = () => {
   return (
     <Box
       position={'relative'}
@@ -20,4 +20,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignUp;

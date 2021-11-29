@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Container from '../../../common/Container';
-import { Features, Footer, Hero, Highlights, Register } from './components';
+import { Features, Hero, Highlights, SignUp } from './components';
 
 
 
@@ -32,7 +32,7 @@ const Home = () => {
       </Box> 
       <Box bgcolor={theme.palette.primary.dark}>    
         <Container>
-          <Register callback={callbackRegisterComplete} theme={theme} />
+          <SignUp callback={callbackRegisterComplete} theme={theme} />
         </Container>
       </Box>
     </Box>

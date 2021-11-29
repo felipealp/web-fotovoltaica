@@ -1,9 +1,9 @@
 import jwt_decode from 'jwt-decode';
 
 import { identityServiceUrl } from '../helpers/urls.helper';
-import { ILoginResponse, ILoginRequest } from '../interfaces/login.interface';
+import { ILoginRequest } from '../interfaces/login.interfaces';
 import { IStandardApiResponse } from '../interfaces/api-response.interface';
-import { IJwt } from '../interfaces/jwt.interface';
+import { IJwt } from '../interfaces/jwt.interfaces';
 import { fetchJwt } from '../helpers/jwt.helper';
 
 export class LoginRequest implements ILoginRequest {
@@ -15,7 +15,7 @@ export class LoginRequest implements ILoginRequest {
 }
 
 export class AuthService {
-  async Login(loginString: string): Promise<ILoginResponse> {
+  async Login(loginString: string): Promise<IStandardApiResponse> {
     let body = new LoginRequest(loginString);
 
     try {
@@ -117,26 +117,7 @@ export class AuthService {
     isValid = (status === 200 || status === 201) ? true : false;
 
     return Promise.resolve(isValid);
-  } 
-
-  IsValidateTokenMe(jwt: string | null, callBack: (data: any) => void) {
-    let isValid: boolean = false;    
-
-    if (jwt === null || jwt === undefined) return isValid;
-
-    fetch(identityServiceUrl + '/api/auth/validate', {
-      method: 'get',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + jwt,
-        Accept: 'application/json',
-      }),
-    }).then(res => res.json()).then(function(data) {
-      return data.succes;
-    });        
-    
-    return true;
-  }
+  }  
 }
 
 export interface IAuthCheck {

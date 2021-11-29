@@ -77,7 +77,7 @@ import {
   Contact as ContactView,
   About as AboutView,
   Login as LoginView,
-  Signup as SignupView,
+  SignUp as SignUpView,
   ForgotPassword as ForgotPasswordView,
 } from './views/publicPages';
 
@@ -340,7 +340,7 @@ const Routes = () => {
         render={(matchProps) => (
           <WithLayout
             {...matchProps}
-            component={SignupView}
+            component={SignUpView}
             layout={MainLayout}
           />
         )}

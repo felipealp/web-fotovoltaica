@@ -1,0 +1,8 @@
+### Test Simple
+GET https://danhellem-identityservice.azurewebsites.net/api/test/simple HTTP/1.1
+content-type: application/json
+
+### Test Data
+GET https://danhellem-identityservice.azurewebsites.net/api/test/data HTTP/1.1
+content-type: application/json
+

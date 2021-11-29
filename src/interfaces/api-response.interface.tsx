@@ -1,3 +1,5 @@
+import { MessageCode } from "helpers/enums";
+
 export interface IStandardApiResponse extends IApiResponse {
 	value: string;
 }
@@ -5,6 +7,6 @@ export interface IStandardApiResponse extends IApiResponse {
 export interface IApiResponse {
 	success: boolean | false;
 	message: string;
-	messageCode: number | 500;
+	messageCode: MessageCode | MessageCode.ExceptionThrown;
 	count: number | 0;
 }

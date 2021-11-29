@@ -10,8 +10,8 @@ import { Alert, AlertTitle } from '@material-ui/core';
 
 import { base64EncodeString } from 'helpers/security.helper';
 import AuthService from 'services/auth.service';
-import { ILoginResponse } from 'interfaces/login.interface';
 import { FormCode } from 'helpers/enums';
+import { IStandardApiResponse } from 'interfaces/api-response.interface';
 
 class Form extends React.Component<ILoginFormProps, {}> {
   static defaultProps: Partial<ILoginFormProps> = {};
@@ -54,7 +54,7 @@ class Form extends React.Component<ILoginFormProps, {}> {
     const hashed: string = base64EncodeString(loginString);
     const auth = new AuthService();
 
-    auth.Login(hashed).then(async(response: ILoginResponse) => {      
+    auth.Login(hashed).then(async(response: IStandardApiResponse) => {      
       if (response.success) {
         //set jwt to local storage item
         await localStorage.setItem('myapp.jwt', response.value);
