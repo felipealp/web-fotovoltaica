@@ -1,6 +1,6 @@
 import jwt_decode from 'jwt-decode';
 
-import { identityServiceUrl } from '../helpers/urls.helper';
+import { identityServiceUrl, apiKey } from '../helpers/urls.helper';
 import { ILoginRequest } from '../interfaces/login.interfaces';
 import { IStandardApiResponse } from '../interfaces/api-response.interface';
 import { IJwt } from '../interfaces/jwt.interfaces';
@@ -105,6 +105,7 @@ export class AuthService {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json',
+        'apiKey': apiKey,
         Authorization: 'Bearer ' + jwt,
         Accept: 'application/json',
       }),

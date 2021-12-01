@@ -11,7 +11,7 @@ import {
 } from './layouts';
 
 // Landing pages
-import { 
+import {
   Advertisement as AdvertisementView,
   PaymentApp as PaymentAppView,
   Marketing as MarketingView,
@@ -50,10 +50,7 @@ import {
 //  ForgotPasswordSimple as ForgotPasswordSimpleView,
 //} from './views/authPages';
 
-import {
-  Logout as LogoutView,
-  Home as HomeSecureView,
-} from './views/myPages';
+import { Logout as LogoutView, Home as HomeSecureView } from './views/myPages';
 
 // Documentation pages
 import {
@@ -78,6 +75,7 @@ import {
   About as AboutView,
   Login as LoginView,
   SignUp as SignUpView,
+  ConfirmSignUp as ConfirmSignUpView,
   ForgotPassword as ForgotPasswordView,
 } from './views/publicPages';
 
@@ -345,6 +343,17 @@ const Routes = () => {
           />
         )}
       />
+      <Route
+        exact
+        path="/confirm-signup/:id"
+        render={(matchProps) => (
+          <WithLayout
+            {...matchProps}
+            component={ConfirmSignUpView}
+            layout={MainLayout}
+          />
+        )}
+      />
 
       <Route
         exact
@@ -511,7 +520,7 @@ const Routes = () => {
             layout={MainLayout}
           />
         )}
-      />     
+      />
 
       <Route
         exact
@@ -523,7 +532,7 @@ const Routes = () => {
             layout={MainLayout}
           />
         )}
-      />     
+      />
 
       <Route
         exact
@@ -535,7 +544,7 @@ const Routes = () => {
             layout={MainSecureLayout}
           />
         )}
-      />     
+      />
 
       <Route
         exact

@@ -10,9 +10,11 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import Avatar from '@material-ui/core/Avatar';
 
-//import { Alert, AlertTitle } from '@material-ui/core';
+import { UserService } from 'services/user.service';
+import { ISignUpRequest, ISignUpResponse } from 'interfaces/user.interfaces';
+import { fetchIpAddress } from 'helpers/network.helper';
 
-import { FormCode } from 'helpers/enums';
+//import { Alert, AlertTitle } from '@material-ui/core';
 
 class SignUp extends React.Component<ISignUpFormProps, {}> {
   static defaultProps: Partial<ISignUpFormProps> = {};
@@ -21,25 +23,68 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
     name: '',
     email: '',
     password: '',
+    ipaddress: '192.168.1.1',
     action: 'normal',
-    formCode: FormCode.Ok,
-    errorMsg: '',
-    loginText: 'Login',
+    code: '',
+    errorMsg: '',   
     blurErrors: []
   }
 
+  componentDidMount() {
+    // get ip address
+    fetchIpAddress().then((response: any) => {
+      this.setState({ ipaddress: response.IPv4 });
+    });
+  }
+
   public validateForm() {
+    this.setState({ action: 'normal', blurErrors: [] });
+    let blurErrors: string[] = [];
+
+    if (this.state.email.length < 8) blurErrors.push('email');
+    if (this.state.password.length < 8) blurErrors.push('password');
+    if (this.state.name.length < 4) blurErrors.push('name');
+
+    if (blurErrors.length > 0) {
+      this.setState({ action: 'validation-error', blurErrors: blurErrors });
+      return false;
+    }
+
     return true;
   }
 
   public handleClick = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
+    if (!this.validateForm()) {
+      return;
+    }
+
     this.setState({ action: 'processing' });
 
-    setTimeout(() => {
-      this.setState({ action: 'done' });
-    }, 2000);
+    const userService: UserService = new UserService();
+    const body: ISignUpRequest = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      ipaddress: this.state.ipaddress
+    };   
+
+    userService.SignUp(body).then(async (response: ISignUpResponse) => {
+      if (response.success) {
+        this.setState({ action: 'success', code: response.value.id });
+      } else {
+        this.setState({ action: 'failed', errorMsg: this.setErrorMessage(response.messageCode) });
+      }
+    }).catch((error: Error) => {
+      this.setState({ action: 'failed', errorMsg: error.message });
+    });
+  }
+
+  public handleResetForm = async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    this.setState({ action: 'normal', email: '', password: '', errorMsg: '' });
   }
 
   private handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
@@ -51,16 +96,61 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
   // form onBlur validation
   private handleInputBlur = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
+
+    e.preventDefault();
+    let blurErrors: string[] = this.state.blurErrors;
+
+    if (blurErrors.includes(e.currentTarget.name)) blurErrors.splice(blurErrors.indexOf(e.currentTarget.name), 2);
+
+    switch (e.currentTarget.name) {
+      case 'name':
+        if (this.state.name.length < 4 && !blurErrors.includes(e.currentTarget.name)) blurErrors.push('name');
+        break;
+      case 'email':
+        if (this.state.email.length < 8 && !blurErrors.includes(e.currentTarget.name)) blurErrors.push('email');
+        break;
+      case 'password':
+        if (this.state.password.length < 8 && !blurErrors.includes(e.currentTarget.name)) blurErrors.push('password');
+        break;
+      default:
+        break;
+    }
+
+    this.setState({ blurErrors: blurErrors });
   }
 
   private setHelperTextMessage = (field: string) => {
-    return '';
+    switch (field) {
+      case 'name':
+        return this.state.blurErrors.includes('name') ? 'name is required' : ' ';
+      case 'email':
+        return this.state.blurErrors.includes('email') ? 'email is required' : ' ';
+      case 'password':
+        return this.state.blurErrors.includes('password') ? 'password is required' : ' ';
+      case 'confirmPassword':
+        return this.state.blurErrors.includes('confirmPassword') ? 'confirm password is required and must match password' : ' ';
+      default:
+        return ' ';
+    }
+  }
+
+  private setErrorMessage = (code: number, msg: string = '') => {
+    switch (code) {
+      case 402:
+        return 'Form values that were posted to the server are invalid.';
+      case 406:
+        return 'Email address already exists for another user. Please try with a different email or <a href="./forgot-password>click here</a> to recover your account.';
+      case 600:
+        return 'There was an error on the server: ' + msg;   
+      default:
+        return 'Unhandled exception thrown. Please contact us for support.';
+    }
   }
 
   render() {
     return (
       <div>
-        <Box display={this.state.action !== 'done' ? 'flex' : 'none'}>
+        <Box display={this.state.action !== 'success' ? 'flex' : 'none'}>
           <Grid container spacing={4}>
             <Grid item xs={12} md={6}>
               <Box width={1} height="100%" display="flex" alignItems="center">
@@ -74,7 +164,7 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
                       fontWeight: 900,
                     }}
                   >
-                    Get in touch!
+                    Sign me up!
                   </Typography>
                   <Box marginBottom={4}>
                     <Typography
@@ -85,15 +175,14 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
                         fontWeight: 400,
                       }}
                     >
-                      Get in touch with us by sending a meeage and we will get back to you
-                      soon to schedule a discovery call.
+                      To get started, sign up with us. We will do great things together.
                     </Typography>
                   </Box>
                 </Box>
               </Box>
             </Grid>
             <Grid item xs={12} md={6}>
-              <Box width={1} height="100%" alignItems="center">
+              <Box width={1} height="100%" alignItems="center" display={this.state.action !== 'failed' ? 'flex' : 'none'}>
                 <Box
                   padding={{ xs: 3, sm: 6 }}
                   width={'100%'}
@@ -105,32 +194,46 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
                     <Box display="flex" flexDirection={'column'}>
                       <Box marginBottom={2}>
                         <TextField
-                          sx={{ height: 54 }}
-                          label="Full name"
+                          type="text"
+                          label="Name *"
                           variant="outlined"
                           color="primary"
                           fullWidth
+                          name={'name'}
+                          value={this.state.name}
+                          onChange={(e: any) => this.handleInputChanges(e)}
+                          onBlur={(e: any) => this.handleInputBlur(e)}
+                          error={this.state.blurErrors.includes('name') ? true : false}
+                          helperText={this.setHelperTextMessage('name')}
                         />
                       </Box>
                       <Box marginBottom={2}>
                         <TextField
-                          sx={{ height: 54 }}
-                          label="Email"
+                          label="Email *"
                           type="email"
                           variant="outlined"
                           color="primary"
                           fullWidth
+                          name={'email'}
+                          value={this.state.email}
+                          onChange={(e: any) => this.handleInputChanges(e)}
+                          onBlur={(e: any) => this.handleInputBlur(e)}
+                          error={this.state.blurErrors.includes('email') ? true : false}
+                          helperText={this.setHelperTextMessage('email')}
                         />
                       </Box>
                       <Box marginBottom={2}>
                         <TextField
-                          label="Message"
-                          type="text"
+                          label="Password *"
                           variant="outlined"
-                          color="primary"
+                          name={'password'}
+                          type={'password'}
                           fullWidth
-                          multiline
-                          rows={6}
+                          value={this.state.password}
+                          onChange={(e: any) => this.handleInputChanges(e)}
+                          onBlur={(e: any) => this.handleInputBlur(e)}
+                          error={this.state.blurErrors.includes('password') ? true : false}
+                          helperText={this.setHelperTextMessage('password')}
                         />
                       </Box>
                       <Box>
@@ -143,18 +246,75 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
                           onClick={(e: any) => this.handleClick(e)}
                           disabled={this.state.action === 'processing' ? true : false}
                         >
-                          {this.state.action === 'processing' ? 'Registering, please wait...' : 'Register now'}
+                          {this.state.action === 'processing' ? 'Signing you up, please wait...' : 'Sign me up!'}
                         </Button>
                       </Box>
                     </Box>
                   </form>
                 </Box>
               </Box>
+
+              <Box width={1} height="100%" alignItems="center" display={this.state.action === 'failed' ? 'flex' : 'none'}>
+                <Box
+                  padding={{ xs: 3, sm: 6 }}
+                  width={'100%'}
+                  component={Card}
+                  borderRadius={2}
+                  boxShadow={4}
+                >
+                  <Box
+                    component={Avatar}
+                    width={'100%'}
+                    height={'100%'}
+                    marginBottom={2}
+                    bgcolor={alpha(this.props.theme.palette.primary.main, 0.0)}
+                    color={this.props.theme.palette.primary.main}
+                  >
+                    <svg
+                      height={100}
+                      width={100}
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                      />
+                    </svg>
+                  </Box>
+                  <Box marginBottom={4}>
+                    <Typography
+                      variant="h6"
+                      component="p"
+                      sx={{
+                        color: this.props.theme.palette.common.white,
+                        fontWeight: 400,
+                      }}
+                    >
+                      {this.state.errorMsg}
+                    </Typography>
+                  </Box>
+                  <Box alignItems="center" textAlign="center" width={'100%'}>
+                    <Button                        
+                      size={'large'}
+                      color="primary"  
+                      variant="outlined"                    
+                      onClick={(e: any) => this.handleResetForm(e)}                      
+                    >
+                      Go back and try again
+                    </Button>
+                  </Box>
+                </Box>
+              </Box>
             </Grid>
           </Grid>
         </Box>
 
-        <Box display={this.state.action === 'done' ? 'flex' : 'none'}>
+        <Box display={this.state.action === 'success' ? 'flex' : 'none'}>
           <Grid container spacing={4}>
             <Grid item xs={12} md={6}>
               <Box width={1} height="465px" display="flex" alignItems="center">
@@ -179,8 +339,9 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
                         fontWeight: 400,
                       }}
                     >
-                      Get in touch with us by sending a meeage and we will get back to you
-                      soon to schedule a discovery call.
+                      We are sending you an email to confirm that you are you. Click that link to finilie the sign up process and get started.
+                      <br/><br/>
+                      {'<a href="./signup-confirm/' + this.state.code + '>Temp confirm link</a>'}
                     </Typography>
                   </Box>
                 </Box>
@@ -207,7 +368,7 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+                    d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20"
                   />
                 </svg>
               </Box>
@@ -229,11 +390,11 @@ interface ISignUp {
   name: string,
   email: string,
   password: string,
+  ipaddress: string,
   action: string,
-  formCode: FormCode,
   errorMsg: string;
-  loginText: string,
   blurErrors: string[],
+  code: string,
 }
 
 export default SignUp;
