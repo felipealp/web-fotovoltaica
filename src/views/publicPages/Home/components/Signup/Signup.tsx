@@ -139,7 +139,7 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
       case 402:
         return 'Form values that were posted to the server are invalid.';
       case 406:
-        return 'Email address already exists for another user. Please try with a different email or <a href="./forgot-password>click here</a> to recover your account.';
+        return 'Email address already exists for another user. Please try with a different email or <a href="./forgot-password" style="color: ' + this.props.theme.palette.common.white + '">click here</a> to recover your account.';
       case 600:
         return 'There was an error on the server: ' + msg;   
       default:
@@ -295,7 +295,7 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
                         fontWeight: 400,
                       }}
                     >
-                      {this.state.errorMsg}
+                      <div dangerouslySetInnerHTML={{ __html: this.state.errorMsg }} />                     
                     </Typography>
                   </Box>
                   <Box alignItems="center" textAlign="center" width={'100%'}>
@@ -384,7 +384,6 @@ interface ISignUpFormProps {
   callback: () => void;
   theme: Theme;
 }
-
 
 interface ISignUp {
   name: string,

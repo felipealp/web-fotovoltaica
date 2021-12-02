@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@material-ui/core/Box';
 import Container from '../../../common/Container';
-import { Form } from './components';
+import { Form, Success } from './components';
+import { useParams } from 'react-router-dom';
 
 const ConfirmSignUp = () => {
+  const { id } = useParams<{ id: string }>();
+  const [isConfirmComplete, setComplete] = useState(false);
+
+  const callbackSuccess = () => {  
+    setComplete(true);  
+  };
+
   return (
     <Box
       position={'relative'}
@@ -13,9 +21,12 @@ const ConfirmSignUp = () => {
       justifyContent={'center'}
       height={'100%'}
     >
-      <Container maxWidth={600}>
-        <Form />
-      </Container>
+      <Container maxWidth={600} sx={! isConfirmComplete ? { display: 'flex' } : { display: 'none' }}>
+        <Form code={id} callback={callbackSuccess} />
+      </Container>  
+      <Container maxWidth={600} sx={isConfirmComplete ? { display: 'flex' } : { display: 'none' }}>
+        <Success />
+      </Container>      
     </Box>
   );
 };

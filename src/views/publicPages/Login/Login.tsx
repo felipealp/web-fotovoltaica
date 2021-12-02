@@ -10,10 +10,7 @@ class Login extends React.Component<ILogin, {}> {
     action: 'normal'
   };
 
-  componentDidMount() {
-    
-  } 
-
+  componentDidMount() { } 
   
   private callbackLoginSuccessfull = () => {    
     this.setState({ action: 'redirect'});
