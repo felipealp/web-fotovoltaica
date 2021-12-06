@@ -2,36 +2,58 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import { Theme } from '@material-ui/core/styles';
+import { Button, Link } from '@material-ui/core';
+import TravelIllustration from '../../../../../svg/illustrations/Travel';
 
 class Success extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
 
-  componentDidMount() { } 
-
-  public handleClick = async (e: React.FormEvent<HTMLButtonElement>) => {
-    e.preventDefault();    
-
-    // this.setState({ action: 'processing' });  
-    this.props.callback();  
-  }    
+  componentDidMount() { }
 
   render() {
     return (
-      <Box>
-        <Box marginBottom={4}>          
-          <Typography
-            variant="h4"
-            sx={{
-              fontWeight: 700,
-            }}
+
+      <Box marginBottom={4}>
+        <Box
+          component={Typography}
+          fontWeight={700}
+          variant={'h3'}
+          gutterBottom
+          align={'center'}
+        >
+          Confirmation complete!
+        </Box>
+        <Typography
+          variant={'h6'}
+          component={'p'}
+          color={'textSecondary'}
+          align={'center'}
+        >
+          Build a beautiful, modern website with flexible, fully customizable,
+          atomic Material-UI components.
+          <br />
+          An experience you'd expect from a design system.
+        </Typography>
+        <Box
+          display={'flex'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          marginBottom={4}
+        >
+          <Box height={'100%'} width={'100%'} maxWidth={600}>
+            <TravelIllustration height={'100%'} width={'100%'} />
+          </Box>
+        </Box>
+        <Box marginTop={3} display={'flex'} justifyContent={'center'}>
+          <Button
+            size={'large'}
+            variant={'outlined'}
+            component={Link}
+            href={'/'}
           >
-            Success
-          </Typography>
-          <Typography color="text.secondary">
-            Enter the confirmation code below we'll get your account activated.
-          </Typography>
-        </Box>        
+            Continue
+          </Button>
+        </Box>
       </Box>
     );
   }
@@ -39,7 +61,4 @@ class Success extends React.Component<IProps, {}> {
 
 export default Success;
 
-interface IProps {
-  callback: () => void;
-  theme: Theme;
-}
+interface IProps { }

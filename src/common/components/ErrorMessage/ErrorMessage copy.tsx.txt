@@ -1,0 +1,23 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import Box from '@material-ui/core/Box';
+import { Alert, AlertTitle } from '@material-ui/core';
+
+const ErrorMessage = ({ message = '' }: any) => {
+
+  return (
+    <Box marginBottom={4} display={message.length > 0 ? 'box' : 'none'}>
+      <Alert variant="outlined" severity="error" onClose={() => { message = ''; }}>
+        <AlertTitle>Oops</AlertTitle>
+        <div dangerouslySetInnerHTML={{ __html: message }} />   
+      </Alert>
+    </Box>
+  );
+
+};
+
+ErrorMessage.propTypes = {
+  message: PropTypes.node.isRequired
+};
+
+export default ErrorMessage;

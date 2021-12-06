@@ -49,10 +49,7 @@ content-type: application/json
 
 ### Confirmation Code
 
-POST https://localhost:44399/api/user/confirm HTTP/1.1
+POST https://danhellem-identityservice.azurewebsites.net/api/users/confirm HTTP/1.1
 content-type: application/json
 
-{    
-    "email": "joe@world.com",
-    "code": "c32eca47-b55f-466f-a6d3-495812b91bbf"     
-}
+"am9lQHdvcmxkLmNvbTozMjk5NDkwNC0zOTcyLTRlODAtOGI5NC05YjJlYjRhYzYzNTM="

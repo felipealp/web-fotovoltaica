@@ -4,8 +4,6 @@ import Box from '@material-ui/core/Box';
 import Container from '../../../common/Container';
 import { Features, Hero, Highlights, SignUp } from './components';
 
-
-
 const Home = () => {
   const theme: any = useTheme();
 

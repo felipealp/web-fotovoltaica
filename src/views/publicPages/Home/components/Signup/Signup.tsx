@@ -74,7 +74,7 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
       if (response.success) {
         this.setState({ action: 'success', code: response.value.id });
       } else {
-        this.setState({ action: 'failed', errorMsg: this.setErrorMessage(response.messageCode) });
+        this.setState({ action: 'failed', errorMsg: this.setErrorMessage(response.messageCode, response.message) });
       }
     }).catch((error: Error) => {
       this.setState({ action: 'failed', errorMsg: error.message });
@@ -134,8 +134,8 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
     }
   }
 
-  private setErrorMessage = (code: number, msg: string = '') => {
-    switch (code) {
+  private setErrorMessage = (messageCode: number, msg: string = '') => {
+    switch (messageCode) {
       case 402:
         return 'Form values that were posted to the server are invalid.';
       case 406:

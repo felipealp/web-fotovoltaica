@@ -1,8 +1,9 @@
 import { identityServiceUrl } from '../helpers/urls.helper';
-import { IConfirmCodeRequest, IResendCodeRequest, IResendCodeResponse, ISignUpRequest, ISignUpResponse } from 'interfaces/user.interfaces';
+import { IResendCodeRequest, IResendCodeResponse, ISignUpRequest, ISignUpResponse } from 'interfaces/user.interfaces';
 import { IStandardApiResponse } from 'interfaces/api-response.interface';
 
 export class UserService {
+  
   async SignUp(body: ISignUpRequest): Promise<ISignUpResponse> {
     
     try {
@@ -22,7 +23,7 @@ export class UserService {
     }
   }
 
-  async ConfirmCode(body: IConfirmCodeRequest): Promise<IStandardApiResponse> {
+  async ConfirmCode(code: string): Promise<IStandardApiResponse> {
     
     try {
       const response = await fetch(identityServiceUrl + '/api/users/confirm', {
@@ -31,7 +32,7 @@ export class UserService {
           'Content-Type': 'application/json',
           Accept: 'application/json',
         }),
-        body: JSON.stringify(body),
+        body: JSON.stringify(code),
       });
 
       const results = await Promise.resolve(response);

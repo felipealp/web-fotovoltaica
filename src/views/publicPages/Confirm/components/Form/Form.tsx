@@ -8,6 +8,12 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import { Theme } from '@material-ui/core/styles';
 
+import ErrorMessage from '../../../../../common/components/ErrorMessage/ErrorMessage';
+
+import { UserService } from 'services/user.service';
+import { IStandardApiResponse } from 'interfaces/api-response.interface';
+import { MessageCode } from 'helpers/enums';
+
 class Form extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
 
@@ -21,11 +27,40 @@ class Form extends React.Component<IProps, {}> {
 
   componentDidMount() { } 
 
+  public validateForm() {
+    this.setState({ action: 'normal', blurErrors: [] });
+    let blurErrors: string[] = [];
+
+    if (this.state.code.length < 36) blurErrors.push('code');  
+
+    if (blurErrors.length > 0) {
+      this.setState({ action: 'validation-error', blurErrors: blurErrors });
+      return false;
+    }
+
+    return true;
+  }
+
   public handleClick = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();    
 
-    // this.setState({ action: 'processing' });  
-    this.props.callback();  
+    if (!this.validateForm()) {
+      return;
+    }
+
+    this.setState({ action: 'processing'});
+    const userService: UserService = new UserService(); 
+
+    userService.ConfirmCode(this.state.code).then(async (response: IStandardApiResponse) => {      
+      if (response.success) {    
+        this.setState({ action: 'success', code: response.value });         
+        this.props.callback(); 
+      } else {
+        this.setState({ action: 'failed', errorMsg: this.setErrorMessage(response.messageCode) });
+      }
+    }).catch((error: Error) => {
+      this.setState({ action: 'failed', errorMsg: error.message });
+    });    
   }  
 
   private handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
@@ -33,6 +68,23 @@ class Form extends React.Component<IProps, {}> {
 
     this.setState({ [e.currentTarget.name]: e.currentTarget.value } as unknown as Pick<IForm, keyof IForm>);
   };  
+  
+  private setErrorMessage = (messageCode: MessageCode, msg: string = '') => {
+    switch (messageCode) {
+      case MessageCode.InvalidModelState:
+        return 'Invalid confirmation code.';
+      case MessageCode.NotFound:
+        return 'This code is either invalid or has already been used. Try logging in or <a href="./send-code" style="color: ' + this.props.theme.palette.common.white + '">create a new code here</a>.';
+      case MessageCode.Expired:
+        return 'Code has expired.';
+      case MessageCode.Failed:
+        return 'There was an error with confirmation code: ' + msg;
+      case MessageCode.ExceptionThrown:
+        return 'Server error: ' + msg;   
+      default:
+        return 'Unhandled exception thrown. Please contact us for support.';
+    }
+  }
 
   render() {
     return (
@@ -50,16 +102,21 @@ class Form extends React.Component<IProps, {}> {
             Enter the confirmation code below we'll get your account activated.
           </Typography>
         </Box>
+        <Box>
+          <ErrorMessage message={this.state.errorMsg} />
+        </Box>
         <form>
           <Grid container spacing={4}>
-            <Grid item xs={12}>              
+            <Grid item xs={12} marginBottom={2}>              
               <TextField
-                label="Code *"
+                label="Confirmation Code *"
                 variant="outlined"
                 name={'Code'}
                 fullWidth
                 value={this.state.code}
-                onChange={(e: any) => this.handleInputChanges(e)}                           
+                onChange={(e: any) => this.handleInputChanges(e)} 
+                error={this.state.blurErrors.includes('code') ? true : false} 
+                helperText={this.state.blurErrors.includes('code') ? 'Confirmation code is required' : ''}                         
               />
             </Grid>
             <Grid item container xs={12}>
@@ -83,7 +140,7 @@ class Form extends React.Component<IProps, {}> {
                   </Button>
                 </Box>
                 <Button 
-                  sx={{ width: 240 }}
+                  sx={{ width: 250 }}
                   size={'large'} 
                   variant={'contained'} 
                   onClick={(e: any) => this.handleClick(e)}

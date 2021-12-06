@@ -16,11 +16,6 @@ export interface ISignUpRequest {
 	ipaddress: string;
 }
 
-export interface IConfirmCodeRequest {
-	email: string;
-	code: string;
-}
-
 export interface IResendCodeRequest {	
 	email: string;
 	Status: UserStatus;

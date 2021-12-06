@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Container from '../../../common/Container';
 import { Form, Success } from './components';
@@ -6,7 +7,8 @@ import { useParams } from 'react-router-dom';
 
 const ConfirmSignUp = () => {
   const { id } = useParams<{ id: string }>();
-  const [isConfirmComplete, setComplete] = useState(false);
+  const [isConfirmComplete, setComplete] = useState(true);
+  const theme: any = useTheme();
 
   const callbackSuccess = () => {  
     setComplete(true);  
@@ -20,9 +22,9 @@ const ConfirmSignUp = () => {
       alignItems={'center'}
       justifyContent={'center'}
       height={'100%'}
-    >
-      <Container maxWidth={600} sx={! isConfirmComplete ? { display: 'flex' } : { display: 'none' }}>
-        <Form code={id} callback={callbackSuccess} />
+    >      
+      <Container maxWidth={600} sx={isConfirmComplete ? { display: 'none' } : { display: 'flex' }}>
+        <Form code={id} callback={callbackSuccess} theme={theme} />
       </Container>  
       <Container maxWidth={600} sx={isConfirmComplete ? { display: 'flex' } : { display: 'none' }}>
         <Success />
