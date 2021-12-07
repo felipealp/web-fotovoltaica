@@ -18,7 +18,6 @@ export interface ISignUpRequest {
 
 export interface IResendCodeRequest {	
 	email: string;
-	Status: UserStatus;
 }
 
 export interface ICode {

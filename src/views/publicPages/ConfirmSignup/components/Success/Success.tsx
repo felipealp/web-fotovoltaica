@@ -21,7 +21,7 @@ class Success extends React.Component<IProps, {}> {
           gutterBottom
           align={'center'}
         >
-          Confirmation complete!
+          Confirmation complete
         </Box>
         <Typography
           variant={'h6'}
@@ -29,16 +29,16 @@ class Success extends React.Component<IProps, {}> {
           color={'textSecondary'}
           align={'center'}
         >
-          Build a beautiful, modern website with flexible, fully customizable,
-          atomic Material-UI components.
+          Your account confirmation is complete
           <br />
-          An experience you'd expect from a design system.
+          We look forward to working together
         </Typography>
         <Box
           display={'flex'}
           justifyContent={'center'}
           alignItems={'center'}
           marginBottom={4}
+          marginTop={4}
         >
           <Box height={'100%'} width={'100%'} maxWidth={600}>
             <TravelIllustration height={'100%'} width={'100%'} />
@@ -47,11 +47,11 @@ class Success extends React.Component<IProps, {}> {
         <Box marginTop={3} display={'flex'} justifyContent={'center'}>
           <Button
             size={'large'}
-            variant={'outlined'}
+            variant={'contained'}
             component={Link}
-            href={'/'}
+            href={'../secure/home'}
           >
-            Continue
+            Get Started
           </Button>
         </Box>
       </Box>

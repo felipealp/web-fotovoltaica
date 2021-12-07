@@ -43,8 +43,7 @@ POST https://localhost:44399/api/codes/resend HTTP/1.1
 content-type: application/json
 
 {    
-    "email": "joe@world.com",
-    "status": 0   
+    "email": "joe@world.com"
 }
 
 ### Confirmation Code

@@ -5,9 +5,9 @@ import Container from '../../../common/Container';
 import { Form, Success } from './components';
 import { useParams } from 'react-router-dom';
 
-const ConfirmSignUp = () => {
+const ConfirmSignup = () => {
   const { id } = useParams<{ id: string }>();
-  const [isConfirmComplete, setComplete] = useState(true);
+  const [isConfirmComplete, setComplete] = useState(false);
   const theme: any = useTheme();
 
   const callbackSuccess = () => {  
@@ -33,4 +33,4 @@ const ConfirmSignUp = () => {
   );
 };
 
-export default ConfirmSignUp;
+export default ConfirmSignup;

@@ -74,8 +74,9 @@ import {
   Contact as ContactView,
   About as AboutView,
   Login as LoginView,
-  SignUp as SignUpView,
-  ConfirmSignUp as ConfirmSignUpView,
+  Signup as SignUpView,
+  ConfirmSignup as ConfirmSignUpView,
+  SendCode as SendCodeView,
   ForgotPassword as ForgotPasswordView,
 } from './views/publicPages';
 
@@ -354,7 +355,17 @@ const Routes = () => {
           />
         )}
       />
-
+      <Route
+        exact
+        path="/send-code"
+        render={(matchProps) => (
+          <WithLayout
+            {...matchProps}
+            component={SendCodeView}
+            layout={MainLayout}
+          />
+        )}
+      />
       <Route
         exact
         path="/forgot-password"
@@ -521,7 +532,7 @@ const Routes = () => {
           />
         )}
       />
-
+      
       <Route
         exact
         path="/logout"

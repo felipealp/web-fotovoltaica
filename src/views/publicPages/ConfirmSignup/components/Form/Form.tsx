@@ -18,7 +18,6 @@ class Form extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
 
   state: IForm = {    
-    email: '',  
     code: this.props.code, 
     action: 'normal',
     errorMsg: '',   
@@ -53,7 +52,10 @@ class Form extends React.Component<IProps, {}> {
 
     userService.ConfirmCode(this.state.code).then(async (response: IStandardApiResponse) => {      
       if (response.success) {    
-        this.setState({ action: 'success', code: response.value });         
+        //set jwt to local storage item
+        await localStorage.setItem('myapp.jwt', response.value);
+        
+        this.setState({ action: 'success' });
         this.props.callback(); 
       } else {
         this.setState({ action: 'failed', errorMsg: this.setErrorMessage(response.messageCode) });
@@ -165,7 +167,6 @@ interface IProps {
 }
 
 interface IForm {
-  email: string,
   code: string,
   action: string,
   errorMsg: string;
