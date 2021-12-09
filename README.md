@@ -1,6 +1,6 @@
 # My Web App
 
-Project just getting off the ground and used Webbee UI Kit. Will post a better a readme.md in the near future.
+Project just getting off the ground. Using the Webbee UI Kit. Will post a better a readme.md in the near future.
 
 # [Webbee - Multipurpose Template + UI Kit](https://webbee.maccarianagency.com/)
 
