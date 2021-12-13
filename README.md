@@ -1,3 +1,7 @@
+# 🚀 My Web App
+
+Project just getting off the ground. Using the Webbee UI Kit. Will post a better a readme.md in the near future.
+
 # [Webbee - Multipurpose Template + UI Kit](https://webbee.maccarianagency.com/)
 
 Material-UI & ReactJS based Landing Pages Kit made with [Material UI's](https://material-ui.com/?ref=maccarian-agency) components, [React](https://reactjs.org/?ref=maccarian-agency).
