@@ -11,7 +11,7 @@ import { Theme } from '@material-ui/core/styles';
 import ErrorMessage from '../../../../../common/components/ErrorMessage/ErrorMessage';
 
 import { UserService } from 'services/user.service';
-import { IResendCodeRequest, IGetCodeResponse } from 'interfaces/user.interfaces';
+import { IForgotPasswordRequest, IGetCodeResponse } from 'interfaces/user.interfaces';
 import { MessageCode } from 'helpers/enums';
 
 class Form extends React.Component<IProps, {}> {
@@ -49,14 +49,16 @@ class Form extends React.Component<IProps, {}> {
 
     this.setState({ action: 'processing' });
     const userService: UserService = new UserService();
-    const body: IResendCodeRequest = { email: this.state.email };
+    const body: IForgotPasswordRequest = { email: this.state.email };
 
-    userService.ResendCode(body).then(async (response: IGetCodeResponse) => {
+    userService.ForgotPassword(body).then(async (response: IGetCodeResponse) => {
+      console.log(response);
+      
       if (response.success) {
         this.setState({ action: 'success' });
         this.props.callback(response.value.status);
       } else {
-        this.setState({ action: 'failed', errorMsg: this.setErrorMessage(response.messageCode) });
+        this.setState({ action: 'failed', errorMsg: this.setErrorMessage(response.messageCode, response.message) });
       }
     }).catch((error: Error) => {
       this.setState({ action: 'failed', errorMsg: error.message });
@@ -72,6 +74,8 @@ class Form extends React.Component<IProps, {}> {
   private setErrorMessage = (messageCode: MessageCode, msg: string = '') => {
     switch (messageCode) {
       case MessageCode.InvalidModelState:
+        return 'Invalid email address. Please try again.';
+      case MessageCode.NullValue:
         return 'Invalid email address. Please try again.';
       case MessageCode.NotFound:
         return 'The email address you have entered is not found. Please try again or sign up for a new account.';
@@ -98,10 +102,10 @@ class Form extends React.Component<IProps, {}> {
               fontWeight: 700,
             }}
           >
-            Resend Code
+            Forgot your password?
           </Typography>
           <Typography color="text.secondary">
-            Enter your email address and we will generate a new code and send you a message.
+            Enter your email address and will send you an message with a link to reset your password.
           </Typography>
         </Box>
         <Box>
@@ -147,7 +151,7 @@ class Form extends React.Component<IProps, {}> {
                   variant={'contained'}
                   onClick={(e: any) => this.handleClick(e)}
                   disabled={this.state.action === 'processing' ? true : false}>
-                  {this.state.action === 'processing' ? 'Creating code, please wait...' : 'Click to send code'}
+                  {this.state.action === 'processing' ? 'Processing, please wait...' : 'Click to send message'}
                 </Button>
               </Box>
             </Grid>

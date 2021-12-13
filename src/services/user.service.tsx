@@ -1,10 +1,10 @@
 import { identityServiceUrl } from '../helpers/urls.helper';
-import { IResendCodeRequest, IResendCodeResponse, ISignUpRequest, ISignUpResponse } from 'interfaces/user.interfaces';
+import { IForgotPasswordRequest, IResendCodeRequest, IGetCodeResponse, ISignUpRequest } from 'interfaces/user.interfaces';
 import { IStandardApiResponse } from 'interfaces/api-response.interface';
 
 export class UserService {
   
-  async SignUp(body: ISignUpRequest): Promise<ISignUpResponse> {
+  async SignUp(body: ISignUpRequest): Promise<IGetCodeResponse> {
     
     try {
       const response = await fetch(identityServiceUrl + '/api/users/signup', {
@@ -42,7 +42,7 @@ export class UserService {
     }
   }
 
-  async ResendCode(body: IResendCodeRequest): Promise<IResendCodeResponse> {
+  async ResendCode(body: IResendCodeRequest): Promise<IGetCodeResponse> {
     
     try {
       const response = await fetch(identityServiceUrl + '/api/codes/resend', {
@@ -60,7 +60,44 @@ export class UserService {
       return await Promise.reject(error);
     }
   }
+
+  async ForgotPassword(body: IForgotPasswordRequest): Promise<IGetCodeResponse> {
+    
+    try {
+      const response = await fetch(identityServiceUrl + '/api/users/forgotpassword', {
+        method: 'post',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        }),
+        body: JSON.stringify(body),
+      });
+
+      const results = await Promise.resolve(response);
+      return await results.json();
+    } catch (error) {
+      return await Promise.reject(error);
+    }
+  }
   
+  async ResetPassword(body: IForgotPasswordRequest): Promise<IGetCodeResponse> {
+    
+    try {
+      const response = await fetch(identityServiceUrl + '/api/users/resetpassword', {
+        method: 'put',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        }),
+        body: JSON.stringify(body),
+      });
+
+      const results = await Promise.resolve(response);
+      return await results.json();
+    } catch (error) {
+      return await Promise.reject(error);
+    }
+  }
 }
 
 export default UserService;

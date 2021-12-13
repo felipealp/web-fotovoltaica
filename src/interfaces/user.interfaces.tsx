@@ -1,11 +1,7 @@
 import { UserStatus } from "helpers/enums";
 import { IApiResponse } from "./api-response.interface";
 
-export interface ISignUpResponse extends IApiResponse {
-	value: ICode;
-}
-
-export interface IResendCodeResponse extends IApiResponse {
+export interface IGetCodeResponse extends IApiResponse {
 	value: ICode;
 }
 
@@ -20,8 +16,16 @@ export interface IResendCodeRequest {
 	email: string;
 }
 
-export interface ICode {
-	id: string;
+export interface ICode {	
 	status: UserStatus;
 	dateExpires: Date;
+}
+
+export interface IForgotPasswordRequest {
+	email: string;
+}
+
+export interface IResetPasswordRequest {
+	code: string;
+	password: string;
 }

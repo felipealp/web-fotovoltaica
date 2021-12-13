@@ -11,7 +11,7 @@ import Card from '@material-ui/core/Card';
 import Avatar from '@material-ui/core/Avatar';
 
 import { UserService } from 'services/user.service';
-import { ISignUpRequest, ISignUpResponse } from 'interfaces/user.interfaces';
+import { ISignUpRequest, IGetCodeResponse } from 'interfaces/user.interfaces';
 import { fetchIpAddress } from 'helpers/network.helper';
 
 //import { Alert, AlertTitle } from '@material-ui/core';
@@ -24,8 +24,7 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
     email: '',
     password: '',
     ipaddress: '192.168.1.1',
-    action: 'normal',
-    code: '',
+    action: 'normal',   
     errorMsg: '',   
     blurErrors: []
   }
@@ -70,9 +69,9 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
       ipaddress: this.state.ipaddress
     };   
 
-    userService.SignUp(body).then(async (response: ISignUpResponse) => {
+    userService.SignUp(body).then(async (response: IGetCodeResponse) => {
       if (response.success) {
-        this.setState({ action: 'success', code: response.value.id });
+        this.setState({ action: 'success' });
       } else {
         this.setState({ action: 'failed', errorMsg: this.setErrorMessage(response.messageCode, response.message) });
       }
@@ -339,9 +338,7 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
                         fontWeight: 400,
                       }}
                     >
-                      We are sending you an email to confirm that you are you. Click that link to finilie the sign up process and get started.
-                      <br/><br/>
-                      {'<a href="./signup-confirm/' + this.state.code + '>Temp confirm link</a>'}
+                      We are sending you an email to confirm that you are you. Click that link to finilie the sign up process and get started.                     
                     </Typography>
                   </Box>
                 </Box>
@@ -392,8 +389,7 @@ interface ISignUp {
   ipaddress: string,
   action: string,
   errorMsg: string;
-  blurErrors: string[],
-  code: string,
+  blurErrors: string[],  
 }
 
 export default SignUp;
