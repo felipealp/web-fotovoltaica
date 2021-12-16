@@ -6,12 +6,12 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
-import { Alert, AlertTitle } from '@material-ui/core';
 
 import { base64EncodeString } from 'helpers/security.helper';
 import AuthService from 'services/auth.service';
 import { AuthMessageCode, FormCode } from 'helpers/enums';
 import { IAuthApiResponse } from 'interfaces/api-response.interface';
+import { ErrorMessage } from 'common/components';
 
 class Form extends React.Component<ILoginFormProps, {}> {
   static defaultProps: Partial<ILoginFormProps> = {};
@@ -110,8 +110,10 @@ class Form extends React.Component<ILoginFormProps, {}> {
         return 'The status of our account is not eligible to for login. This usually means you have attempted to reset your password but you have not finished the process.';
       case (AuthMessageCode.NotActive):
         return 'The status of your account is currently marked not active';  
-      default:
+      case (AuthMessageCode.ExceptionThrown):
         return 'Unhandled exception thrown. Please contact us for support.';
+      default:
+        return '';
     }
   }
 
@@ -152,12 +154,7 @@ class Form extends React.Component<ILoginFormProps, {}> {
             Login to manage your account.
           </Typography>
         </Box>
-        <Box marginBottom={4} display={ this.state.formCode === FormCode.ApiFail ? 'box' : 'none'}>
-          <Alert variant="outlined" severity="error" onClose={() => { this.setState({ action: 'normal', password: '', formCode: FormCode.Ok, errorMsg: '' });}}>
-            <AlertTitle>Authentication Error</AlertTitle>
-            {this.setErrorMessage(this.state.messageCode, this.state.message)}
-          </Alert>
-        </Box>
+        <ErrorMessage message={this.setErrorMessage(this.state.messageCode, this.state.message)} />
         <form>
           <Grid container spacing={4}>
             <Grid item xs={12}>
@@ -230,7 +227,7 @@ class Form extends React.Component<ILoginFormProps, {}> {
                     <Link
                       component={'a'}
                       color={'primary'}
-                      href={'/page-signup-simple'}
+                      href={'/signup'}
                       underline={'none'}
                     >
                       Sign up here.

@@ -93,7 +93,7 @@ const Logout = () => {
                   variant="contained"
                   color="primary"
                   size="large"
-                  href={'/'}
+                  href={'/login'}
                 >
                   Login page
                 </Button>                

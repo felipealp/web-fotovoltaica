@@ -294,7 +294,7 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
                         fontWeight: 400,
                       }}
                     >
-                      <div dangerouslySetInnerHTML={{ __html: this.state.errorMsg }} />                     
+                      <span dangerouslySetInnerHTML={{ __html: this.state.errorMsg }} />                      
                     </Typography>
                   </Box>
                   <Box alignItems="center" textAlign="center" width={'100%'}>
@@ -338,7 +338,7 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
                         fontWeight: 400,
                       }}
                     >
-                      We are sending you an email to confirm that you are you. Click that link to finilie the sign up process and get started.                     
+                      We are sending you an email to confirm that you are you. Click that link to finalize the sign up process and get started.                     
                     </Typography>
                   </Box>
                 </Box>

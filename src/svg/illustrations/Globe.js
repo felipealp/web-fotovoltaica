@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@material-ui/core/styles';
 
-const Globe = ({ width = 147, height = 119 }) => {
+const Globe = ({ width = '100%', height = '100%' }) => {
   const theme = useTheme();
   const colorPrimaryMain = theme.palette.primary.main;
   return (

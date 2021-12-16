@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@material-ui/core/Box';
 import Container from '../../../common/Container';
-import { Form } from './components';
+import { Form, Success } from './components';
+import { useTheme } from '@material-ui/core/styles';
 
 const Signup = () => {
+  const theme: any = useTheme();
+  const [isSuccess, setSuccess] = useState(false);
+
+  const callbackSuccess = () => {  
+    setSuccess(true);
+  };
+
   return (
     <Box
       position={'relative'}
@@ -13,9 +21,12 @@ const Signup = () => {
       justifyContent={'center'}
       height={'100%'}
     >
-      <Container maxWidth={600}>
-        <Form />
-      </Container>
+      <Container sx={isSuccess ? { display: 'none' } : { display: 'flex' }}>
+        <Form callback={callbackSuccess} theme={theme} />
+      </Container>  
+      <Container sx={isSuccess ? { display: 'flex' } : { display: 'none' }}>
+        <Success theme={theme} />
+      </Container>  
     </Box>
   );
 };
