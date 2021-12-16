@@ -2,7 +2,7 @@ import jwt_decode from 'jwt-decode';
 
 import { identityServiceUrl, apiKey } from '../helpers/urls.helper';
 import { ILoginRequest } from '../interfaces/login.interfaces';
-import { IStandardApiResponse } from '../interfaces/api-response.interface';
+import { IAuthApiResponse, IStandardApiResponse } from '../interfaces/api-response.interface';
 import { IJwt } from '../interfaces/jwt.interfaces';
 import { fetchJwt } from '../helpers/jwt.helper';
 
@@ -15,7 +15,7 @@ export class LoginRequest implements ILoginRequest {
 }
 
 export class AuthService {
-  async Login(loginString: string): Promise<IStandardApiResponse> {
+  async Login(loginString: string): Promise<IAuthApiResponse> {
     let body = new LoginRequest(loginString);
 
     try {

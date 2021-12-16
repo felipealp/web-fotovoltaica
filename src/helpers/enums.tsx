@@ -30,3 +30,17 @@ export enum MessageCode {
     ExceptionThrown = 501,
     AuthFailed = 500
 }
+
+export enum AuthMessageCode {
+    Success = 200,
+    InvalidFormat = 400,
+    NotFound = 404,
+    Blocked = 401,
+    LoginAttempts = 402,
+    NotConfirmed = 403,
+    InvalidStatus = 405,
+    NotActive = 406,
+    InvalidLogin = 500,
+    Failed = 501,
+    ExceptionThrown = 502
+}

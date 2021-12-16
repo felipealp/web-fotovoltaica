@@ -2,13 +2,12 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import { Button, Link } from '@material-ui/core';
+import { Button, Link, Stack } from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { alpha } from '@material-ui/core';
-import { UserStatus } from 'helpers/enums';
 
-class Success extends React.Component<IProps, {}> {
+class Error extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};  
 
   render() {
@@ -40,10 +39,10 @@ class Success extends React.Component<IProps, {}> {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                strokeWidth={1}
+                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
-            </svg>
+            </svg>             
           </Box>
         </Box>      
 
@@ -54,7 +53,7 @@ class Success extends React.Component<IProps, {}> {
           gutterBottom
           align={'center'}
         >
-          Check your inbox
+          Houston, we have a problem...
         </Box>
         <Typography
           variant={'h6'}
@@ -62,26 +61,28 @@ class Success extends React.Component<IProps, {}> {
           color={'textSecondary'}
           align={'center'}
         >
-          We sent you a new message with a link to reset your password.       
+          {this.props.message}     
         </Typography>
         <Box marginTop={3} display={'flex'} justifyContent={'center'}>
-          <Button
-            size={'large'}
-            variant={'outlined'}
-            component={Link}
-            href={'/'}
-          >
-            Back to Home
-          </Button>
+          <Stack spacing={2} direction="row">            
+            <Button
+              size={'large'}
+              variant={'contained'}
+              component={Link}
+              href={'/send-code'}
+            >
+              Resend code
+            </Button>
+          </Stack>
         </Box>
       </Box>
     );
   }
 }
 
-export default Success;
+export default Error;
 
 interface IProps {
   theme: Theme;
-  status: UserStatus;
+  message: string;
 }

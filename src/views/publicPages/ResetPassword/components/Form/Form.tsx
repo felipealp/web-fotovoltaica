@@ -11,14 +11,16 @@ import { Theme } from '@material-ui/core/styles';
 import ErrorMessage from '../../../../../common/components/ErrorMessage/ErrorMessage';
 
 import { UserService } from 'services/user.service';
-import { IForgotPasswordRequest, IGetCodeResponse } from 'interfaces/user.interfaces';
+import { IResetPasswordRequest, IGetCodeResponse } from 'interfaces/user.interfaces';
 import { MessageCode } from 'helpers/enums';
 
 class Form extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
 
   state: IForm = {
-    email: '',
+    code: this.props.code,
+    password: '',
+    passwordConfirm: '',
     action: 'normal',
     errorMsg: '',
     blurErrors: []
@@ -30,7 +32,9 @@ class Form extends React.Component<IProps, {}> {
     this.setState({ action: 'normal', blurErrors: [] });
     let blurErrors: string[] = [];
 
-    if (this.state.email.length < 8) blurErrors.push('email');
+    if (this.state.password.length < 8) blurErrors.push('password');
+    if (this.state.passwordConfirm.length < 8) blurErrors.push('passwordConfirm');
+    if (this.state.passwordConfirm !== this.state.password) blurErrors.push('passwordConfirm');
 
     if (blurErrors.length > 0) {
       this.setState({ blurErrors: blurErrors });
@@ -49,10 +53,10 @@ class Form extends React.Component<IProps, {}> {
 
     this.setState({ action: 'processing' });
     const userService: UserService = new UserService();
-    const body: IForgotPasswordRequest = { email: this.state.email };
+    const body: IResetPasswordRequest = { password: this.state.password, code: this.props.code };
 
-    userService.ForgotPassword(body).then(async (response: IGetCodeResponse) => {      
-      if (response.success) {        
+    userService.ResetPassword(body).then(async (response: IGetCodeResponse) => {
+      if (response.success) {
         this.props.callback(response.value.status);
       } else {
         this.setState({ action: 'failed', errorMsg: this.setErrorMessage(response.messageCode, response.message) });
@@ -60,6 +64,28 @@ class Form extends React.Component<IProps, {}> {
     }).catch((error: Error) => {
       this.setState({ action: 'failed', errorMsg: error.message });
     });
+  }
+
+  // form onBlur validation
+  private handleInputBlur = (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    let blurErrors: string[] = this.state.blurErrors;
+
+    if (blurErrors.includes(e.currentTarget.name)) blurErrors.splice(blurErrors.indexOf(e.currentTarget.name), 2);
+
+    switch (e.currentTarget.name) {
+      case 'password':
+        if (this.state.password.length < 8 && !blurErrors.includes(e.currentTarget.name)) blurErrors.push('password');
+        break;
+      case 'passwordConfirm':
+        if (this.state.passwordConfirm.length < 8 && !blurErrors.includes(e.currentTarget.name)) blurErrors.push('passwordConfirm');
+        if (this.state.passwordConfirm !== this.state.password && !blurErrors.includes(e.currentTarget.name)) blurErrors.push('passwordConfirm');
+        break;
+      default:
+        break;
+    }
+
+    this.setState({ blurErrors: blurErrors });
   }
 
   private handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
@@ -70,9 +96,7 @@ class Form extends React.Component<IProps, {}> {
 
   private setErrorMessage = (messageCode: MessageCode, msg: string = '') => {
     switch (messageCode) {
-      case MessageCode.InvalidModelState:
-        return 'Invalid email address. Please try again.';
-      case MessageCode.NullValue:
+      case (MessageCode.InvalidModelState, MessageCode.NullValue):
         return 'Invalid email address. Please try again.';
       case MessageCode.NotFound:
         return 'The email address you have entered is not found. Please try again or sign up for a new account.';
@@ -99,10 +123,10 @@ class Form extends React.Component<IProps, {}> {
               fontWeight: 700,
             }}
           >
-            Forgot your password?
+            Change your password
           </Typography>
           <Typography color="text.secondary">
-            Enter your email address and will send you an message with a link to reset your password.
+            Your code is good! Go ahead and change your password and click update.
           </Typography>
         </Box>
         <Box>
@@ -112,14 +136,30 @@ class Form extends React.Component<IProps, {}> {
           <Grid container spacing={4}>
             <Grid item xs={12} marginBottom={2}>
               <TextField
-                label="Email *"
+                label="Password *"
                 variant="outlined"
-                name={'email'}
+                name={'password'}
+                type={'password'}
                 fullWidth
-                value={this.state.email}
+                value={this.state.password}
                 onChange={(e: any) => this.handleInputChanges(e)}
-                error={this.state.blurErrors.includes('email') ? true : false}
-                helperText={this.state.blurErrors.includes('email') ? 'Email is required' : ''}
+                onBlur={(e: any) => this.handleInputBlur(e)}
+                error={this.state.blurErrors.includes('password') ? true : false}
+                helperText={this.state.blurErrors.includes('password') ? 'Password is required' : ''}
+              />
+            </Grid>
+            <Grid item xs={12} marginBottom={2}>
+              <TextField
+                label="Confirm password *"
+                variant="outlined"
+                name={'passwordConfirm'}
+                type={'password'}
+                fullWidth
+                value={this.state.passwordConfirm}
+                onChange={(e: any) => this.handleInputChanges(e)}
+                onBlur={(e: any) => this.handleInputBlur(e)}
+                error={this.state.blurErrors.includes('passwordConfirm') ? true : false}
+                helperText={this.state.blurErrors.includes('passwordConfirm') ? 'Confirm password is required and must match password' : ''}
               />
             </Grid>
             <Grid item container xs={12}>
@@ -148,7 +188,7 @@ class Form extends React.Component<IProps, {}> {
                   variant={'contained'}
                   onClick={(e: any) => this.handleClick(e)}
                   disabled={this.state.action === 'processing' ? true : false}>
-                  {this.state.action === 'processing' ? 'Processing, please wait...' : 'Click to send message'}
+                  {this.state.action === 'processing' ? 'Processing, please wait...' : 'Update password'}
                 </Button>
               </Box>
             </Grid>
@@ -164,10 +204,13 @@ export default Form;
 interface IProps {
   callback: (status: any) => void;
   theme: Theme;
+  code: string;
 }
 
 interface IForm {
-  email: string,
+  code: string,
+  password: string;
+  passwordConfirm: string;
   action: string,
   errorMsg: string;
   blurErrors: string[],

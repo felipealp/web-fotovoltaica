@@ -33,7 +33,7 @@ class Form extends React.Component<IProps, {}> {
     if (this.state.email.length < 8) blurErrors.push('email');
 
     if (blurErrors.length > 0) {
-      this.setState({ action: 'validation-error', blurErrors: blurErrors });
+      this.setState({ blurErrors: blurErrors });
       return false;
     }
 

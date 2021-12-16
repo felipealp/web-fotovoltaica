@@ -78,6 +78,7 @@ import {
   ConfirmSignup as ConfirmSignUpView,
   SendCode as SendCodeView,
   ForgotPassword as ForgotPasswordView,
+  ResetPassword as ResetPasswordView,
 } from './views/publicPages';
 
 const Routes = () => {
@@ -373,6 +374,17 @@ const Routes = () => {
           <WithLayout
             {...matchProps}
             component={ForgotPasswordView}
+            layout={MainLayout}
+          />
+        )}
+      />
+      <Route
+        exact
+        path="/reset-password/:code"
+        render={(matchProps) => (
+          <WithLayout
+            {...matchProps}
+            component={ResetPasswordView}
             layout={MainLayout}
           />
         )}

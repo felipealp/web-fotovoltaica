@@ -1,5 +1,5 @@
 import { identityServiceUrl } from '../helpers/urls.helper';
-import { IForgotPasswordRequest, IResendCodeRequest, IGetCodeResponse, ISignUpRequest } from 'interfaces/user.interfaces';
+import { IForgotPasswordRequest, IResendCodeRequest, IGetCodeResponse, ISignUpRequest, IResetPasswordRequest } from 'interfaces/user.interfaces';
 import { IStandardApiResponse } from 'interfaces/api-response.interface';
 
 export class UserService {
@@ -80,7 +80,7 @@ export class UserService {
     }
   }
   
-  async ResetPassword(body: IForgotPasswordRequest): Promise<IGetCodeResponse> {
+  async ResetPassword(body: IResetPasswordRequest): Promise<IGetCodeResponse> {
     
     try {
       const response = await fetch(identityServiceUrl + '/api/users/resetpassword', {

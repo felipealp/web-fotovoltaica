@@ -10,8 +10,8 @@ import { Alert, AlertTitle } from '@material-ui/core';
 
 import { base64EncodeString } from 'helpers/security.helper';
 import AuthService from 'services/auth.service';
-import { FormCode } from 'helpers/enums';
-import { IStandardApiResponse } from 'interfaces/api-response.interface';
+import { AuthMessageCode, FormCode } from 'helpers/enums';
+import { IAuthApiResponse } from 'interfaces/api-response.interface';
 
 class Form extends React.Component<ILoginFormProps, {}> {
   static defaultProps: Partial<ILoginFormProps> = {};
@@ -21,7 +21,8 @@ class Form extends React.Component<ILoginFormProps, {}> {
     password: '',
     action: 'normal',
     formCode: FormCode.Ok,
-    errorMsg: '',
+    message: '',
+    messageCode: AuthMessageCode.Failed,
     loginText: 'Login',
     blurErrors: []   
   }   
@@ -34,7 +35,7 @@ class Form extends React.Component<ILoginFormProps, {}> {
     if (this.state.password.length < 8) blurErrors.push('password');  
        
     if (blurErrors.length > 0) {
-      this.setState({ action: 'validation-error', blurErrors: blurErrors});
+      this.setState({ blurErrors: blurErrors});
       return false;
     }
     
@@ -54,16 +55,14 @@ class Form extends React.Component<ILoginFormProps, {}> {
     const hashed: string = base64EncodeString(loginString);
     const auth = new AuthService();
 
-    auth.Login(hashed).then(async(response: IStandardApiResponse) => {      
+    auth.Login(hashed).then(async(response: IAuthApiResponse) => {      
       if (response.success) {
-        //set jwt to local storage item
-        await localStorage.setItem('myapp.jwt', response.value);
-
-        this.setState({ action: 'success', loginText: 'Login', formCode: FormCode.Ok });
+        // set jwt to local storage item
+        await localStorage.setItem('myapp.jwt', response.value);     
         this.props.callback();
       }
       else {
-        this.setState({ action: 'failed', loginText: 'Login', formCode: FormCode.ApiFail, errorMsg: response.message });
+        this.setState({ action: 'failed', loginText: 'Login', formCode: FormCode.ApiFail, message: response.message, messageCode: response.messageCode });
       }
     });
   }
@@ -93,6 +92,27 @@ class Form extends React.Component<ILoginFormProps, {}> {
     }   
 
     this.setState({ blurErrors: blurErrors });   
+  }
+
+  private setErrorMessage = (authMessageCode: AuthMessageCode, msg: string = '') => {
+    switch (authMessageCode) {
+      case (AuthMessageCode.InvalidFormat):
+        return 'Invalid email address or password. Please try again.';    
+      case (AuthMessageCode.NotFound):
+        return 'Email address not found. Please try a differnt email or create a new account.';
+      case (AuthMessageCode.Blocked):
+        return 'This email address has been blocked. Please contact use.';
+      case (AuthMessageCode.LoginAttempts):
+        return msg;
+      case (AuthMessageCode.NotConfirmed):
+        return 'This email address has not yet been confirmed. Please check your inbox for a confirm account message.';
+      case (AuthMessageCode.InvalidStatus):
+        return 'The status of our account is not eligible to for login. This usually means you have attempted to reset your password but you have not finished the process.';
+      case (AuthMessageCode.NotActive):
+        return 'The status of your account is currently marked not active';  
+      default:
+        return 'Unhandled exception thrown. Please contact us for support.';
+    }
   }
 
   private setHelperTextMessage = (field: string) => {
@@ -135,7 +155,7 @@ class Form extends React.Component<ILoginFormProps, {}> {
         <Box marginBottom={4} display={ this.state.formCode === FormCode.ApiFail ? 'box' : 'none'}>
           <Alert variant="outlined" severity="error" onClose={() => { this.setState({ action: 'normal', password: '', formCode: FormCode.Ok, errorMsg: '' });}}>
             <AlertTitle>Authentication Error</AlertTitle>
-            {this.state.errorMsg}
+            {this.setErrorMessage(this.state.messageCode, this.state.message)}
           </Alert>
         </Box>
         <form>
@@ -174,7 +194,7 @@ class Form extends React.Component<ILoginFormProps, {}> {
                   <Link
                     component={'a'}
                     color={'primary'}
-                    href={'/page-forgot-password-simple'}
+                    href={'/forgot-password'}
                     underline={'none'}
                   >
                     Forgot your password?
@@ -233,13 +253,13 @@ interface ILoginFormProps {
 	callback: () => void;
 }
 
-
 interface IForm {
   email: string,
   password: string,
   action: string,
   formCode: FormCode,
-  errorMsg: string;
+  message: string;
+  messageCode: AuthMessageCode;
   loginText: string,
   blurErrors: string[],
 }

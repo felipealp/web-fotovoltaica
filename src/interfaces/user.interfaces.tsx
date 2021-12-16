@@ -29,3 +29,8 @@ export interface IResetPasswordRequest {
 	code: string;
 	password: string;
 }
+
+export interface IValidateCodeRequest {
+	code: string;
+	status: UserStatus;
+}
