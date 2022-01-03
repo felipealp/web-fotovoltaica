@@ -13,7 +13,6 @@ class Success extends React.Component<IProps, {}> {
 
   render() {
     return (
-
       <Box marginBottom={4}>
         <Box
           component={Typography}

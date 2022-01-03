@@ -1,0 +1,8 @@
+@url = https://localhost:44399
+//@url = https://danhellem-identityservice.azurewebsites.net
+@token = Bearer value
+
+### Auth Test
+GET {{url}}/api/test/simpleauth HTTP/1.1
+content-type: application/json
+X-Authorization: {{token}}

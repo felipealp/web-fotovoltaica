@@ -74,6 +74,21 @@ class Success extends React.Component<IProps, {}> {
             Back to Home
           </Button>
         </Box>
+        <Box marginTop={3} display={'flex'} justifyContent={'center'}>
+
+          <Typography variant={'subtitle2'}>
+            Didn't revieve an email from us?{' '}
+            <Link
+              component={'a'}
+              color={'primary'}
+              href={'/send-code'}
+              underline={'none'}
+            >
+              Try again and we will resend you a new code
+            </Link>
+          </Typography>
+        </Box>             
+             
       </Box>
     );
   }
