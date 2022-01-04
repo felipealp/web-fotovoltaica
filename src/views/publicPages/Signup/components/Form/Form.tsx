@@ -8,8 +8,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 
-import { UserService } from 'services/user.service';
-import { ISignUpRequest, IGetCodeResponse } from 'interfaces/user.interfaces';
+import { UserIdentityService } from 'services/user.identity.service';
+import { ISignUpRequest, IGetCodeResponse } from 'interfaces/user.identity.interfaces';
 import { fetchIpAddress } from 'helpers/network.helper';
 import { ErrorMessage } from 'common/components';
 
@@ -58,7 +58,7 @@ class Form extends React.Component<IFormProps, {}> {
 
     this.setState({ action: 'processing' });
 
-    const userService: UserService = new UserService();
+    const userService: UserIdentityService = new UserIdentityService();
     const body: ISignUpRequest = {
       name: this.state.name,
       email: this.state.email,

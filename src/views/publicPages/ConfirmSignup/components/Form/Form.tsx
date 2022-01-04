@@ -10,7 +10,7 @@ import { Theme } from '@material-ui/core/styles';
 
 import ErrorMessage from '../../../../../common/components/ErrorMessage/ErrorMessage';
 
-import { UserService } from 'services/user.service';
+import { UserIdentityService } from 'services/user.identity.service';
 import { IStandardApiResponse } from 'interfaces/api-response.interface';
 import { MessageCode } from 'helpers/enums';
 
@@ -48,7 +48,7 @@ class Form extends React.Component<IProps, {}> {
     }
 
     this.setState({ action: 'processing'});
-    const userService: UserService = new UserService(); 
+    const userService: UserIdentityService = new UserIdentityService(); 
 
     userService.ConfirmCode(this.state.code).then(async (response: IStandardApiResponse) => {      
       if (response.success) {    

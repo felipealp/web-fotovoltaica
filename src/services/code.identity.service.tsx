@@ -1,7 +1,7 @@
 import { identityServiceUrl } from '../helpers/urls.helper';
-import { IGetCodeResponse, IValidateCodeRequest } from 'interfaces/user.interfaces';
+import { IGetCodeResponse, IValidateCodeRequest } from 'interfaces/user.identity.interfaces';
 
-export class CodeService {
+export class CodeIdentityService {
   
   async Validate(body: IValidateCodeRequest): Promise<IGetCodeResponse> {    
     try {
@@ -22,4 +22,4 @@ export class CodeService {
   }  
 }
 
-export default CodeService;
+export default CodeIdentityService;

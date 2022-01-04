@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Container from '../../../common/Container';
 import TravelIllustration from '../../../svg/illustrations/Travel';
 
-import AuthService from 'services/auth.service';
+import AuthIdentityService from 'services/auth.identity.service';
 import { fetchJwt } from 'helpers/jwt.helper';
 import { IStandardApiResponse } from 'interfaces/api-response.interface';
 
@@ -20,7 +20,7 @@ const Logout = () => {
   });
 
   const handleLogout = () => {
-    const auth: AuthService = new AuthService();
+    const auth: AuthIdentityService = new AuthIdentityService();
     const jwt: string | null = fetchJwt();
 
     auth.Logout(jwt).then(async(response: IStandardApiResponse) => {

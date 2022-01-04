@@ -10,11 +10,11 @@ import { Topbar, Sidebar, Footer } from './components';
 import Container from '../../common/Container';
 import { pages } from '../navigation';
 
-import AuthService from 'services/auth.service';
+import AuthIdentityService from 'services/auth.identity.service';
 import { fetchJwt } from 'helpers/jwt.helper';
 
 let auth = { isAuthenticated: false, permissions: [] };
-const authService = new AuthService();
+const authService = new AuthIdentityService();
 
 const HideOnScroll = ({ children }) => {
   const trigger = useScrollTrigger();

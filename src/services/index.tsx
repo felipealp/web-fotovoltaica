@@ -1,3 +1,3 @@
-export { default as AuthService } from './auth.service';
-export { default as UserService } from './user.service';
-export { default as CodeService } from './code.service';
+export { default as AuthIdentityService } from './auth.identity.service';
+export { default as UserIdentityService } from './user.identity.service';
+export { default as CodeIdentityService } from './code.identity.service';

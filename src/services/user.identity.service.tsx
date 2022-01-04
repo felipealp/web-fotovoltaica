@@ -1,8 +1,8 @@
 import { identityServiceUrl } from '../helpers/urls.helper';
-import { IForgotPasswordRequest, IResendCodeRequest, IGetCodeResponse, ISignUpRequest, IResetPasswordRequest } from 'interfaces/user.interfaces';
+import { IForgotPasswordRequest, IResendCodeRequest, IGetCodeResponse, ISignUpRequest, IResetPasswordRequest } from 'interfaces/user.identity.interfaces';
 import { IStandardApiResponse } from 'interfaces/api-response.interface';
 
-export class UserService {
+export class UserIdentityService {
   
   async SignUp(body: ISignUpRequest): Promise<IGetCodeResponse> {
     
@@ -100,4 +100,4 @@ export class UserService {
   }
 }
 
-export default UserService;
+export default UserIdentityService;

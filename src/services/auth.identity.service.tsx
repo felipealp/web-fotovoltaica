@@ -14,7 +14,7 @@ export class LoginRequest implements ILoginRequest {
   }
 }
 
-export class AuthService {
+export class AuthIdentityService {
   async Login(loginString: string): Promise<IAuthApiResponse> {
     let body = new LoginRequest(loginString);
 
@@ -128,7 +128,7 @@ export interface IAuthCheck {
 
 export const authCheck = async (role: string | ''): Promise<IAuthCheck> => {
   const jwt: string | null = fetchJwt();
-  const authService = new AuthService();
+  const authService = new AuthIdentityService();
   let isValidToken =  (jwt === null || jwt === undefined) ? false : true;
 
   const status = await authService.IsValidateToken(jwt).then(async (response) => {
@@ -142,4 +142,4 @@ export const authCheck = async (role: string | ''): Promise<IAuthCheck> => {
   return { isAuthenticated: isValidToken, permissions: [] };
 };
 
-export default AuthService;
+export default AuthIdentityService;

@@ -10,8 +10,8 @@ import { Theme } from '@material-ui/core/styles';
 
 import ErrorMessage from '../../../../../common/components/ErrorMessage/ErrorMessage';
 
-import { UserService } from 'services/user.service';
-import { IResetPasswordRequest, IGetCodeResponse } from 'interfaces/user.interfaces';
+import { UserIdentityService } from 'services/user.identity.service';
+import { IResetPasswordRequest, IGetCodeResponse } from 'interfaces/user.identity.interfaces';
 import { MessageCode } from 'helpers/enums';
 
 class Form extends React.Component<IProps, {}> {
@@ -52,7 +52,7 @@ class Form extends React.Component<IProps, {}> {
     }
 
     this.setState({ action: 'processing' });
-    const userService: UserService = new UserService();
+    const userService: UserIdentityService = new UserIdentityService();
     const body: IResetPasswordRequest = { password: this.state.password, code: this.props.code };
 
     userService.ResetPassword(body).then(async (response: IGetCodeResponse) => {

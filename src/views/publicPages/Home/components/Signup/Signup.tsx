@@ -10,8 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import Avatar from '@material-ui/core/Avatar';
 
-import { UserService } from 'services/user.service';
-import { ISignUpRequest, IGetCodeResponse } from 'interfaces/user.interfaces';
+import { UserIdentityService } from 'services/user.identity.service';
+import { ISignUpRequest, IGetCodeResponse } from 'interfaces/user.identity.interfaces';
 import { fetchIpAddress } from 'helpers/network.helper';
 
 //import { Alert, AlertTitle } from '@material-ui/core';
@@ -61,7 +61,7 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
 
     this.setState({ action: 'processing' });
 
-    const userService: UserService = new UserService();
+    const userService: UserIdentityService = new UserIdentityService();
     const body: ISignUpRequest = {
       name: this.state.name,
       email: this.state.email,

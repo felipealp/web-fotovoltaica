@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 
 import { base64EncodeString } from 'helpers/security.helper';
-import AuthService from 'services/auth.service';
+import AuthIdentityService from 'services/auth.identity.service';
 import { AuthMessageCode, FormCode } from 'helpers/enums';
 import { IAuthApiResponse } from 'interfaces/api-response.interface';
 import { ErrorMessage } from 'common/components';
@@ -53,7 +53,7 @@ class Form extends React.Component<ILoginFormProps, {}> {
 
     const loginString = this.state.email + ':' + this.state.password;
     const hashed: string = base64EncodeString(loginString);
-    const auth = new AuthService();
+    const auth: AuthIdentityService = new AuthIdentityService();
 
     auth.Login(hashed).then(async(response: IAuthApiResponse) => {      
       if (response.success) {

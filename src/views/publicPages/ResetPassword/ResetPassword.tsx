@@ -4,8 +4,8 @@ import { useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Container from '../../../common/Container';
 import { Form, Processing, Success, Error } from './components';
-import { CodeService } from 'services';
-import { IGetCodeResponse, IValidateCodeRequest } from 'interfaces/user.interfaces';
+import { CodeIdentityService } from 'services';
+import { IGetCodeResponse, IValidateCodeRequest } from 'interfaces/user.identity.interfaces';
 import { MessageCode, UserStatus } from 'helpers/enums';
 
 const ResetPassword = () => {  
@@ -30,12 +30,10 @@ const ResetPassword = () => {
   };
 
   const fetchAndValidateCode = useCallback(() => {
-    const userService = new CodeService();
-    const body: IValidateCodeRequest = { code: code, status: UserStatus.ForgotPassword };
+    const codeService = new CodeIdentityService();
+    const body: IValidateCodeRequest = { code: code, status: UserStatus.ForgotPassword }; 
 
-    console.log('called');
-
-    userService.Validate(body).then(async (response: IGetCodeResponse) => {      
+    codeService.Validate(body).then(async (response: IGetCodeResponse) => {      
       if (response.success) {      
         setAction(2);
       } else {  
