@@ -14,5 +14,6 @@ export interface IUserList {
 	isActive: boolean;
 	dateCreated: Date;
 	dateUpdated: Date | null;
-	dateLastAttempt: Date | null
+	dateLastAttempt: Date | null;
+	rowNumber: number;
 }

@@ -81,6 +81,11 @@ import {
   ResetPassword as ResetPasswordView,
 } from './views/publicPages';
 
+// admin pages
+import {
+  Users as UsersAdminView,  
+} from './views/adminPages';
+
 const Routes = () => {
   return (
     <Switch>
@@ -564,6 +569,18 @@ const Routes = () => {
           <WithLayout
             {...matchProps}
             component={HomeSecureView}
+            layout={MainSecureLayout}
+          />
+        )}
+      />
+
+      <Route
+        exact
+        path="/admin-users"
+        render={(matchProps) => (
+          <WithLayout
+            {...matchProps}
+            component={UsersAdminView}
             layout={MainSecureLayout}
           />
         )}

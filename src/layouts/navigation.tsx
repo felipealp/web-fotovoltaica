@@ -67,6 +67,24 @@ export const pages = [
     ],
   },
   {
+    title: 'Admin Pages',
+    id: 'admin-pages',
+    authOnly: true,
+    role: 'site-admin',
+    pages: [
+      {
+        title: 'Users',
+        href: '/admin-users',
+        authHide: false,
+      },
+      {
+        title: 'Sessions',
+        href: '/admin-sessions',
+        authHide: false,
+      },         
+    ],
+  },
+  {
     title: 'Landing Pages',
     id: 'landing-pages',
     authOnly: false,
