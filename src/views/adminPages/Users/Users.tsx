@@ -1,40 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import Container from '../../../common/Container';
-import { List } from './components';
-import { Typography } from '@material-ui/core';
 
-const Users = () => {   
+import { List, SearchBox } from './components';
+import Container from 'common/Container';
+
+const Users = () => {
   const theme: any = useTheme();
+  const [searchBody, setSearchBody] = useState(null);
 
-  const callbackSuccess = () => {  
-   
-  };
+  const callbackList = () => {
+
+  };  
+
+  const callbackSearch = (body: any) => {   
+    setSearchBody(body);   
+  };  
 
   return (
     <Box>
-      <Box bgcolor={theme.palette.alternate.main} position={'relative'}>
-        <Container paddingX={'0 !important'} maxWidth={800}>
-          <Box>
-            <Typography
-              variant="h4"
-              align={'center'}
-              sx={{ fontWeight: 700, }}
-            >
-              Users
-            </Typography>
-            <Typography color="text.secondary" align={'center'}>
-              Enter your email address and we will generate a new code and send you a message.
-            </Typography>
-          </Box>     
+      <Box bgcolor={theme.palette.alternate.main}>
+        <SearchBox theme={theme} callback={callbackSearch} />
+      </Box>
+      <Box bgcolor={theme.palette.alternate.main} >
+        <Container maxWidth={'80%'}>
+          <List callback={callbackList} theme={theme} searchCriteria={searchBody} />
         </Container>
       </Box>
-      <Box>   
-        <Container maxWidth={'80%'}>
-          <List callback={callbackSuccess} theme={theme} />
-        </Container>  
-      </Box>                
     </Box>
   );
 };

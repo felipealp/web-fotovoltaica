@@ -1,10 +1,10 @@
 import { adminServiceUrl } from '../helpers/urls.helper';
 import { fetchJwt } from '../helpers/jwt.helper'; 
-import { IListUsersResponse } from 'interfaces/user.admin.interfaces';
+import { IListUsersResponse, IListUsersRequest } from 'interfaces/user.admin.interfaces';
 
 export class UserAdminService {
   
-  async List(): Promise<IListUsersResponse> {
+  async List(body: IListUsersRequest | null = null): Promise<IListUsersResponse> {
     
     const jwt: string | null = fetchJwt();
 
@@ -24,7 +24,7 @@ export class UserAdminService {
     } catch (error: any) {
       return await Promise.reject(error);
     }
-  }
+  }  
 }
 
 export default UserAdminService;

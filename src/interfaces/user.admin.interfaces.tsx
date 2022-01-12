@@ -17,3 +17,13 @@ export interface IUserList {
 	dateLastAttempt: Date | null;
 	rowNumber: number;
 }
+
+export interface IListUsersRequest {
+	name: string | null;
+	email: string | null;
+	role: string | null;
+	status: number;
+	isActive: boolean;
+}
+
+
