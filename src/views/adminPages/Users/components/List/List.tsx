@@ -16,7 +16,7 @@ class List extends React.Component<IProps, {}> {
     action: 'loading',
     errorMsg: '',
     data: [],
-    ph: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    ph: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     pageCount: 1,
     paging: { currentPage: 1, spanStart: 1, spanEnd: this._pageSize },
   }

@@ -16,7 +16,7 @@ export class UserAdminService {
           'X-Authorization': `Bearer ${jwt}`,
           Accept: 'application/json',
         }),
-        body: null
+        body: JSON.stringify(body),
       });
 
       const results = await Promise.resolve(response);

@@ -33,13 +33,27 @@ class SearchBox extends React.Component<IProps, {}> {
   private handleSearchButtonClick = (e: React.ChangeEvent<HTMLButtonElement>) => {
     e.preventDefault();
     
-    const body: IListUsersRequest = { 
-      name: this.state.searchText,
-      email: null,
-      isActive: true,
-      role: null,
-      status: -1
-    };
+    const searchText: string = this.state.searchText.toLowerCase();
+    let len: number = searchText.length;
+    let ind: number;
+    let key, val: string;
+
+    let split = searchText.split(',');
+    if (split.length < 1) split.push(searchText);
+
+    let body: IListUsersRequest = new ListUsersRequest();
+
+    split.forEach((e) => {
+      ind = e.indexOf(':');
+      key = e.slice(0, ind).trim();
+      val = e.slice(ind + 1, len).trim();
+
+      body.name = key.includes('name') ? val : body.name;
+      body.email = key.includes('email') ? val : body.email;
+      body.isActive = key.includes('isactive') && val === 'false' ? false : body.isActive;
+      body.role = key.includes('role') ? val : body.role;
+      body.status = key.includes('status') ? parseInt(val) : body.status;
+    });    
     
     this.props.callback(body);
   }
@@ -106,4 +120,20 @@ interface ISearchBox {
   action: string,
   errorMsg: string;
   searchText: string;
+}
+
+class ListUsersRequest implements IListUsersRequest {
+  constructor() {
+    this.name = null;
+    this.email = null;
+    this.role = null;
+    this.status = -1;
+    this.isActive = true;
+  }
+
+  name: string | null;
+  email: string | null;
+  role: string | null;
+  status: number;
+  isActive: boolean;
 }
