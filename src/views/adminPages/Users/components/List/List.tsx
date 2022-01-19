@@ -2,10 +2,13 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import { Theme } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Skeleton, Stack, Pagination, } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Skeleton, Stack, Pagination, IconButton, } from '@material-ui/core';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import InActiveIcon from '@material-ui/icons/VisibilityOff';
+import Avatar from '../Avatar/Avatar';
 
 //import { MessageCode } from 'helpers/enums';
-import { IListUsersResponse, IUserList } from 'interfaces/user.admin.interfaces';
+import { IListUsersRequest, IListUsersResponse, IUserList } from 'interfaces/user.admin.interfaces';
 import UserAdminService from 'services/user.admin.service';
 
 class List extends React.Component<IProps, {}> {
@@ -26,11 +29,21 @@ class List extends React.Component<IProps, {}> {
   }
 
   componentDidUpdate(prevProps: any) {
-    if (prevProps.searchObj !== this.props.searchCriteria) {
-      console.log('props changed');
-      console.log(this.props.searchCriteria);
+    if (prevProps.searchCriteria !== this.props.searchCriteria) {    
+      this.load_users();    
     }
   }
+
+  //shouldComponentUpdate(nextProps: any, nextState: any) {
+  //  console.log(nextProps);
+  //  console.log(nextState);
+
+  //  if (nextProps.value !== this.props.value) {
+  //    return true;
+  //  } else {
+  //    return false;
+  //  }
+  //}
 
   private handlePageChange = (e: React.ChangeEvent<HTMLButtonElement>, value: string) => {
     const next: string = '<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>';
@@ -49,10 +62,12 @@ class List extends React.Component<IProps, {}> {
   }
 
   private load_users = () => {
-    const client: UserAdminService = new UserAdminService();        
+    const client: UserAdminService = new UserAdminService();  
+    const defaultBody: IListUsersRequest = { name: null, email: null, role: null, status: -1, isActive: true }; 
+    let body: IListUsersRequest = this.props.searchCriteria != null ? this.props.searchCriteria : defaultBody;   
 
-    client.List(this.props.searchCriteria).then(async (response: IListUsersResponse) => {
-      if (response.success) {
+    client.List(body).then(async (response: IListUsersResponse) => {
+      if (response.success) {      
 
         this.setState({
           paging: {
@@ -80,10 +95,10 @@ class List extends React.Component<IProps, {}> {
                 <TableHead>
                   <TableRow>
                     <TableCell>Name</TableCell>
-                    <TableCell align="left">Name</TableCell>
                     <TableCell align="left">Email</TableCell>
-                    <TableCell align="center">Status</TableCell>
-                    <TableCell align="center">Role</TableCell>
+                    <TableCell align="left">Status</TableCell>
+                    <TableCell align="left"></TableCell>
+                    <TableCell align="center">&nbsp;</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -94,12 +109,20 @@ class List extends React.Component<IProps, {}> {
                       hover
                     >
                       <TableCell component="th" scope="row">
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="left">{row.name}</TableCell>
+                        <Avatar name={row.name} role={row.role}></Avatar>
+                      </TableCell>                      
                       <TableCell align="left">{row.email}</TableCell>
-                      <TableCell align="center">{row.status}</TableCell>
-                      <TableCell align="center">{row.role}</TableCell>
+                      <TableCell align="left">{row.statusText}</TableCell>
+                      <TableCell align="left"> 
+                        <IconButton aria-label="more info">
+                          <MoreIcon />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="left">
+                        <IconButton aria-label="inactive">
+                          <InActiveIcon color="disabled" />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -107,8 +130,8 @@ class List extends React.Component<IProps, {}> {
             </TableContainer>
           </Box>
           <Box>
-            <Stack spacing={2} sx={{ display: 'flex' }} alignItems={'center'}>
-              <Pagination count={this.state.pageCount} page={this.state.paging.currentPage} variant="outlined" onChange={(e: any) => this.handlePageChange(e, e.target.innerText)} />
+            <Stack spacing={2} sx={this.state.pageCount > 1 ? { display: 'flex' } : { display: 'none' }} alignItems={'center'}>
+              <Pagination count={this.state.pageCount} page={this.state.paging.currentPage} variant="outlined" onChange={(e: any) => this.handlePageChange(e, e.target.innerText)} hidePrevButton hideNextButton />
             </Stack>
           </Box>
         </Box>

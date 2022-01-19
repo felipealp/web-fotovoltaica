@@ -10,6 +10,7 @@ export interface IUserList {
 	email: string;
 	role: string;
 	status: number;
+	statusText: string;
 	loginAttempts: number;
 	isActive: boolean;
 	dateCreated: Date;
