@@ -22,20 +22,22 @@ function stringToColor(string: string) {
   return color;
 }
 
-function stringAvatar(name: string) {
+function stringAvatar(name: string, size: number) {
   return {
     sx: {
       bgcolor: stringToColor(name),    
+      width: size,
+      height: size,
     },
     children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
   };
 }
 
-const Avatar = ({ name, role }: IProps) => {
+const Avatar = ({ name, role, size = 40 }: IProps) => {
   return (
     <Box component={ListItem} disableGutters width={'auto'}>
       <ListItemAvatar>
-        <MyAvatar {...stringAvatar(name)} />
+        <MyAvatar {...stringAvatar(name, size)} />
       </ListItemAvatar>
       <ListItemText
         primary={name}
@@ -47,7 +49,8 @@ const Avatar = ({ name, role }: IProps) => {
 
 interface IProps {
   name: string;
-  role: string
+  role: string;
+  size?: number;
 }
 
 export default Avatar;
