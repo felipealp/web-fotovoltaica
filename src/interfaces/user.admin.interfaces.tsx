@@ -11,8 +11,7 @@ export interface IUserList {
 	role: string;
 	status: number;
 	statusText: string;
-	loginAttempts: number;
-	isActive: boolean;
+	loginAttempts: number;	
 	dateCreated: Date;
 	dateUpdated: Date | null;
 	dateLastAttempt: Date | null;
@@ -24,7 +23,6 @@ export interface IListUsersRequest {
 	email: string | null;
 	role: string | null;
 	status: number;
-	isActive: boolean;
 }
 
 

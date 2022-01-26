@@ -3,13 +3,13 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import { Theme } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Skeleton, Stack, Pagination, IconButton, } from '@material-ui/core';
-import EditRowIcon from '@material-ui/icons/MoreHorizRounded';
+import EditRowIcon from '@material-ui/icons/ModeEditOutlineOutlined';
 import Avatar from '../Avatar/Avatar';
 
 //import { MessageCode } from 'helpers/enums';
 import { IListUsersRequest, IListUsersResponse, IUserList } from 'interfaces/user.admin.interfaces';
 import UserAdminService from 'services/user.admin.service';
-import IsActive from '../IsActive';
+import StatusIcon from '../Status';
 import EditUser from '../EditUser';
 
 class List extends React.Component<IProps, {}> {
@@ -96,7 +96,7 @@ class List extends React.Component<IProps, {}> {
 
   private load_users = () => {
     const client: UserAdminService = new UserAdminService();  
-    const defaultBody: IListUsersRequest = { name: null, email: null, role: null, status: -1, isActive: true }; 
+    const defaultBody: IListUsersRequest = { name: null, email: null, role: null, status: -1 }; 
     let body: IListUsersRequest = this.props.searchCriteria != null ? this.props.searchCriteria : defaultBody;   
 
     client.List(body).then(async (response: IListUsersResponse) => {
@@ -154,7 +154,7 @@ class List extends React.Component<IProps, {}> {
                       <TableCell align="left">{row.statusText}</TableCell>     
                       <TableCell align="left">{row.dateLastAttempt}</TableCell>                  
                       <TableCell align="left">
-                        <IsActive isactive={row.isActive} status={row.status} />
+                        <StatusIcon status={row.status} />
                       </TableCell>
                     </TableRow>
                   ))}

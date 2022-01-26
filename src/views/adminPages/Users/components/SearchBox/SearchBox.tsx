@@ -50,7 +50,6 @@ class SearchBox extends React.Component<IProps, {}> {
 
       body.name = key.includes('name') ? val : body.name;
       body.email = key.includes('email') ? val : body.email;
-      body.isActive = key.includes('isactive') && val === 'false' ? false : body.isActive;
       body.role = key.includes('role') ? val : body.role;
       body.status = key.includes('status') ? parseInt(val) : body.status;
     });    
@@ -128,12 +127,10 @@ class ListUsersRequest implements IListUsersRequest {
     this.email = null;
     this.role = null;
     this.status = -1;
-    this.isActive = true;
   }
 
   name: string | null;
   email: string | null;
   role: string | null;
   status: number;
-  isActive: boolean;
 }
