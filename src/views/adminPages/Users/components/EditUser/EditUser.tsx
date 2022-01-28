@@ -67,7 +67,6 @@ class EditUser extends React.Component<IProps, {}> {
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={d} />
       </svg>
     );
-
   }
 
   render() {

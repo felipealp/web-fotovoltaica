@@ -4,12 +4,13 @@ import Box from '@material-ui/core/Box';
 import { Theme } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Skeleton, Stack, Pagination, IconButton, } from '@material-ui/core';
 import EditRowIcon from '@material-ui/icons/ModeEditOutlineOutlined';
+import DeleteRowIcon from '@material-ui/icons/DeleteOutline';
 import Avatar from '../Avatar/Avatar';
 
 //import { MessageCode } from 'helpers/enums';
 import { IListUsersRequest, IListUsersResponse, IUserList } from 'interfaces/user.admin.interfaces';
 import UserAdminService from 'services/user.admin.service';
-import StatusIcon from '../Status';
+import StatusIcon from '../StatusIcon';
 import EditUser from '../EditUser';
 
 class List extends React.Component<IProps, {}> {
@@ -24,6 +25,7 @@ class List extends React.Component<IProps, {}> {
     pageCount: 1,
     paging: { currentPage: 1, spanStart: 1, spanEnd: this._pageSize },
     rowId: '',
+    selectedRowId: '',
     openSideBar: false,
     selectedUser: null,
   }
@@ -67,10 +69,14 @@ class List extends React.Component<IProps, {}> {
 
   private handleMouseEnter = (e: any, id: string) => {
     this.setState({ rowId: id });
+
+    if (id === this.state.selectedRowId) {
+      this.setState({ selectedRowId: '' });
+    }
   }
 
   private handleMouseLeave = (e: any, id: string) => {
-    this.setState({ rowId: ''});
+    this.setState({ rowId: '' });
   }  
 
   private handleSidebarClose = () => {
@@ -78,21 +84,8 @@ class List extends React.Component<IProps, {}> {
   };
 
   private handleSidebarOpen = (user: IUserList) => {    
-    this.setState({ openSideBar: true, selectedUser: user });   
-  };
-
-  private editRowIcon = (show: boolean, user: IUserList) => {
-    if (show) {
-      return (
-        <IconButton aria-label="more info" onClick={(e:any) => this.handleSidebarOpen(user)}>
-          <EditRowIcon />
-        </IconButton>
-      );
-    }
-    else {
-      return (<div style={{ width: '50px' }}>&nbsp;</div>);
-    }   
-  }
+    this.setState({ openSideBar: true, selectedUser: user, selectedRowId: user.id });   
+  };  
 
   private load_users = () => {
     const client: UserAdminService = new UserAdminService();  
@@ -127,12 +120,12 @@ class List extends React.Component<IProps, {}> {
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ paddingLeft: '20px'}}>Name</TableCell>
-                    <TableCell align="center">&nbsp;</TableCell>
+                    <TableCell sx={{ paddingLeft: '20px'}}>Name</TableCell>                    
                     <TableCell align="left">Email</TableCell>
                     <TableCell align="left">Status</TableCell>
                     <TableCell align="left">Last Login Attempt</TableCell>
-                    <TableCell align="center">&nbsp;</TableCell>                    
+                    <TableCell align="center">&nbsp;</TableCell> 
+                    <TableCell align="center">&nbsp;</TableCell>                                       
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -143,17 +136,25 @@ class List extends React.Component<IProps, {}> {
                       hover
                       onMouseEnter={(e: any) => this.handleMouseEnter(e, row.id) }
                       onMouseLeave={(e: any) => this.handleMouseLeave(e, row.id) }
+                      selected={this.state.selectedRowId === row.id ? true : false}
                     >
                       <TableCell component="th" scope="row" sx={{ paddingLeft: '20px'}}>
                         <Avatar name={row.name} role={row.role} ></Avatar>
-                      </TableCell> 
-                      <TableCell align="center"> 
-                        { this.editRowIcon(this.state.rowId === row.id, row) }                           
-                      </TableCell>                     
+                      </TableCell>                                        
                       <TableCell align="left">{row.email}</TableCell>
                       <TableCell align="left">{row.statusText}</TableCell>     
                       <TableCell align="left">{row.dateLastAttempt}</TableCell>                  
-                      <TableCell align="left">
+                      <TableCell align="center" sx={{ width: '130px'}}>
+                        <div style={{ display: this.state.rowId === row.id ? 'flex' : 'none'}}>
+                          <IconButton aria-label="more info" onClick={(e:any) => this.handleSidebarOpen(row)}>
+                            <EditRowIcon />
+                          </IconButton>                       
+                          <IconButton aria-label="more info" onClick={(e: any) => alert(row.id)}>
+                            <DeleteRowIcon />
+                          </IconButton>
+                        </div>
+                      </TableCell>
+                      <TableCell align="center">
                         <StatusIcon status={row.status} />
                       </TableCell>
                     </TableRow>
@@ -223,6 +224,7 @@ interface IList {
   pageCount: number;
   paging: IPaging;
   rowId: string;
+  selectedRowId:string,
   openSideBar: boolean;
   selectedUser: IUserList | null;
 }

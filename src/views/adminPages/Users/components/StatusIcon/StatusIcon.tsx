@@ -2,7 +2,7 @@ import React from 'react';
 import InActiveIcon from '@material-ui/icons/VisibilityOff';
 import BlockedIcon from '@material-ui/icons/Block';
 
-const Status = ({ status }: IProps) => {
+const StatusIcon = ({ status }: IProps) => {
   
   if (status === 3)
   {
@@ -24,4 +24,4 @@ interface IProps {
   status: number;
 }
 
-export default Status;
+export default StatusIcon;
