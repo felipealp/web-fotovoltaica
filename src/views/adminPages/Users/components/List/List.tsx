@@ -4,14 +4,14 @@ import Box from '@material-ui/core/Box';
 import { Theme } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Skeleton, Stack, Pagination, IconButton, } from '@material-ui/core';
 import EditRowIcon from '@material-ui/icons/ModeEditOutlineOutlined';
-import DeleteRowIcon from '@material-ui/icons/DeleteOutline';
 import Avatar from '../Avatar/Avatar';
 
 //import { MessageCode } from 'helpers/enums';
 import { IListUsersRequest, IListUsersResponse, IUserList } from 'interfaces/user.admin.interfaces';
 import UserAdminService from 'services/user.admin.service';
 import StatusIcon from '../StatusIcon';
-import EditUser from '../EditUser';
+import Edit from '../Edit';
+import LockAndUnlock from '../LockAndUnlock';
 
 class List extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -92,7 +92,7 @@ class List extends React.Component<IProps, {}> {
     const defaultBody: IListUsersRequest = { name: null, email: null, role: null, status: -1 }; 
     let body: IListUsersRequest = this.props.searchCriteria != null ? this.props.searchCriteria : defaultBody;   
 
-    client.List(body).then(async (response: IListUsersResponse) => {
+    client.List(body).then(async (response: IListUsersResponse) => {     
       if (response.success) {      
 
         this.setState({
@@ -146,16 +146,14 @@ class List extends React.Component<IProps, {}> {
                       <TableCell align="left">{row.dateLastAttempt}</TableCell>                  
                       <TableCell align="center" sx={{ width: '130px'}}>
                         <div style={{ display: this.state.rowId === row.id ? 'flex' : 'none'}}>
-                          <IconButton aria-label="more info" onClick={(e:any) => this.handleSidebarOpen(row)}>
+                          <IconButton aria-label="edit user" onClick={(e:any) => this.handleSidebarOpen(row)}>
                             <EditRowIcon />
                           </IconButton>                       
-                          <IconButton aria-label="more info" onClick={(e: any) => alert(row.id)}>
-                            <DeleteRowIcon />
-                          </IconButton>
+                          <LockAndUnlock id={row.id} isLocked={row.isLocked} />
                         </div>
                       </TableCell>
                       <TableCell align="center">
-                        <StatusIcon status={row.status} />
+                        <StatusIcon status={row.status} isLocked={row.isLocked} />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -202,7 +200,7 @@ class List extends React.Component<IProps, {}> {
             </TableContainer>
           </Box>          
         </Box>
-        <EditUser theme={this.props.theme} open={this.state.openSideBar} user={this.state.selectedUser} onClose={this.handleSidebarClose}></EditUser>
+        <Edit theme={this.props.theme} open={this.state.openSideBar} user={this.state.selectedUser} onClose={this.handleSidebarClose}></Edit>
       </Box>
     );
   }

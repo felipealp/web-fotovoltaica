@@ -1,10 +1,17 @@
 import React from 'react';
 import InActiveIcon from '@material-ui/icons/VisibilityOff';
 import BlockedIcon from '@material-ui/icons/Block';
+import LockIcon from '@material-ui/icons/Lock';
 
-const StatusIcon = ({ status }: IProps) => {
+const StatusIcon = ({ status, isLocked }: IProps) => {
   
-  if (status === 3)
+  if(isLocked)
+  {
+    return (      
+      <LockIcon color="disabled" />     
+    );
+  }  
+  else if (status === 3)
   {
     return (      
       <BlockedIcon color="disabled" />     
@@ -22,6 +29,7 @@ const StatusIcon = ({ status }: IProps) => {
 
 interface IProps {
   status: number;
+  isLocked: boolean;
 }
 
 export default StatusIcon;

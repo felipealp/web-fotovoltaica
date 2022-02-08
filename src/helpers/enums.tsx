@@ -7,7 +7,7 @@ export enum UserStatus {
     NotConfirmed = 0,
     Okay = 1,
     ForgotPassword = 2,
-    BlockedExceededLoginAttempts = 3
+    BlockedExceededLoginAttempts = 3,  
 }
 
 export enum MessageCode {

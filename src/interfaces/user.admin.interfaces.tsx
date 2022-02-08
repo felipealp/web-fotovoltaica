@@ -11,9 +11,11 @@ export interface IUserList {
 	role: string;
 	status: number;
 	statusText: string;
+	isLocked: boolean;
 	loginAttempts: number;	
 	dateCreated: Date;
 	dateUpdated: Date | null;
+	dateLocked: Date | null;
 	dateLastAttempt: Date | null;
 	rowNumber: number;
 }
@@ -25,4 +27,9 @@ export interface IListUsersRequest {
 	status: number;
 }
 
+export interface IUserUpdatePatch {
+	id: string;
+	role: string;
+	action: string;
+}
 
