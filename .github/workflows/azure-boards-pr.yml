@@ -8,8 +8,7 @@ on:
 
 jobs:
   alert:
-    runs-on: ubuntu-latest
-    name: Save pr as work item
+    runs-on: ubuntu-latest  
     steps:       
     - uses: danhellem/github-actions-pr-to-work-item@master
       env:     
