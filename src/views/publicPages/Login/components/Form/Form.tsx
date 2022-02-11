@@ -13,8 +13,8 @@ import { AuthMessageCode, FormCode } from 'helpers/enums';
 import { IAuthApiResponse } from 'interfaces/api-response.interface';
 import { ErrorMessage } from 'common/components';
 
-class Form extends React.Component<ILoginFormProps, {}> {
-  static defaultProps: Partial<ILoginFormProps> = {};
+class Form extends React.Component<IProps, {}> {
+  static defaultProps: Partial<IProps> = {};
   
   state: IForm = {
     email: '',
@@ -246,7 +246,7 @@ class Form extends React.Component<ILoginFormProps, {}> {
   }
 }
 
-interface ILoginFormProps {	
+interface IProps {	
 	callback: () => void;
 }
 

@@ -87,6 +87,10 @@ class List extends React.Component<IProps, {}> {
     this.setState({ openSideBar: true, selectedUser: user, selectedRowId: user.id });   
   };  
 
+  //private callbackLockAndUnLockSuccess = (row: IUserList): void => {    
+  //  console.log(row);
+  //};
+
   private load_users = () => {
     const client: UserAdminService = new UserAdminService();  
     const defaultBody: IListUsersRequest = { name: null, email: null, role: null, status: -1 }; 
@@ -149,7 +153,7 @@ class List extends React.Component<IProps, {}> {
                           <IconButton aria-label="edit user" onClick={(e:any) => this.handleSidebarOpen(row)}>
                             <EditRowIcon />
                           </IconButton>                       
-                          <LockAndUnlock id={row.id} isLocked={row.isLocked} />
+                          <LockAndUnlock user={row} />
                         </div>
                       </TableCell>
                       <TableCell align="center">
