@@ -2,7 +2,7 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import { Theme } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Skeleton, Stack, Pagination, IconButton, } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Stack, Pagination, IconButton, } from '@material-ui/core';
 import EditRowIcon from '@material-ui/icons/ModeEditOutlineOutlined';
 import Avatar from '../Avatar/Avatar';
 
@@ -12,6 +12,7 @@ import UserAdminService from 'services/user.admin.service';
 import StatusIcon from '../StatusIcon';
 import Edit from '../Edit';
 import LockAndUnlock from '../LockAndUnlock';
+import { TableSkeleton } from 'common/components';
 
 class List extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -20,8 +21,7 @@ class List extends React.Component<IProps, {}> {
   state: IList = {
     action: 'loading',
     errorMsg: '',
-    data: [],
-    ph: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    data: [],   
     pageCount: 1,
     paging: { currentPage: 1, spanStart: 1, spanEnd: this._pageSize },
     rowId: '',
@@ -172,37 +172,7 @@ class List extends React.Component<IProps, {}> {
           </Box>
         </Box>
         <Box>
-          <Box marginBottom={2} sx={this.state.action === 'loading' ? { display: 'flex' } : { display: 'none' }}>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell><Skeleton animation="wave" /></TableCell>
-                    <TableCell align="left"><Skeleton animation="wave" /></TableCell>
-                    <TableCell align="left"><Skeleton animation="wave" /></TableCell>
-                    <TableCell align="center"><Skeleton animation="wave" /></TableCell>
-                    <TableCell align="center"><Skeleton animation="wave" /></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {this.state.ph.map((i) => (
-                    <TableRow
-                      key={i}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        <Skeleton animation="wave" />
-                      </TableCell>
-                      <TableCell align="left"><Skeleton animation="wave" /></TableCell>
-                      <TableCell align="left"><Skeleton animation="wave" /></TableCell>
-                      <TableCell align="center"><Skeleton animation="wave" /></TableCell>
-                      <TableCell align="center"><Skeleton animation="wave" /></TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>          
+          <TableSkeleton rows={10} columns={5} display={this.state.action === 'loading' ? true : false}></TableSkeleton>                 
         </Box>
         <Edit theme={this.props.theme} open={this.state.openSideBar} user={this.state.selectedUser} onClose={this.handleSidebarClose}></Edit>
       </Box>
@@ -221,8 +191,7 @@ interface IProps {
 interface IList {
   action: string,
   errorMsg: string;
-  data: IUserList[];
-  ph: number[];
+  data: IUserList[]; 
   pageCount: number;
   paging: IPaging;
   rowId: string;
