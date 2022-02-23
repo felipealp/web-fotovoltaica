@@ -19,7 +19,7 @@ export const stringToColor = (string: string) => {
   return color;
 };
 
-export const formatDate = (value: Date | null, empty: string = 'None'): string => {
+export const formatDate = (value: Date | null | undefined, empty: string = 'None'): string => {
   
   if (value == null) {
     return empty;

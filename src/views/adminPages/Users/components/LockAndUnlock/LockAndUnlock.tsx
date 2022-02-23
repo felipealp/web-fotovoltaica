@@ -29,7 +29,7 @@ class LockAndUnlock extends React.Component<IProps, {}> {
         this.setState({ isLocked: false });  
         user.isLocked = false;
         
-        //this.props.callback(user); 
+        if (typeof this.props.callback == 'function') this.props.callback(user);
       }
     }).catch((error: Error) => {
       console.log(error);
@@ -47,7 +47,7 @@ class LockAndUnlock extends React.Component<IProps, {}> {
         this.setState({ isLocked: true });         
         user.isLocked = true;
         
-        //this.props.callback(user); 
+        if (typeof this.props.callback == 'function') this.props.callback(user);
       }
     }).catch((error: Error) => {
       console.log(error);
@@ -79,7 +79,7 @@ class LockAndUnlock extends React.Component<IProps, {}> {
 export default LockAndUnlock;
 
 interface IProps {
-  callback: () => void;
+  callback: (user: IUserList) => void;
   user: IUserList;
 }
 
