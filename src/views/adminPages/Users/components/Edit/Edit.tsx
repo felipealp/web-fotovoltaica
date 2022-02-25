@@ -13,7 +13,7 @@ import RoleIcon from '@material-ui/icons/AdminPanelSettings';
 import EmailIcon from '@material-ui/icons/Email';
 import DateIcon from '@material-ui/icons/CalendarToday';
 import LastAttemptIcon from '@material-ui/icons/Login';
-import WarningIcon from '@material-ui/icons/Warning';
+import WarningIcon from '@material-ui/icons/ReportGmailerrorred';
 import ResetIcon from '@material-ui/icons/RestartAlt';
 import OkayIcon from '@material-ui/icons/ThumbUp';
 import SetPersonToAdminIcon from '@material-ui/icons/PersonAddAlt1';
@@ -89,6 +89,30 @@ class EditUser extends React.Component<IProps, {}> {
     client = null;
   }  
 
+  handleResetClick(id: string) {
+    let client: UserAdminService | null = new UserAdminService();   
+    let user: IUserList = this.state.user; 
+
+    client.Reset(id).then(async (response: IApiResponse) => {
+      if (response.success) {
+        user.status = 1;
+        user.statusText = 'Okay';
+        user.loginAttempts = 0;
+
+        this.setState({ user: user, action: 'reset' });
+      }
+    }).catch((error: Error) => {
+      console.log(error);
+    });
+
+    client = null;
+  }  
+
+  handleOnClose() {
+    this.setState({ action: 'normal' });
+    this.props.onClose();
+  }
+
   lockedButton(locked: boolean, id: string) {
     if (locked) {
       return (<IconButton edge="end" aria-label="un lock" onClick={(e: any) => this.handleUnLockClick(id)}>
@@ -99,6 +123,15 @@ class EditUser extends React.Component<IProps, {}> {
       return (<IconButton edge="end" aria-label="lock" onClick={(e: any) => this.handleLockClick(id)}>
         <LockIcon />
       </IconButton>);
+    }
+  } 
+
+  statusIcon(status: number) {
+    if (status === 3) {
+      return (<WarningIcon color="error" fontSize='large' />);
+    }
+    else {
+      return (<OkayIcon color="primary" fontSize='large' />);
     }
   } 
 
@@ -119,7 +152,7 @@ class EditUser extends React.Component<IProps, {}> {
             display={'flex'}
             justifyContent={'flex-end'}
             sx={{ paddingRight: '10px', paddingTop: '10px' }}
-            onClick={(e: any) => this.props.onClose()}
+            onClick={(e: any) => this.handleOnClose()}
           >
             <IconButton>
               <CloseIcon fontSize="small" />
@@ -148,9 +181,7 @@ class EditUser extends React.Component<IProps, {}> {
                       <ListItemIcon>
                         <EmailIcon color="primary" fontSize='large' />
                       </ListItemIcon>
-                      <ListItemText 
-                        primary={this.state.user.email}                        
-                      />
+                      <ListItemText primary={this.state.user.email} />
                     </ListItem>
                     <ListItem sx={{ paddingLeft: '0px' }}
                       secondaryAction={
@@ -197,17 +228,15 @@ class EditUser extends React.Component<IProps, {}> {
                     </ListItem>
                     <ListItem sx={{ paddingLeft: '0px' }}
                       secondaryAction={
-                        <IconButton edge="end" aria-label="delete">
+                        <IconButton edge="end" aria-label="reset" onClick={(e: any) => this.handleResetClick(this.state.user.id)} sx={ this.state.user.status === 3 ? { display: 'flex' } : { display: 'none' }}>
                           <ResetIcon />
                         </IconButton>
                       }
                     >
                       <ListItemIcon>
-                        <WarningIcon color="error" fontSize='large' />
+                        {this.statusIcon(this.state.user.status)}
                       </ListItemIcon>
-                      <ListItemText 
-                        primary={this.state.user.statusText}                      
-                      />
+                      <ListItemText primary={this.state.user.statusText} secondary={this.state.action === 'reset' ? 'User has been reset' : '' } />
                     </ListItem>
                   </List>
                 </Grid>

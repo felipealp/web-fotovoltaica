@@ -13,6 +13,7 @@ import StatusIcon from '../StatusIcon';
 import Edit from '../Edit';
 import LockAndUnlock from '../LockAndUnlock';
 import { TableSkeleton } from 'common/components';
+import { formatDate } from 'helpers/string.helper';
 
 class List extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -147,7 +148,7 @@ class List extends React.Component<IProps, {}> {
                       </TableCell>                                        
                       <TableCell align="left">{row.email}</TableCell>
                       <TableCell align="left">{row.statusText}</TableCell>     
-                      <TableCell align="left">{row.dateLastAttempt}</TableCell>                  
+                      <TableCell align="left">{formatDate(row.dateLastAttempt)}</TableCell>                  
                       <TableCell align="center" sx={{ width: '130px'}}>
                         <div style={{ display: this.state.rowId === row.id ? 'flex' : 'none'}}>
                           <IconButton aria-label="edit user" onClick={(e:any) => this.handleSidebarOpen(row)}>
