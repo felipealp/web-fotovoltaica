@@ -5,7 +5,6 @@ import { Theme } from '@material-ui/core/styles';
 import { CardActions, CardContent, Divider, Drawer, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Avatar from '@material-ui/core/Avatar';
-import LockAndUnlock from '../LockAndUnlock';
 
 import UnLockIcon from '@material-ui/icons/LockOpen';
 import LockIcon from '@material-ui/icons/Lock';
@@ -43,15 +42,6 @@ class EditUser extends React.Component<IProps, {}> {
       this.setState({ open: this.props.open, user: this.props.user });
     }
   }  
-
-  lockedStatus(locked: boolean | undefined) {
-    if (locked) {
-      return <LockIcon color="primary" fontSize='large' />;
-    }
-    else {
-      return <UnLockIcon color="primary" fontSize='large' />;
-    }
-  }
 
   handleUnLockClick(id: string) {
     let client: UserAdminService | null = new UserAdminService();  
@@ -108,6 +98,25 @@ class EditUser extends React.Component<IProps, {}> {
     client = null;
   }  
 
+  handleRoleChangeClick(role: string, id: string) {
+    let client: UserAdminService | null = new UserAdminService();   
+    let user: IUserList = this.state.user; 
+
+    console.log('role change');
+
+    client.ChangeRole(role, id).then(async (response: IApiResponse) => {
+      if (response.success) {
+        user.role = role;       
+
+        this.setState({ user: user });
+      }
+    }).catch((error: Error) => {
+      console.log(error);
+    });
+
+    client = null;
+  }  
+
   handleOnClose() {
     this.setState({ action: 'normal' });
     this.props.onClose();
@@ -126,12 +135,34 @@ class EditUser extends React.Component<IProps, {}> {
     }
   } 
 
+  lockedStatus(locked: boolean | undefined) {
+    if (locked) {
+      return <LockIcon color="primary" fontSize='large' />;
+    }
+    else {
+      return <UnLockIcon color="primary" fontSize='large' />;
+    }
+  }
+
   statusIcon(status: number) {
     if (status === 3) {
       return (<WarningIcon color="error" fontSize='large' />);
     }
     else {
       return (<OkayIcon color="primary" fontSize='large' />);
+    }
+  } 
+
+  roleChangeButton(role: string, id: string) {
+    if (role.toLowerCase() === 'basic') {
+      return (<IconButton edge="end" aria-label="change role to site admin" onClick={(e: any) => this.handleRoleChangeClick('site admin', id)}>
+        <SetPersonToAdminIcon />
+      </IconButton>);
+    }
+    else {
+      return (<IconButton edge="end" aria-label="change role to basic" onClick={(e: any) => this.handleRoleChangeClick('basic', id)}>
+        <SetPersonToBasicIcon />
+      </IconButton>);
     }
   } 
 
@@ -183,12 +214,9 @@ class EditUser extends React.Component<IProps, {}> {
                       </ListItemIcon>
                       <ListItemText primary={this.state.user.email} />
                     </ListItem>
-                    <ListItem sx={{ paddingLeft: '0px' }}
-                      secondaryAction={
-                        <IconButton edge="end" aria-label="delete">
-                          <SetPersonToAdminIcon />
-                        </IconButton>
-                      }
+                    <ListItem 
+                      sx={{ paddingLeft: '0px' }}
+                      secondaryAction={this.roleChangeButton(this.state.user.role, this.state.user.id)}
                     >
                       <ListItemIcon>
                         <RoleIcon color="primary" fontSize='large' />
