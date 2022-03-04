@@ -2,7 +2,7 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import { Theme } from '@material-ui/core/styles';
-import { CardActions, CardContent, Divider, Drawer, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
+import { Button, CardActions, CardContent, Divider, Drawer, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -15,6 +15,7 @@ import LastAttemptIcon from '@material-ui/icons/Login';
 import WarningIcon from '@material-ui/icons/ReportGmailerrorred';
 import ResetIcon from '@material-ui/icons/RestartAlt';
 import OkayIcon from '@material-ui/icons/ThumbUp';
+import DeleteIcon from '@material-ui/icons/Delete';
 import SetPersonToAdminIcon from '@material-ui/icons/PersonAddAlt1';
 import SetPersonToBasicIcon from '@material-ui/icons/PersonRemoveAlt1';
 
@@ -122,6 +123,10 @@ class EditUser extends React.Component<IProps, {}> {
     this.props.onClose();
   }
 
+  handleOnDeleteClick(id: string) {
+    this.setState({ action: 'deleting' });    
+  }
+
   lockedButton(locked: boolean, id: string) {
     if (locked) {
       return (<IconButton edge="end" aria-label="un lock" onClick={(e: any) => this.handleUnLockClick(id)}>
@@ -190,7 +195,7 @@ class EditUser extends React.Component<IProps, {}> {
             </IconButton>
           </Box>
 
-          <Box sx={{ height: '100%', padding: 1, }} >
+          <Box display={this.state.action === 'deleted' ? 'none' : 'flex'} sx={{ height: '100%', padding: 1 }} >
             <Box marginBottom={2} alignItems={'center'} justifyContent={'center'} component={CardActions}>
               <Avatar sx={{ width: 100, height: 100, bgcolor: stringToColor(this.state.user.name) }}></Avatar>
             </Box>
@@ -270,6 +275,17 @@ class EditUser extends React.Component<IProps, {}> {
                 </Grid>
               </Grid>
             </Box>
+          </Box>
+
+          <Box
+            display={this.state.action === 'deleted' ? 'none' : 'flex'}
+            justifyContent={'flex-end'}
+            sx={{ paddingBottom: '10px', marginRight: '20px', marginLeft: '20px' }}
+            onClick={(e: any) => this.handleOnDeleteClick(this.state.user.id)}
+          >
+            <Button variant="contained" startIcon={this.state.action === 'deleting' ? null : <DeleteIcon />} sx={{ width: '100%' }} color='primary' disabled={this.state.action === 'deleting' ? true : false } >
+              {this.state.action === 'deleting' ? 'Deleting user, please wait...' : 'Delete user' }
+            </Button>
           </Box>
         </Drawer>
       );
