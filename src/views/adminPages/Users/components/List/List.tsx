@@ -84,7 +84,8 @@ class List extends React.Component<IProps, {}> {
     this.setState({ openSideBar: false });
   };
 
-  private handleSidebarOpen = (user: IUserList) => {    
+  private handleSidebarOpen = (user: IUserList) => {  
+    user.isDirtyDeleted = false;    
     this.setState({ openSideBar: true, selectedUser: user, selectedRowId: user.id });   
   };  
 
@@ -134,7 +135,7 @@ class List extends React.Component<IProps, {}> {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {this.state.data.filter((x) => x.rowNumber >= this.state.paging.spanStart && x.rowNumber <= this.state.paging.spanEnd).map((row) => (
+                  {this.state.data.filter((x) => x.rowNumber >= this.state.paging.spanStart && x.rowNumber <= this.state.paging.spanEnd && x.isDirtyDeleted !== true).map((row) => (                    
                     <TableRow
                       key={row.id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

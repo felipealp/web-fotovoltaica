@@ -23,6 +23,7 @@ import { IUserList } from 'interfaces/user.admin.interfaces';
 import { stringToColor, formatDate } from 'helpers/string.helper';
 import UserAdminService from 'services/user.admin.service';
 import { IApiResponse } from 'interfaces/api-response.interface';
+import Deleted from '../Deleted';
 
 class EditUser extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -35,12 +36,12 @@ class EditUser extends React.Component<IProps, {}> {
   }
 
   componentDidMount() {
-
+    
   }
 
-  componentDidUpdate(prevProps: any) {
-    if (prevProps.open !== this.props.open) {
-      this.setState({ open: this.props.open, user: this.props.user });
+  componentDidUpdate(prevProps: any) {    
+    if (prevProps.open !== this.props.open) {     
+      this.setState({ open: this.props.open, user: this.props.user, action: 'normal' });
     }
   }  
 
@@ -103,8 +104,6 @@ class EditUser extends React.Component<IProps, {}> {
     let client: UserAdminService | null = new UserAdminService();   
     let user: IUserList = this.state.user; 
 
-    console.log('role change');
-
     client.ChangeRole(role, id).then(async (response: IApiResponse) => {
       if (response.success) {
         user.role = role;       
@@ -123,8 +122,27 @@ class EditUser extends React.Component<IProps, {}> {
     this.props.onClose();
   }
 
+  handleOnCloseAfterDelete() {
+    this.props.onClose();
+  }
+
   handleOnDeleteClick(id: string) {
-    this.setState({ action: 'deleting' });    
+    this.setState({ action: 'deleting' });       
+    
+    let client: UserAdminService | null = new UserAdminService();   
+    let user: IUserList = this.state.user; 
+   
+    client.Delete(id).then(async (response: IApiResponse) => {
+      if (response.success) {        
+        user.isDirtyDeleted = true;
+
+        this.setState({user: user, action: 'deleted' });
+      }
+    }).catch((error: Error) => {
+      console.log(error);
+    });
+
+    client = null;
   }
 
   lockedButton(locked: boolean, id: string) {
@@ -195,7 +213,13 @@ class EditUser extends React.Component<IProps, {}> {
             </IconButton>
           </Box>
 
-          <Box display={this.state.action === 'deleted' ? 'none' : 'flex'} sx={{ height: '100%', padding: 1 }} >
+          <Box display={this.state.action === 'deleted' ? 'block' : 'none'} sx={{ height: '100%', padding: 1 }} >
+            <Box marginTop={20} justifyContent={'center'}>
+              <Deleted theme={this.props.theme} onClose={this.props.onClose}></Deleted>
+            </Box>
+          </Box>
+
+          <Box display={this.state.action === 'deleted' ? 'none' : 'block'} sx={{ height: '100%', padding: 1 }} >
             <Box marginBottom={2} alignItems={'center'} justifyContent={'center'} component={CardActions}>
               <Avatar sx={{ width: 100, height: 100, bgcolor: stringToColor(this.state.user.name) }}></Avatar>
             </Box>
@@ -283,7 +307,7 @@ class EditUser extends React.Component<IProps, {}> {
             sx={{ paddingBottom: '10px', marginRight: '20px', marginLeft: '20px' }}
             onClick={(e: any) => this.handleOnDeleteClick(this.state.user.id)}
           >
-            <Button variant="contained" startIcon={this.state.action === 'deleting' ? null : <DeleteIcon />} sx={{ width: '100%' }} color='primary' disabled={this.state.action === 'deleting' ? true : false } >
+            <Button variant="contained" startIcon={this.state.action === 'deleting' ? null : <DeleteIcon />} sx={{ width: '100%', background: this.props.theme.palette.grey[600] }} disabled={this.state.action === 'deleting' ? true : false } >
               {this.state.action === 'deleting' ? 'Deleting user, please wait...' : 'Delete user' }
             </Button>
           </Box>
