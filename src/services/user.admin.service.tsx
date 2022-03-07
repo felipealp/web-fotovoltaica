@@ -33,7 +33,7 @@ export class UserAdminService {
 
     try {
       const response = await fetch(adminServiceUrl + '/api/users/update', {
-        method: 'patch',
+        method: 'post',
         headers: new Headers({
           'Content-Type': 'application/json',
           'X-Authorization': `Bearer ${jwt}`,

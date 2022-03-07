@@ -2,7 +2,7 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import { Button, Link } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { alpha } from '@material-ui/core';
@@ -42,8 +42,7 @@ class Success extends React.Component<IProps, {}> {
                 strokeWidth={2}
                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
               />
-            </svg>  
-          
+            </svg>            
           </Box>
         </Box>      
 
@@ -55,23 +54,14 @@ class Success extends React.Component<IProps, {}> {
           align={'center'}
         >
           User has been deleted
-        </Box>
-        <Typography
-          variant={'h6'}
-          component={'p'}
-          color={'textSecondary'}
-          align={'center'}
-        >
-          Your password has been reset. Please login with that new password.     
-        </Typography>
+        </Box>        
         <Box marginTop={3} display={'flex'} justifyContent={'center'}>
           <Button
             size={'large'}
             variant={'outlined'}
-            component={Link}
-            href={'/login'}
+            onClick={(e: any) => this.props.onClose()}
           >
-            Close
+            Back to user list
           </Button>
         </Box>
       </Box>
@@ -83,4 +73,5 @@ export default Success;
 
 interface IProps {
   theme: Theme;
+  onClose: () => void;
 }

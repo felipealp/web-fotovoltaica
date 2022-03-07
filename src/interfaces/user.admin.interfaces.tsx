@@ -12,6 +12,7 @@ export interface IUserList {
 	status: number;
 	statusText: string;
 	isLocked: boolean;
+	isDirtyDeleted: boolean;
 	loginAttempts: number;	
 	dateCreated: Date;
 	dateUpdated: Date | null;
