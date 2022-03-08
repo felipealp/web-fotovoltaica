@@ -135,14 +135,14 @@ class List extends React.Component<IProps, {}> {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {this.state.data.filter((x) => x.rowNumber >= this.state.paging.spanStart && x.rowNumber <= this.state.paging.spanEnd && x.isDirtyDeleted !== true).map((row) => (                    
+                  {this.state.data.filter((x) => x.rowNumber >= this.state.paging.spanStart && x.rowNumber <= this.state.paging.spanEnd).map((row) => (                    
                     <TableRow
                       key={row.id}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 }, backgroundColor: row.isDirtyDeleted === true ? 'rgb(22, 11, 11)' : '' }}
                       hover
                       onMouseEnter={(e: any) => this.handleMouseEnter(e, row.id) }
                       onMouseLeave={(e: any) => this.handleMouseLeave(e, row.id) }
-                      selected={this.state.selectedRowId === row.id ? true : false}
+                      selected={this.state.selectedRowId === row.id && row.isDirtyDeleted !== true ? true : false}                                      
                     >
                       <TableCell component="th" scope="row" sx={{ paddingLeft: '20px'}}>
                         <Avatar name={row.name} role={row.role} ></Avatar>
@@ -151,7 +151,7 @@ class List extends React.Component<IProps, {}> {
                       <TableCell align="left">{row.statusText}</TableCell>     
                       <TableCell align="left">{formatDate(row.dateLastAttempt)}</TableCell>                  
                       <TableCell align="center" sx={{ width: '130px'}}>
-                        <div style={{ display: this.state.rowId === row.id ? 'flex' : 'none'}}>
+                        <div style={{ display: this.state.rowId === row.id && row.isDirtyDeleted !== true ? 'flex' : 'none'}}>
                           <IconButton aria-label="edit user" onClick={(e:any) => this.handleSidebarOpen(row)}>
                             <EditRowIcon />
                           </IconButton>                       
@@ -159,7 +159,9 @@ class List extends React.Component<IProps, {}> {
                         </div>
                       </TableCell>
                       <TableCell align="center">
-                        <StatusIcon status={row.status} isLocked={row.isLocked} />
+                        <div style={{ display: row.isDirtyDeleted !== true ? 'flex' : 'none'}}>
+                          <StatusIcon status={row.status} isLocked={row.isLocked} />
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
