@@ -114,6 +114,29 @@ export class UserAdminService {
       return await Promise.reject(error);
     }
   }  
+    
+  async Restore(id: string): Promise<IStandardApiResponse> {
+    const jwt: string | null = fetchJwt();
+    const patch: IUserUpdatePatch = { id: id, role: '', action: 'restore' };
+
+    try {
+      const response = await fetch(adminServiceUrl + '/api/users/update', {
+        method: 'post',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'X-Authorization': `Bearer ${jwt}`,
+          Accept: 'application/json',
+        }),
+        body: JSON.stringify(patch),
+      });
+
+      const results = await Promise.resolve(response);
+      return await results.json();
+    } catch (error: any) {
+      return await Promise.reject(error);
+    }
+  }  
+
 
   async ChangeRole(role: string, id: string): Promise<IStandardApiResponse> {
     const jwt: string | null = fetchJwt();

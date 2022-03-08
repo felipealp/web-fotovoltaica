@@ -134,9 +134,7 @@ class EditUser extends React.Component<IProps, {}> {
    
     client.Delete(id).then(async (response: IApiResponse) => {
       if (response.success) {        
-        user.isDirtyDeleted = true;
-        user.statusText = 'Deleted';
-        user.dateLastAttempt = null;        
+        user.isDirtyDeleted = true;             
 
         this.setState({user: user, action: 'deleted' });
       }
