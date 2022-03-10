@@ -14,6 +14,7 @@ import Edit from '../Edit';
 import LockAndUnlock from '../LockAndUnlock';
 import { TableSkeleton } from 'common/components';
 import { formatDate } from 'helpers/string.helper';
+import { Rowing } from '@material-ui/icons';
 
 class List extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -135,33 +136,31 @@ class List extends React.Component<IProps, {}> {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {this.state.data.filter((x) => x.rowNumber >= this.state.paging.spanStart && x.rowNumber <= this.state.paging.spanEnd).map((row) => (                    
+                  {this.state.data.filter((x) => x.rowNumber >= this.state.paging.spanStart && x.rowNumber <= this.state.paging.spanEnd && !x.isDirtyDeleted).map((row) => (                    
                     <TableRow
                       key={row.id}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 }, backgroundColor: row.isDirtyDeleted === true ? '#eb9694' : '' }}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       hover
                       onMouseEnter={(e: any) => this.handleMouseEnter(e, row.id) }
                       onMouseLeave={(e: any) => this.handleMouseLeave(e, row.id) }
-                      selected={this.state.selectedRowId === row.id && row.isDirtyDeleted !== true ? true : false}                                      
+                      selected={this.state.selectedRowId === row.id ? true : false}                                      
                     >
-                      <TableCell component="th" scope="row" sx={{ paddingLeft: '20px', color: row.isDirtyDeleted === true ? '#697689' : '' }}>
+                      <TableCell component="th" scope="row" sx={{ paddingLeft: '20px' }}>
                         <Avatar name={row.name} role={row.role} ></Avatar>
                       </TableCell>                                        
-                      <TableCell align="left" sx={{ color: row.isDirtyDeleted === true ? '#697689' : '' }}>{row.email}</TableCell>
-                      <TableCell align="left" sx={{ color: row.isDirtyDeleted === true ? '#697689' : '' }}>{row.isDirtyDeleted ? 'Deleted' : row.statusText}</TableCell>     
-                      <TableCell align="left" sx={{ color: row.isDirtyDeleted === true ? '#697689' : '' }}>{formatDate(row.dateLastAttempt)}</TableCell>                  
+                      <TableCell align="left">{row.email}</TableCell>
+                      <TableCell align="left">{row.isDirtyDeleted ? 'Deleted' : row.statusText}</TableCell>     
+                      <TableCell align="left">{formatDate(row.dateLastAttempt)}</TableCell>                  
                       <TableCell align="center" sx={{ width: '130px'}}>
-                        <div style={{ display: this.state.rowId === row.id && row.isDirtyDeleted !== true ? 'flex' : 'none'}}>
+                        <div style={{ display: this.state.rowId === row.id ? 'flex' : 'none'}}>
                           <IconButton aria-label="edit user" onClick={(e:any) => this.handleSidebarOpen(row)}>
                             <EditRowIcon />
                           </IconButton>                       
                           <LockAndUnlock user={row} />
                         </div>
                       </TableCell>
-                      <TableCell align="center">
-                        <div style={{ display: row.isDirtyDeleted !== true ? 'flex' : 'none'}}>
-                          <StatusIcon status={row.status} isLocked={row.isLocked} />
-                        </div>
+                      <TableCell align="center">                        
+                        <StatusIcon status={row.status} isLocked={row.isLocked} />                       
                       </TableCell>
                     </TableRow>
                   ))}
