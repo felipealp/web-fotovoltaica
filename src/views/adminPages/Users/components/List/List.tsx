@@ -5,6 +5,7 @@ import { Theme } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Stack, Pagination, IconButton, Alert, Button, Snackbar, } from '@material-ui/core';
 import EditRowIcon from '@material-ui/icons/ModeEditOutlineOutlined';
 import Avatar from '../Avatar/Avatar';
+import CloseIcon from '@material-ui/icons/Close';
 
 //import { MessageCode } from 'helpers/enums';
 import { IListUsersRequest, IListUsersResponse, IUserList } from 'interfaces/user.admin.interfaces';
@@ -14,6 +15,7 @@ import Edit from '../Edit';
 import LockAndUnlock from '../LockAndUnlock';
 import { TableSkeleton } from 'common/components';
 import { formatDate } from 'helpers/string.helper';
+import { IApiResponse } from 'interfaces/api-response.interface';
 
 class List extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -91,7 +93,23 @@ class List extends React.Component<IProps, {}> {
   };  
 
   private handleRestoreClick = (id: string) => {
+    let client: UserAdminService | null = new UserAdminService();  
+    let user: IUserList | null = this.state.selectedUser;
+  
+    console.log('restore');
+    console.log(id);
 
+    client.Restore(id).then(async (response: IApiResponse) => {
+      if (response.success) {
+        if (user !== null) user.isDirtyDeleted = false;        
+
+        this.setState({ selectedUser: user, deletedRowId: '' });
+      }
+    }).catch((error: Error) => {
+      console.log(error);
+    });
+
+    client = null;
   }
 
   private handleCloseDeleteAlertClick = () => {
@@ -126,11 +144,27 @@ class List extends React.Component<IProps, {}> {
     });
   }
 
+  private deleteUserAlertAction = () => {
+    return (<React.Fragment>
+      <Button color="secondary" size="small" onClick={(e: any) => this.handleRestoreClick(this.state.deletedRowId)}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={(e: any) => this.handleCloseDeleteAlertClick()}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>);
+  }
+
   render() {
     return (
       <Box>  
         <Snackbar open={this.state.deletedRowId.length > 1 ? true : false} autoHideDuration={5000} onClose={(e: any) => this.handleCloseDeleteAlertClick()}>
-          <Alert severity="info" variant='filled' sx={{ minWidth: '400px' }} action={<Button color="inherit" size="small" onClick={(e: any) => this.handleRestoreClick(this.state.deletedRowId)} >UNDO</Button>}>
+          <Alert severity="info" variant='filled' sx={{ minWidth: '400px' }} action={this.deleteUserAlertAction()}>
             User has been deleted
           </Alert>
         </Snackbar>           
