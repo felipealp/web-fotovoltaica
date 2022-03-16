@@ -22,7 +22,7 @@ const Users = () => {
       <Box bgcolor={theme.palette.alternate.main}>
         <SearchBox theme={theme} callback={callbackSearch} />
       </Box>
-      <Box bgcolor={theme.palette.alternate.main} >
+      <Box bgcolor={theme.palette.alternate.main} marginTop={0} >
         <Container maxWidth={'80%'}>
           <List callback={callbackList} theme={theme} searchCriteria={searchBody} />
         </Container>

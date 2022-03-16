@@ -2,7 +2,7 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import { Theme } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Stack, Pagination, IconButton, } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Stack, Pagination, IconButton, Alert, Button, Snackbar, } from '@material-ui/core';
 import EditRowIcon from '@material-ui/icons/ModeEditOutlineOutlined';
 import Avatar from '../Avatar/Avatar';
 
@@ -14,7 +14,6 @@ import Edit from '../Edit';
 import LockAndUnlock from '../LockAndUnlock';
 import { TableSkeleton } from 'common/components';
 import { formatDate } from 'helpers/string.helper';
-import { Rowing } from '@material-ui/icons';
 
 class List extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -28,8 +27,9 @@ class List extends React.Component<IProps, {}> {
     paging: { currentPage: 1, spanStart: 1, spanEnd: this._pageSize },
     rowId: '',
     selectedRowId: '',
+    deletedRowId: '',
     openSideBar: false,
-    selectedUser: null,
+    selectedUser: null   
   }
 
   componentDidMount() {
@@ -82,13 +82,21 @@ class List extends React.Component<IProps, {}> {
   }  
 
   private handleSidebarClose = () => {
-    this.setState({ openSideBar: false });
+    this.setState({ openSideBar: false, deletedRowId: this.state.selectedUser?.isDirtyDeleted ? this.state.selectedUser.id : '' });    
   };
 
   private handleSidebarOpen = (user: IUserList) => {  
     user.isDirtyDeleted = false;    
-    this.setState({ openSideBar: true, selectedUser: user, selectedRowId: user.id });   
+    this.setState({ openSideBar: true, selectedUser: user, selectedRowId: user.id, deletedRowId: '' });   
   };  
+
+  private handleRestoreClick = (id: string) => {
+
+  }
+
+  private handleCloseDeleteAlertClick = () => {
+    this.setState({ deletedRowId: '' }); 
+  }
 
   //private callbackLockAndUnLockSuccess = (row: IUserList): void => {    
   //  console.log(row);
@@ -120,14 +128,19 @@ class List extends React.Component<IProps, {}> {
 
   render() {
     return (
-      <Box>        
-        <Box sx={this.state.action === 'normal' ? { display: 'block' } : { display: 'none' }}>
-          <Box marginBottom={4} sx={{ display: 'flex' }}>
+      <Box>  
+        <Snackbar open={this.state.deletedRowId.length > 1 ? true : false} autoHideDuration={5000} onClose={(e: any) => this.handleCloseDeleteAlertClick()}>
+          <Alert severity="info" variant='filled' sx={{ minWidth: '400px' }} action={<Button color="inherit" size="small" onClick={(e: any) => this.handleRestoreClick(this.state.deletedRowId)} >UNDO</Button>}>
+            User has been deleted
+          </Alert>
+        </Snackbar>           
+        <Box sx={this.state.action === 'normal' ? { display: 'block' } : { display: 'none' }}>          
+          <Box marginBottom={4} sx={{ display: 'flex' }}>            
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ paddingLeft: '20px'}}>Name</TableCell>                    
+                    <TableCell sx={{ paddingLeft: '20px' }}>Name</TableCell>                    
                     <TableCell align="left">Email</TableCell>
                     <TableCell align="left">Status</TableCell>
                     <TableCell align="left">Last Login Attempt</TableCell>
@@ -198,7 +211,8 @@ interface IList {
   pageCount: number;
   paging: IPaging;
   rowId: string;
-  selectedRowId:string,
+  selectedRowId: string;
+  deletedRowId: string;
   openSideBar: boolean;
   selectedUser: IUserList | null;
 }
