@@ -2,13 +2,30 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import { Button } from '@material-ui/core';
+import { Button, Stack } from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { alpha } from '@material-ui/core';
 
-class Success extends React.Component<IProps, {}> {
+import UserAdminService from 'services/user.admin.service';
+import { IApiResponse } from 'interfaces/api-response.interface';
+
+class ConfirmDelete extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};  
+
+  handleOnDeleteClick(id: string) {    
+    let client: UserAdminService | null = new UserAdminService();   
+       
+    client.Delete(id).then(async (response: IApiResponse) => {
+      if (response.success) {        
+        this.props.onSuccess(); 
+      }
+    }).catch((error: Error) => {
+      console.log(error);
+    });
+
+    client = null;
+  }
 
   render() {
     return (
@@ -53,25 +70,39 @@ class Success extends React.Component<IProps, {}> {
           gutterBottom
           align={'center'}
         >
-          User has been deleted
+          Are you sure you want to delete this user?
         </Box>        
         <Box marginTop={3} display={'flex'} justifyContent={'center'}>
-          <Button
-            size={'large'}
-            variant={'outlined'}
-            onClick={(e: any) => this.props.onClose()}
-          >
-            Back to user list
-          </Button>
+          <Stack spacing={2} direction="row">          
+            <Button
+              size={'large'}     
+              variant="contained"
+              color={'primary'}        
+              onClick={(e: any) => this.handleOnDeleteClick(this.props.id)}
+            >
+              Yes, Delete User
+            </Button>
+
+            <Button
+              size={'large'}   
+              variant="contained"  
+              color={'secondary'}        
+              onClick={(e: any) => this.props.onCancel()}
+            >
+              Oops, Nevermind
+            </Button>
+          </Stack>
         </Box>
       </Box>
     );
   }
 }
 
-export default Success;
+export default ConfirmDelete;
 
 interface IProps {
+  id: string;
   theme: Theme;
-  onClose: () => void;
+  onSuccess: () => void;
+  onCancel: () => void;
 }

@@ -23,7 +23,7 @@ import { IUserList } from 'interfaces/user.admin.interfaces';
 import { stringToColor, formatDate } from 'helpers/string.helper';
 import UserAdminService from 'services/user.admin.service';
 import { IApiResponse } from 'interfaces/api-response.interface';
-import Deleted from '../Deleted';
+import ConfirmDelete from '../ConfirmDelete';
 
 class EditUser extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -123,26 +123,15 @@ class EditUser extends React.Component<IProps, {}> {
   }
 
   handleOnCloseAfterDelete() {
+    let user: IUserList = this.state.user; 
+    user.isDirtyDeleted = true;
+
+    this.setState({ action: 'normal', user: user });
     this.props.onClose();
   }
 
-  handleOnDeleteClick(id: string) {
-    this.setState({ action: 'deleting' });       
-    
-    let client: UserAdminService | null = new UserAdminService();   
-    let user: IUserList = this.state.user; 
-   
-    client.Delete(id).then(async (response: IApiResponse) => {
-      if (response.success) {        
-        user.isDirtyDeleted = true;             
-
-        this.setState({user: user, action: 'deleted' });
-      }
-    }).catch((error: Error) => {
-      console.log(error);
-    });
-
-    client = null;
+  cancelDeleteCallback() {
+    this.setState({ action: 'normal' });   
   }
 
   lockedButton(locked: boolean, id: string) {
@@ -213,13 +202,13 @@ class EditUser extends React.Component<IProps, {}> {
             </IconButton>
           </Box>
 
-          <Box display={this.state.action === 'deleted' ? 'block' : 'none'} sx={{ height: '100%', padding: 1 }} >
+          <Box display={this.state.action === 'confirm-delete' ? 'block' : 'none'} sx={{ height: '100%', padding: 1 }} >
             <Box marginTop={20} justifyContent={'center'}>
-              <Deleted theme={this.props.theme} onClose={this.props.onClose}></Deleted>
+              <ConfirmDelete id={this.props.user.id} theme={this.props.theme} onSuccess={this.handleOnCloseAfterDelete.bind(this)} onCancel={this.cancelDeleteCallback.bind(this)}></ConfirmDelete>
             </Box>
           </Box>
 
-          <Box display={this.state.action === 'deleted' ? 'none' : 'block'} sx={{ height: '100%', padding: 1 }} >
+          <Box display={this.state.action === 'confirm-delete' ? 'none' : 'block'} sx={{ height: '100%', padding: 1 }} >
             <Box marginBottom={2} alignItems={'center'} justifyContent={'center'} component={CardActions}>
               <Avatar sx={{ width: 100, height: 100, bgcolor: stringToColor(this.state.user.name) }}></Avatar>
             </Box>
@@ -302,13 +291,13 @@ class EditUser extends React.Component<IProps, {}> {
           </Box>
 
           <Box
-            display={this.state.action === 'deleted' ? 'none' : 'flex'}
+            display={this.state.action === 'confirm-delete' ? 'none' : 'flex'}
             justifyContent={'flex-end'}
             sx={{ paddingBottom: '10px', marginRight: '20px', marginLeft: '20px' }}
-            onClick={(e: any) => this.handleOnDeleteClick(this.state.user.id)}
+            onClick={(e: any) => this.setState({ action: 'confirm-delete' })}
           >
-            <Button variant="contained" startIcon={this.state.action === 'deleting' ? null : <DeleteIcon />} sx={{ width: '100%', background: this.props.theme.palette.grey[600] }} disabled={this.state.action === 'deleting' ? true : false } >
-              {this.state.action === 'deleting' ? 'Deleting user, please wait...' : 'Delete user' }
+            <Button variant="contained" startIcon={<DeleteIcon />} sx={{ width: '100%', background: this.props.theme.palette.grey[600] }}>
+              Delete user
             </Button>
           </Box>
         </Drawer>

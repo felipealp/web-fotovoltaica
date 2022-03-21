@@ -21,8 +21,9 @@ export class UserAdminService {
       });
 
       const results = await Promise.resolve(response);
+
       return await results.json();
-    } catch (error: any) {
+    } catch (error: any) {      
       return await Promise.reject(error);
     }
   } 

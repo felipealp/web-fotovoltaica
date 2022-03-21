@@ -95,9 +95,6 @@ class List extends React.Component<IProps, {}> {
   private handleRestoreClick = (id: string) => {
     let client: UserAdminService | null = new UserAdminService();  
     let user: IUserList | null = this.state.selectedUser;
-  
-    console.log('restore');
-    console.log(id);
 
     client.Restore(id).then(async (response: IApiResponse) => {
       if (response.success) {
@@ -127,7 +124,6 @@ class List extends React.Component<IProps, {}> {
 
     client.List(body).then(async (response: IListUsersResponse) => {     
       if (response.success) {      
-
         this.setState({
           paging: {
             currentPage: 1,
@@ -139,7 +135,7 @@ class List extends React.Component<IProps, {}> {
           action: 'normal'
         });
       }
-    }).catch((error: Error) => {
+    }).catch((error: Error) => {      
       console.log(error);
     });
   }
