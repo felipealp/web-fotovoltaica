@@ -13,7 +13,7 @@ There are 3 main components to the application so far.
 
 This is built using the [Webbee - Multipurpose Template + UI Kit](https://webbee.maccarianagency.com/). The template is built in React and is based on Material-UI design. It is mix of JavaScript and TypeScript files. It is the front end of the service and communicates via REST endpoints back to the microservices.
 
-> please make sure you check the [licensing terms](https://mui.com/store/license/#i-standard-license) when using this template from Webbee
+> *please make sure you check the [licensing terms](https://mui.com/store/license/#i-standard-license) when using this template. If you have questions, you can [contact them via email](hi@maccarianagency.com).*
 
 # Functionality and features
 
@@ -42,7 +42,9 @@ Tracking the progress of the basic functionality of the application.
 
 # Getting started
 
-
+- Install dependencies: `yarn install`
+- Start the server: `yarn start`
+- Build on production: `yarn build`
 
 # How to contribute
 
@@ -97,6 +99,4 @@ No matter how well documented and built something is, sometimes you just need a 
 ## Contact Us
 
 - Email Us: hi@maccarianagency.com
-- [Follow us on Linkedin](https://www.linkedin.com/company/maccarian)
-- [Follow us on Instagram](https://www.instagram.com/maccarian/)
-- [Follow us on Facebook](https://facebook.com/maccarian.agency/)
+
