@@ -1,6 +1,50 @@
 # 🚀 My Web App
 
-Project just getting off the ground. Using the Webbee UI Kit. Will post a better a readme.md in the near future.
+This project was created as I started to think of our "next great idea" for a cloud service app. I wantd to get all of the common tasks done that are needed for any web application. Things like basic structure, login, security, sign-up, user management, etc. The work is progressing slow but steady and we are in a good place to start showing some value and seeing if others are wiling to contribute.
+
+# Basic architecture
+
+There are 3 main components to the application so far. 
+- My Web App
+- Identity Service
+- Admin Service
+
+## My Web App
+
+This is built using the [Webbee - Multipurpose Template + UI Kit](https://webbee.maccarianagency.com/). The template is built in React and is based on Material-UI design. It is mix of JavaScript and TypeScript files. It is the front end of the service and communicates via REST endpoints back to the microservices.
+
+> please make sure you check the [licensing terms](https://mui.com/store/license/#i-standard-license) when using this template from Webbee
+
+# Functionality and features
+
+Tracking the progress of the basic functionality of the application.
+
+### Functionality
+
+| Feature             | Description                                                                  | Progress    | Status |
+| ------------------- | ---------------------------------------------------------------------------- | ----------- | :----: |
+| Basic Structure     | design templates, folder structure, react components, routing, etc.          | complete    |   ✅   |
+| Sign up             | create an account, condirm account, forget password, reset password          | complete    |   ✅   |
+| Security (Basic)    | jwt tokens, login, logout, validate token, lock out users, login attempts    | complete    |   ✅   |
+| Security (Advanced) | security roles, role checks admin pages                                      | not started |        |
+| User Management     | user search, change roles, lock out user, delete user, restore, manage codes | in progress |   🚧   |
+| Sessions            | view current logged in users, kill session, view users current page          | not started |        |
+| Telemetry (Basic)   | track page accessed, structure to track more details like button clicks      | not started |        |
+| My Profile          | update my profile info, update my preferences, my avatar                     | not started |        |
+
+### Other
+
+| Feature  | Description                                                                        | Progress    | Status |
+| -------- | ---------------------------------------------------------------------------------- | ----------- | :----: |
+| Clean up | remove all the branded information from the Webbee, remove extra pages and content | in progress |   🚧   |
+| Logo & illustrations    | design work for a logo and more illustrations                       | help wanted |        |
+| CI/CD    | proper CI/CD using GitHub actions                                                  | help wanted |   🆘   |
+
+# Getting started
+
+
+
+# How to contribute
 
 # [Webbee - Multipurpose Template + UI Kit](https://webbee.maccarianagency.com/)
 
