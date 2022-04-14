@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 
 import Container from 'common/Container';
 import { IListUsersRequest } from 'interfaces/user.admin.interfaces';
+import { ToggleButton, ToggleButtonGroup } from '@material-ui/core';
 
 class SearchBox extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -17,11 +18,16 @@ class SearchBox extends React.Component<IProps, {}> {
   state: ISearchBox = {
     action: 'normal',
     errorMsg: '',
-    searchText: ''
+    searchText: '',
+    searchType: 'active',
   }
 
   componentDidMount() {
 
+  }
+
+  private handleSearchTypeChange = (e: React.MouseEvent<HTMLElement>, x: string) => {
+    this.setState({ searchType: x });
   }
 
   private handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
@@ -58,6 +64,7 @@ class SearchBox extends React.Component<IProps, {}> {
   }
 
   render() {
+    
     return (
       <Container maxWidth={'75%'}>
         <Box
@@ -73,7 +80,7 @@ class SearchBox extends React.Component<IProps, {}> {
               sx={{ '& .MuiInputBase-input.MuiOutlinedInput-input': { bgcolor: 'background.paper', }, }}
             >
               <Grid container spacing={2}>
-                <Grid item xs={12} md={11}>
+                <Grid item xs={12} md={9}>
                   <Box
                     component={TextField}
                     label="search text"
@@ -84,7 +91,19 @@ class SearchBox extends React.Component<IProps, {}> {
                     height={54}
                     value={this.state.searchText}
                     onChange={(e: any) => this.handleInputChanges(e)}
-                  />
+                  />                  
+                </Grid>
+                <Grid item xs={12} md={2}>
+                  <ToggleButtonGroup
+                    color="primary"
+                    exclusive   
+                    size="large"                   
+                    value={this.state.searchType}  
+                    sx={{ maxHeight: 56 }}                      
+                  >
+                    <ToggleButton value="active" onClick={(e: any) => this.handleSearchTypeChange(e, 'active')}>Active</ToggleButton>
+                    <ToggleButton value="deleted" onClick={(e: any) => this.handleSearchTypeChange(e, 'deleted')}>Deleted</ToggleButton>
+                  </ToggleButtonGroup>
                 </Grid>
                 <Grid item xs={12} md={1}>
                   <Box
@@ -119,6 +138,7 @@ interface ISearchBox {
   action: string,
   errorMsg: string;
   searchText: string;
+  searchType: string;
 }
 
 class ListUsersRequest implements IListUsersRequest {
