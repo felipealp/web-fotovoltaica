@@ -26,8 +26,39 @@ class SearchBox extends React.Component<IProps, {}> {
 
   }
 
+  private buildSearchText = (searchText: string, type: string): IListUsersRequest => {   
+    let len: number = searchText.length;
+    let ind: number;
+    let key, val: string;
+
+    let split = searchText.split(',');
+    if (split.length < 1) split.push(searchText);
+
+    let body: IListUsersRequest = new ListUsersRequest();
+
+    split.forEach((i) => {
+      ind = i.indexOf(':');
+      key = i.slice(0, ind).trim();
+      val = i.slice(ind + 1, len).trim();
+
+      body.name = key.includes('name') ? val : body.name;
+      body.email = key.includes('email') ? val : body.email;
+      body.role = key.includes('role') ? val : body.role;
+      body.status = key.includes('status') ? parseInt(val) : body.status;
+    });
+
+    body.isDeleted = type === 'deleted' ? true : false; 
+
+    return body;
+  }
+
   private handleSearchTypeChange = (e: React.MouseEvent<HTMLElement>, x: string) => {
-    this.setState({ searchType: x });
+    e.preventDefault();
+
+    this.setState({ searchType: x });      
+    const body: IListUsersRequest = this.buildSearchText(this.state.searchText.toLowerCase(), x);
+  
+    this.props.callback(body);
   }
 
   private handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
@@ -38,28 +69,10 @@ class SearchBox extends React.Component<IProps, {}> {
 
   private handleSearchButtonClick = (e: React.ChangeEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    
-    const searchText: string = this.state.searchText.toLowerCase();
-    let len: number = searchText.length;
-    let ind: number;
-    let key, val: string;
+   
+    const body: IListUsersRequest = this.buildSearchText(this.state.searchText.toLowerCase(), this.state.searchType.toLowerCase());
+    console.log(body);
 
-    let split = searchText.split(',');
-    if (split.length < 1) split.push(searchText);
-
-    let body: IListUsersRequest = new ListUsersRequest();
-
-    split.forEach((e) => {
-      ind = e.indexOf(':');
-      key = e.slice(0, ind).trim();
-      val = e.slice(ind + 1, len).trim();
-
-      body.name = key.includes('name') ? val : body.name;
-      body.email = key.includes('email') ? val : body.email;
-      body.role = key.includes('role') ? val : body.role;
-      body.status = key.includes('status') ? parseInt(val) : body.status;
-    });    
-    
     this.props.callback(body);
   }
 
@@ -147,10 +160,12 @@ class ListUsersRequest implements IListUsersRequest {
     this.email = null;
     this.role = null;
     this.status = -1;
+    this.isDeleted = false;
   }
 
   name: string | null;
   email: string | null;
   role: string | null;
   status: number;
+  isDeleted: boolean;
 }

@@ -17,7 +17,7 @@ import { TableSkeleton } from 'common/components';
 import { formatDate } from 'helpers/string.helper';
 import { IApiResponse } from 'interfaces/api-response.interface';
 
-class List extends React.Component<IProps, {}> {
+class ListOfDeleted extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
   readonly _pageSize: number = 25;
 
@@ -43,17 +43,6 @@ class List extends React.Component<IProps, {}> {
       this.load_users();    
     }
   }
-
-  //shouldComponentUpdate(nextProps: any, nextState: any) {
-  //  console.log(nextProps);
-  //  console.log(nextState);
-
-  //  if (nextProps.value !== this.props.value) {
-  //    return true;
-  //  } else {
-  //    return false;
-  //  }
-  //}
 
   private handlePageChange = (e: React.ChangeEvent<HTMLButtonElement>, value: string) => {
     const next: string = '<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>';
@@ -113,13 +102,11 @@ class List extends React.Component<IProps, {}> {
     this.setState({ deletedRowId: '' }); 
   }
 
-  //private callbackLockAndUnLockSuccess = (row: IUserList): void => {    
-  //  console.log(row);
-  //};
+ 
 
   private load_users = () => {
     const client: UserAdminService = new UserAdminService();  
-    const defaultBody: IListUsersRequest = { name: null, email: null, role: null, status: -1 }; 
+    const defaultBody: IListUsersRequest = { name: null, email: null, role: null, status: -1, isDeleted: true }; 
     let body: IListUsersRequest = this.props.searchCriteria != null ? this.props.searchCriteria : defaultBody;   
 
     client.List(body).then(async (response: IListUsersResponse) => {     
@@ -226,7 +213,7 @@ class List extends React.Component<IProps, {}> {
   }
 }
 
-export default List;
+export default ListOfDeleted;
 
 interface IProps {
   callback: () => void;

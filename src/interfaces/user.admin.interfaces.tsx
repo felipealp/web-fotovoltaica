@@ -26,6 +26,7 @@ export interface IListUsersRequest {
 	email: string | null;
 	role: string | null;
 	status: number;
+	isDeleted: boolean;
 }
 
 export interface IUserUpdatePatch {

@@ -1,4 +1,5 @@
-export { default as List } from './List';
+export { default as ListOfActive } from './ListOfActive';
+export { default as ListOfDeleted } from './ListOfDeleted';
 export { default as SearchBox } from './SearchBox';
 export { default as Avatar } from './Avatar';
 export { default as StatusIcon } from './StatusIcon';
