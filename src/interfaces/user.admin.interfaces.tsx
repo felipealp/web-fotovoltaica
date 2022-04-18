@@ -18,6 +18,7 @@ export interface IUserList {
 	dateUpdated: Date | null;
 	dateLocked: Date | null;
 	dateLastAttempt: Date | null;
+	dateDeleted: Date | null;
 	rowNumber: number;
 }
 
