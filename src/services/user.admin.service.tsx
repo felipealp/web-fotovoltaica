@@ -50,6 +50,27 @@ export class UserAdminService {
     }
   }  
 
+  async DeleteForever(id: string): Promise<IStandardApiResponse> {
+    const jwt: string | null = fetchJwt();
+    const patch: IUserUpdatePatch = { id: id, role: '', action: 'restore' };
+
+    try {
+      const response = await fetch(adminServiceUrl + '/api/users/deleteforever/' + id, {
+        method: 'delete',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'X-Authorization': `Bearer ${jwt}`,
+          Accept: 'application/json',
+        })        
+      });
+
+      const results = await Promise.resolve(response);
+      return await results.json();
+    } catch (error: any) {
+      return await Promise.reject(error);
+    }
+  }  
+
   async UnLock(id: string): Promise<IStandardApiResponse> {
     const jwt: string | null = fetchJwt();
     const patch: IUserUpdatePatch = { id: id, role: '', action: 'unlock' };
@@ -137,7 +158,6 @@ export class UserAdminService {
       return await Promise.reject(error);
     }
   }  
-
 
   async ChangeRole(role: string, id: string): Promise<IStandardApiResponse> {
     const jwt: string | null = fetchJwt();

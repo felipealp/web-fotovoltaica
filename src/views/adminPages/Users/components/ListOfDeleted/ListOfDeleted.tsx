@@ -2,7 +2,7 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import { Theme } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Stack, Pagination, IconButton, } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Stack, Pagination, IconButton, Typography, Tooltip, } from '@material-ui/core';
 import Avatar from '../Avatar/Avatar';
 import DestroyIcon from '@material-ui/icons/DeleteForever';
 import RestoreIcon from '@material-ui/icons/Restore';
@@ -61,12 +61,28 @@ class ListOfDeleted extends React.Component<IProps, {}> {
     this.setState({ paging: { currentPage: current, spanStart: start, spanEnd: end } });
   }
 
-  private handleRestoreClick = (id: string) => {
+  private handleRestoreClick = (e: any, id: string) => {
     let client: UserAdminService | null = new UserAdminService();
-
+   
     client.Restore(id).then(async (response: IApiResponse) => {
       if (response.success) {
-        this.setState({ deletedRowId: '' });
+        const list: IUserList[] = this.state.data.filter((x) => x.id !== id);
+        this.setState({ data: list });  
+      }
+    }).catch((error: Error) => {
+      console.log(error);
+    });
+
+    client = null;
+  }
+
+  private handleDeleteForeverClick = (e: any, id: string) => {
+    let client: UserAdminService | null = new UserAdminService();
+   
+    client.DeleteForever(id).then(async (response: IApiResponse) => {
+      if (response.success) {
+        const list: IUserList[] = this.state.data.filter((x) => x.id !== id);
+        this.setState({ data: list });  
       }
     }).catch((error: Error) => {
       console.log(error);
@@ -104,14 +120,14 @@ class ListOfDeleted extends React.Component<IProps, {}> {
       <Box>
         <Box sx={this.state.action === 'normal' ? { display: 'block' } : { display: 'none' }}>
           <Box marginBottom={4} sx={{ display: 'flex' }}>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableContainer component={Paper} sx={this.state.data.length > 0 ? { display: 'flex' } : { display: 'none' }}>
+              <Table sx={{ minWidth: 650 }} aria-label="deleted users">
                 <TableHead>
                   <TableRow>
                     <TableCell sx={{ paddingLeft: '20px' }}>Name</TableCell>
                     <TableCell align="left">Email</TableCell>
-                    <TableCell align="left">Last Login</TableCell>
-                    <TableCell align="left">Deleted</TableCell>
+                    <TableCell align="left">Last Login Attempt</TableCell>
+                    <TableCell align="left">Date Deleted</TableCell>
                     <TableCell align="center"></TableCell>                   
                   </TableRow>
                 </TableHead>
@@ -132,12 +148,17 @@ class ListOfDeleted extends React.Component<IProps, {}> {
                       <TableCell align="left">{formatDate(row.dateDeleted)}</TableCell>
                       <TableCell align="center" sx={{ width: '130px'}}>
                         <div style={{ display: this.state.rowId === row.id ? 'flex' : 'none'}}>
-                          <IconButton aria-label="restore user">
-                            <RestoreIcon />
-                          </IconButton> 
-                          <IconButton aria-label="delete forever">
-                            <DestroyIcon />
-                          </IconButton>   
+                          <Tooltip title="Restore user" arrow>
+                            <IconButton aria-label="restore user" onClick={(e: any) => this.handleRestoreClick(e, row.id)}>
+                              <RestoreIcon />
+                            </IconButton> 
+                          </Tooltip>
+
+                          <Tooltip title="Delete this user forever" arrow>
+                            <IconButton aria-label="delete forever" onClick={(e: any) => this.handleDeleteForeverClick(e, row.id)}>
+                              <DestroyIcon />
+                            </IconButton>   
+                          </Tooltip>
                         </div>
                       </TableCell>                     
                     </TableRow>
@@ -145,6 +166,10 @@ class ListOfDeleted extends React.Component<IProps, {}> {
                 </TableBody>
               </Table>
             </TableContainer>
+
+            <Typography variant={'h5'} sx={this.state.data.length <= 0 && this.state.action === 'normal' ? { fontWeight: 500, display: 'flex', textAlign: 'center' } : { display: 'none' }} gutterBottom align={'center'}>
+                There are no deleted users to take care of
+            </Typography>
           </Box>
           <Box>
             <Stack spacing={2} sx={this.state.pageCount > 1 ? { display: 'flex' } : { display: 'none' }} alignItems={'center'}>
