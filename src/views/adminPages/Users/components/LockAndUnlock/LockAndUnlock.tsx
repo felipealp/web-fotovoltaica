@@ -5,7 +5,7 @@ import { IconButton } from '@material-ui/core';
 
 import UserAdminService from 'services/user.admin.service';
 import { IApiResponse } from 'interfaces/api-response.interface';
-import { IUserList } from 'interfaces/user.admin.interfaces';
+import { IUsers } from 'interfaces/user.admin.interfaces';
 
 class LockAndUnlock extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -79,8 +79,8 @@ class LockAndUnlock extends React.Component<IProps, {}> {
 export default LockAndUnlock;
 
 interface IProps {
-  callback: (user: IUserList) => void;
-  user: IUserList;
+  callback: (user: IUsers) => void;
+  user: IUsers;
 }
 
 interface ILockAndUnlock {

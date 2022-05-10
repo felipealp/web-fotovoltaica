@@ -52,7 +52,6 @@ export class UserAdminService {
 
   async DeleteForever(id: string): Promise<IStandardApiResponse> {
     const jwt: string | null = fetchJwt();
-    const patch: IUserUpdatePatch = { id: id, role: '', action: 'restore' };
 
     try {
       const response = await fetch(adminServiceUrl + '/api/users/deleteforever/' + id, {

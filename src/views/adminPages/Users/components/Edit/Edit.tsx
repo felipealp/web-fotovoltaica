@@ -19,7 +19,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SetPersonToAdminIcon from '@material-ui/icons/PersonAddAlt1';
 import SetPersonToBasicIcon from '@material-ui/icons/PersonRemoveAlt1';
 
-import { IUserList } from 'interfaces/user.admin.interfaces';
+import { IUsers } from 'interfaces/user.admin.interfaces';
 import { stringToColor, formatDate } from 'helpers/string.helper';
 import UserAdminService from 'services/user.admin.service';
 import { IApiResponse } from 'interfaces/api-response.interface';
@@ -47,7 +47,7 @@ class EditUser extends React.Component<IProps, {}> {
 
   handleUnLockClick(id: string) {
     let client: UserAdminService | null = new UserAdminService();  
-    let user: IUserList = this.state.user;    
+    let user: IUsers = this.state.user;    
 
     client.UnLock(id).then(async (response: IApiResponse) => {
       if (response.success) {
@@ -65,7 +65,7 @@ class EditUser extends React.Component<IProps, {}> {
 
   handleLockClick(id: string) {
     let client: UserAdminService | null = new UserAdminService();   
-    let user: IUserList = this.state.user; 
+    let user: IUsers = this.state.user; 
 
     client.Lock(id).then(async (response: IApiResponse) => {
       if (response.success) {
@@ -83,7 +83,7 @@ class EditUser extends React.Component<IProps, {}> {
 
   handleResetClick(id: string) {
     let client: UserAdminService | null = new UserAdminService();   
-    let user: IUserList = this.state.user; 
+    let user: IUsers = this.state.user; 
 
     client.Reset(id).then(async (response: IApiResponse) => {
       if (response.success) {
@@ -102,7 +102,7 @@ class EditUser extends React.Component<IProps, {}> {
 
   handleRoleChangeClick(role: string, id: string) {
     let client: UserAdminService | null = new UserAdminService();   
-    let user: IUserList = this.state.user; 
+    let user: IUsers = this.state.user; 
 
     client.ChangeRole(role, id).then(async (response: IApiResponse) => {
       if (response.success) {
@@ -123,7 +123,7 @@ class EditUser extends React.Component<IProps, {}> {
   }
 
   handleOnCloseAfterDelete() {
-    let user: IUserList = this.state.user; 
+    let user: IUsers = this.state.user; 
     user.isDirtyDeleted = true;
 
     this.setState({ action: 'normal', user: user });
@@ -312,12 +312,12 @@ interface IProps {
   onClose: () => void;
   theme: Theme;
   open: boolean;
-  user: IUserList | any;
+  user: IUsers | any;
 }
 
 interface IEditUser {
   action: string,
   errorMsg: string;
   open: boolean;
-  user: IUserList;
+  user: IUsers;
 }

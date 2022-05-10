@@ -8,7 +8,7 @@ import Avatar from '../Avatar/Avatar';
 import CloseIcon from '@material-ui/icons/Close';
 
 //import { MessageCode } from 'helpers/enums';
-import { IListUsersRequest, IListUsersResponse, IUserList } from 'interfaces/user.admin.interfaces';
+import { IListUsersRequest, IListUsersResponse, IUsers } from 'interfaces/user.admin.interfaces';
 import UserAdminService from 'services/user.admin.service';
 import StatusIcon from '../StatusIcon';
 import Edit from '../Edit';
@@ -87,14 +87,14 @@ class ListOfActive extends React.Component<IProps, {}> {
     this.setState({ openSideBar: false, deletedRowId: this.state.selectedUser?.isDirtyDeleted ? this.state.selectedUser.id : '' });    
   };
 
-  private handleSidebarOpen = (user: IUserList) => {  
+  private handleSidebarOpen = (user: IUsers) => {  
     user.isDirtyDeleted = false;    
     this.setState({ openSideBar: true, selectedUser: user, selectedRowId: user.id, deletedRowId: '' });   
   };  
 
   private handleRestoreClick = (id: string) => {
     let client: UserAdminService | null = new UserAdminService();  
-    let user: IUserList | null = this.state.selectedUser;
+    let user: IUsers | null = this.state.selectedUser;
 
     client.Restore(id).then(async (response: IApiResponse) => {
       if (response.success) {
@@ -237,14 +237,14 @@ interface IProps {
 interface IList {
   action: string,
   errorMsg: string;
-  data: IUserList[]; 
+  data: IUsers[]; 
   pageCount: number;
   paging: IPaging;
   rowId: string;
   selectedRowId: string;
   deletedRowId: string;
   openSideBar: boolean;
-  selectedUser: IUserList | null;
+  selectedUser: IUsers | null;
 }
 
 interface IPaging {

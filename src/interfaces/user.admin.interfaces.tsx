@@ -1,10 +1,10 @@
 import { IApiResponse } from "./api-response.interface";
 
 export interface IListUsersResponse extends IApiResponse {
-	value: IUserList[];
+	value: IUsers[];
 }
 
-export interface IUserList {
+export interface IUsers {
 	id: string;
 	name: string;
 	email: string;

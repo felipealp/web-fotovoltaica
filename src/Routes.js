@@ -84,6 +84,7 @@ import {
 // admin pages
 import {
   Users as UsersAdminView,  
+  Tokens as TokensAdminView, 
 } from './views/adminPages';
 
 const Routes = () => {
@@ -581,6 +582,18 @@ const Routes = () => {
           <WithLayout
             {...matchProps}
             component={UsersAdminView}
+            layout={MainSecureLayout}
+          />
+        )}
+      />
+
+      <Route
+        exact
+        path="/admin-tokens"
+        render={(matchProps) => (
+          <WithLayout
+            {...matchProps}
+            component={TokensAdminView}
             layout={MainSecureLayout}
           />
         )}

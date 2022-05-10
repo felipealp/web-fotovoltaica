@@ -8,7 +8,7 @@ import DestroyIcon from '@material-ui/icons/DeleteForever';
 import RestoreIcon from '@material-ui/icons/Restore';
 
 //import { MessageCode } from 'helpers/enums';
-import { IListUsersRequest, IListUsersResponse, IUserList } from 'interfaces/user.admin.interfaces';
+import { IListUsersRequest, IListUsersResponse, IUsers } from 'interfaces/user.admin.interfaces';
 import UserAdminService from 'services/user.admin.service';
 import { TableSkeleton } from 'common/components';
 import { formatDate } from 'helpers/string.helper';
@@ -66,7 +66,7 @@ class ListOfDeleted extends React.Component<IProps, {}> {
    
     client.Restore(id).then(async (response: IApiResponse) => {
       if (response.success) {
-        const list: IUserList[] = this.state.data.filter((x) => x.id !== id);
+        const list: IUsers[] = this.state.data.filter((x) => x.id !== id);
         this.setState({ data: list });  
       }
     }).catch((error: Error) => {
@@ -81,7 +81,7 @@ class ListOfDeleted extends React.Component<IProps, {}> {
    
     client.DeleteForever(id).then(async (response: IApiResponse) => {
       if (response.success) {
-        const list: IUserList[] = this.state.data.filter((x) => x.id !== id);
+        const list: IUsers[] = this.state.data.filter((x) => x.id !== id);
         this.setState({ data: list });  
       }
     }).catch((error: Error) => {
@@ -196,7 +196,7 @@ interface IProps {
 interface IList {
   action: string,
   errorMsg: string;
-  data: IUserList[];
+  data: IUsers[];
   pageCount: number;
   paging: IPaging;
   rowId: string;

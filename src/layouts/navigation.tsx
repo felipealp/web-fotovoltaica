@@ -78,8 +78,8 @@ export const pages = [
         authHide: false,
       },
       {
-        title: 'Sessions',
-        href: '/admin-sessions',
+        title: 'Active Tokens',
+        href: '/admin-tokens',
         authHide: false,
       },         
     ],
