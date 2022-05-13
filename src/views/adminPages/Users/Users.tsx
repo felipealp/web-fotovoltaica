@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 
-import { ListOfActive, ListOfDeleted, SearchBox } from './components';
+import { ActiveUsers, DeletedUsers, SearchBox } from './components';
 import Container from 'common/Container';
 
 const Users = () => {
@@ -27,7 +27,7 @@ const Users = () => {
       <Box bgcolor={theme.palette.alternate.main} marginTop={0} >
         <Container maxWidth={'80%'}>
           {
-            isDeleted ? <ListOfDeleted callback={callbackList} theme={theme} searchCriteria={searchBody} /> : <ListOfActive callback={callbackList} theme={theme} searchCriteria={searchBody} />
+            isDeleted ? <DeletedUsers callback={callbackList} theme={theme} searchCriteria={searchBody} /> : <ActiveUsers callback={callbackList} theme={theme} searchCriteria={searchBody} />
           }         
         </Container>
       </Box>

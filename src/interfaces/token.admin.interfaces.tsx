@@ -10,8 +10,7 @@ export interface ITokens {
 	timeStamp: Date;
 	expiration: Date;
 	lastChecked: Date;
-	firstName: string;
-	lastName: string;
+	name: string;	
 	email: string;	
 	rowNumber: number;
 }

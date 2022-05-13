@@ -11,7 +11,7 @@ export class TokenAdminService {
 
     try {
       const response = await fetch(adminServiceUrl + '/api/tokens/list', {
-        method: 'post',
+        method: 'get',
         headers: new Headers({
           'Content-Type': 'application/json',
           'X-Authorization': `Bearer ${jwt}`,
@@ -33,7 +33,7 @@ export class TokenAdminService {
     
     try {
       const response = await fetch(`${adminServiceUrl}/api/tokens/delete/${id}`, {
-        method: 'post',
+        method: 'delete',
         headers: new Headers({
           'Content-Type': 'application/json',
           'X-Authorization': `Bearer ${jwt}`,

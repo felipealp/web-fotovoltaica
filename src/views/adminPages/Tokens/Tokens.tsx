@@ -20,7 +20,7 @@ const Tokens = () => {
     <Box>      
       <Box bgcolor={theme.palette.alternate.main}>
         <Container>
-          <ActiveTokens />
+          <ActiveTokens theme={theme} />
         </Container>
       </Box>
     </Box>

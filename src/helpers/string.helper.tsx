@@ -39,3 +39,26 @@ export const formatDate = (value: Date | null | undefined, empty: string = 'None
 
   return new_date;  
 };
+
+export const formatDateAndTime = (value: Date | null | undefined, empty: string = 'None'): string => {
+  
+  if (value == null) {
+    return empty;
+  }
+  
+  const date_value = new Date(value);
+  
+  if (isNaN(date_value.getTime())) {
+    return empty;
+  }
+  
+  const new_date: string = new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',  
+    hour: 'numeric', minute: 'numeric',  
+    timeZoneName: 'short'
+  }).format(date_value);
+
+  return new_date;  
+};

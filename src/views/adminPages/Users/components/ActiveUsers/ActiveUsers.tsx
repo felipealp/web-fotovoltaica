@@ -17,7 +17,7 @@ import { TableSkeleton } from 'common/components';
 import { formatDate } from 'helpers/string.helper';
 import { IApiResponse } from 'interfaces/api-response.interface';
 
-class ListOfActive extends React.Component<IProps, {}> {
+class ActiveUsers extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
   readonly _pageSize: number = 25;
 
@@ -226,7 +226,7 @@ class ListOfActive extends React.Component<IProps, {}> {
   }
 }
 
-export default ListOfActive;
+export default ActiveUsers;
 
 interface IProps {
   callback: () => void;

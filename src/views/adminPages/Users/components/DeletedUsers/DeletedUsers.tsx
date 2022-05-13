@@ -14,7 +14,7 @@ import { TableSkeleton } from 'common/components';
 import { formatDate } from 'helpers/string.helper';
 import { IApiResponse } from 'interfaces/api-response.interface';
 
-class ListOfDeleted extends React.Component<IProps, {}> {
+class DeletedUsers extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
   readonly _pageSize: number = 25;
 
@@ -185,7 +185,7 @@ class ListOfDeleted extends React.Component<IProps, {}> {
   }
 }
 
-export default ListOfDeleted;
+export default DeletedUsers;
 
 interface IProps {
   callback: () => void;
