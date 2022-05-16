@@ -13,7 +13,7 @@ import UserAdminService from 'services/user.admin.service';
 import StatusIcon from '../StatusIcon';
 import Edit from '../Edit';
 import LockAndUnlock from '../LockAndUnlock';
-import { TableSkeleton } from 'common/components';
+import { SkeletonTable } from 'common/components';
 import { formatDate } from 'helpers/string.helper';
 import { IApiResponse } from 'interfaces/api-response.interface';
 
@@ -218,7 +218,7 @@ class ActiveUsers extends React.Component<IProps, {}> {
           </Box>
         </Box>
         <Box>
-          <TableSkeleton rows={10} columns={5} display={this.state.action === 'loading' ? true : false}></TableSkeleton>                 
+          <SkeletonTable rows={10} columns={5} display={this.state.action === 'loading' ? true : false}></SkeletonTable>                 
         </Box>
         <Edit theme={this.props.theme} open={this.state.openSideBar} user={this.state.selectedUser} onClose={this.handleSidebarClose}></Edit>
       </Box>

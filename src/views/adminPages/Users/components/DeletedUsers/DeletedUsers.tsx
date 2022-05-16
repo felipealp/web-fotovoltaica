@@ -10,7 +10,7 @@ import RestoreIcon from '@material-ui/icons/Restore';
 //import { MessageCode } from 'helpers/enums';
 import { IListUsersRequest, IListUsersResponse, IUsers } from 'interfaces/user.admin.interfaces';
 import UserAdminService from 'services/user.admin.service';
-import { TableSkeleton } from 'common/components';
+import { SkeletonTable } from 'common/components';
 import { formatDate } from 'helpers/string.helper';
 import { IApiResponse } from 'interfaces/api-response.interface';
 
@@ -178,7 +178,7 @@ class DeletedUsers extends React.Component<IProps, {}> {
           </Box>
         </Box>
         <Box>
-          <TableSkeleton rows={5} columns={4} display={this.state.action === 'loading' ? true : false}></TableSkeleton>
+          <SkeletonTable rows={5} columns={4} display={this.state.action === 'loading' ? true : false}></SkeletonTable>
         </Box>
       </Box>
     );

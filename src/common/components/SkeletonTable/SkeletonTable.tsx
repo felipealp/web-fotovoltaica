@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Skeleton, Box, } from '@material-ui/core';
 
-class TableSkeleton extends React.Component<IProps, {}> {
+class SkeletonTable extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
 
   state: IComponent = {
@@ -48,4 +48,4 @@ interface IComponent {
   column_array: number[];
 }
 
-export default TableSkeleton;
+export default SkeletonTable;
