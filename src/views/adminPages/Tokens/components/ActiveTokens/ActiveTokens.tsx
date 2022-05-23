@@ -15,15 +15,18 @@ import { stringToColor, formatDateAndTime } from 'helpers/string.helper';
 //import { MessageCode } from 'helpers/enums';
 import { ITokens, IListTokensResponse } from 'interfaces/token.admin.interfaces';
 import TokenAdminService from 'services/token.admin.service';
+import { IApiResponse } from 'interfaces/api-response.interface';
 
 class ActiveTokens extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
   readonly _pageSize: number = 25;
 
-  state: IList = {
+  state: IActiveTokensPage = {
     action: 'loading',
     errorMsg: '',
     data: [],
+    deletedTokenId: '',
+    selectedTokenId: '',
     pageCount: 1,
     paging: { currentPage: 1, spanStart: 1, spanEnd: this._pageSize },
   }
@@ -36,8 +39,6 @@ class ActiveTokens extends React.Component<IProps, {}> {
     const client: TokenAdminService = new TokenAdminService();
 
     client.List().then(async (response: IListTokensResponse) => {
-      console.log(response);
-
       if (response.success) {
         this.setState({
           paging: {
@@ -55,6 +56,19 @@ class ActiveTokens extends React.Component<IProps, {}> {
     });
   }
 
+  private handleDeleteClick = (id: string) => {
+    let client: TokenAdminService | null = new TokenAdminService();  
+    
+    client.Delete(id).then(async (response: IApiResponse) => {
+      if (response.success) {
+        this.setState({ selectedTokenId: '', deletedTokenId: id });   
+      }
+    }).catch((error: Error) => {
+      console.log(error);
+    });
+
+    client = null;
+  }
 
   render() {
     return (
@@ -73,7 +87,7 @@ class ActiveTokens extends React.Component<IProps, {}> {
         <Box sx={this.state.action === 'normal' ? { display: 'block' } : { display: 'none' }}>
           <Grid container spacing={2}>
             {this.state.data.map((item, i) => (
-              <Grid item xs={12} sm={6} md={4} key={i} data-aos={'fade-up'}>
+              <Grid item xs={12} sm={6} md={4} key={i}>
                 <Box
                   component={'a'}
                   href={'#0'}
@@ -81,11 +95,7 @@ class ActiveTokens extends React.Component<IProps, {}> {
                   width={'100%'}
                   height={'100%'}
                   sx={{
-                    textDecoration: 'none',
-                    transition: 'all .2s ease-in-out',
-                    '&:hover': {
-                      transform: `translateY(-${this.props.theme.spacing(1 / 2)})`,
-                    },
+                    textDecoration: 'none',                   
                   }}
                 >
                   <Box
@@ -118,16 +128,16 @@ class ActiveTokens extends React.Component<IProps, {}> {
                       </Box>
                       <Typography color="text.secondary">
                         {item.email}
+                      </Typography> 
+                      <Typography color="text.secondary">
+                        Updated: {formatDateAndTime(item.lastChecked)}
                       </Typography>
                       <Typography color="text.secondary">
-                        {formatDateAndTime(item.lastChecked)}
-                      </Typography>
-                      <Typography color="text.secondary">
-                        {formatDateAndTime(item.expiration)}
+                        Expires: {formatDateAndTime(item.expiration)}
                       </Typography>
                       <Box flexGrow={1} />
                       <Box justifyContent={'center'} marginTop={2}>
-                        <Button size="large" variant={'contained'} fullWidth startIcon={<DeleteIcon />}>
+                        <Button size="large" variant={'contained'} fullWidth startIcon={<DeleteIcon />} onClick={(e: any) => this.handleDeleteClick(item.id)}>
                           Delete
                         </Button>
                       </Box>
@@ -152,12 +162,14 @@ interface IProps {
   theme: Theme;
 }
 
-interface IList {
+interface IActiveTokensPage {
   action: string,
   errorMsg: string;
   data: ITokens[];
   pageCount: number;
-  paging: IPaging;
+  paging: IPaging;  
+  selectedTokenId: string;
+  deletedTokenId: string;
 }
 
 interface IPaging {

@@ -21,7 +21,7 @@ class ActiveUsers extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
   readonly _pageSize: number = 25;
 
-  state: IList = {
+  state: IActiveUsersPage = {
     action: 'loading',
     errorMsg: '',
     data: [],   
@@ -234,7 +234,7 @@ interface IProps {
   searchCriteria: any;
 }
 
-interface IList {
+interface IActiveUsersPage {
   action: string,
   errorMsg: string;
   data: IUsers[]; 
