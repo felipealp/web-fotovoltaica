@@ -26,43 +26,7 @@ const Footer = () => (
           width={35}
         >
           <WebbeeLogo height={'100%'} width={'100%'} />
-        </Box>
-        <Box display="flex" flexWrap={'wrap'} alignItems={'center'}>
-          <Box marginTop={1} marginRight={2}>
-            <Link
-              underline="none"
-              component="a"
-              href="/"
-              color="textPrimary"
-              variant={'subtitle2'}
-            >
-              Home
-            </Link>
-          </Box>
-          <Box marginTop={1} marginRight={2}>
-            <Link
-              underline="none"
-              component="a"
-              href="/docs-introduction"
-              color="textPrimary"
-              variant={'subtitle2'}
-            >
-              Documentation
-            </Link>
-          </Box>
-          <Box marginTop={1}>
-            <Button
-              variant="outlined"
-              color="primary"
-              component="a"
-              target="blank"
-              href="https://material-ui.com/store/items/webbee-landing-page/"
-              size="small"
-            >
-              Purchase now
-            </Button>
-          </Box>
-        </Box>
+        </Box>        
       </Box>
     </Grid>
     <Grid item xs={12}>
@@ -72,19 +36,8 @@ const Footer = () => (
         color="textSecondary"
         gutterBottom
       >
-        &copy; Webbee. 2021, Maccarian. All rights reserved
-      </Typography>
-      <Typography
-        align={'center'}
-        variant={'caption'}
-        color="textSecondary"
-        component={'p'}
-      >
-        When you visit or interact with our sites, services or tools, we or our
-        authorised service providers may use cookies for storing information to
-        help provide you with a better, faster and safer experience and for
-        marketing purposes.
-      </Typography>
+        &copy; My-App. 2021, Apps. All rights reserved
+      </Typography>      
     </Grid>
   </Grid>
 );
