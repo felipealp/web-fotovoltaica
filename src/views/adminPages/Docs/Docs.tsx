@@ -3,7 +3,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Container from 'common/Container';
 
-const Tokens = () => {
+const Docs = () => {
   const theme: any = useTheme();
 
   const pages: any = [{
@@ -129,7 +129,19 @@ const Tokens = () => {
         authHide: false,
       },
     ],
-  },];
+  },
+  {
+    title: 'Documentation Pages',
+    id: 'doc-pages',
+    authOnly: false,
+    pages: [
+      {
+        title: 'Documentation',
+        href: '/docs-introduction',
+        authHide: false,
+      },
+    ],
+  }];
 
   return (
     <Box>
@@ -142,4 +154,4 @@ const Tokens = () => {
   );
 };
 
-export default Tokens;
+export default Docs;

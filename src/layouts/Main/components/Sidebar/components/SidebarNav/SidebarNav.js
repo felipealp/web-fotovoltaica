@@ -67,17 +67,7 @@ const SidebarNav = ({ pages, onClose, auth }) => {
               </Grid>
             </Box>            
           ))}
-        </Box>
-        <Box>
-          <Button
-            variant="outlined"
-            fullWidth
-            component="a"
-            href="/docs-introduction"
-          >
-            Documentation
-          </Button>
-        </Box>        
+        </Box>         
       </Box>
     </Box>
   );

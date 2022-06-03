@@ -81,7 +81,12 @@ export const pages = [
         title: 'Active Tokens',
         href: '/admin-tokens',
         authHide: false,
-      },         
+      },  
+      {
+        title: 'Misc',
+        href: '/admin-docs',
+        authHide: false,
+      },        
     ],
   }, 
 ];

@@ -83,8 +83,9 @@ import {
 
 // admin pages
 import {
-  Users as UsersAdminView,  
-  Tokens as TokensAdminView, 
+  Users as UsersAdminView,
+  Tokens as TokensAdminView,
+  Docs as DocsAdminView,
 } from './views/adminPages';
 
 const Routes = () => {
@@ -550,7 +551,7 @@ const Routes = () => {
           />
         )}
       />
-      
+
       <Route
         exact
         path="/logout"
@@ -594,6 +595,18 @@ const Routes = () => {
           <WithLayout
             {...matchProps}
             component={TokensAdminView}
+            layout={MainSecureLayout}
+          />
+        )}
+      />
+
+      <Route
+        exact
+        path="/admin-docs"
+        render={(matchProps) => (
+          <WithLayout
+            {...matchProps}
+            component={DocsAdminView}
             layout={MainSecureLayout}
           />
         )}
