@@ -1,7 +1,6 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import WebbeeLogo from '../../../../svg/logos/Webbee';
@@ -48,19 +47,7 @@ const Footer = () => (
               variant={'subtitle2'}
             >
               Documentation
-            </Link>
-          </Box>
-          <Box marginTop={1}>
-            <Button
-              variant="outlined"
-              color="primary"
-              component="a"
-              target="blank"
-              href="https://material-ui.com/store/items/webbee-landing-page/"
-              size="small"
-            >
-              Purchase now
-            </Button>
+            </Link>                   
           </Box>
         </Box>
       </Box>

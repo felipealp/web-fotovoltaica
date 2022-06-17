@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import { useTheme } from '@material-ui/core/styles';
 import { colors } from '@material-ui/core';
@@ -139,19 +138,7 @@ const Topbar = ({
             >
               Documentation
             </Link>
-          </Box>
-          <Box>
-            <Button
-              variant="contained"
-              color="primary"
-              component="a"
-              target="blank"
-              href="https://material-ui.com/store/items/webbee-landing-page/"
-              size="large"
-            >
-              Purchase now
-            </Button>
-          </Box>
+          </Box>         
         </Box>
       </Box>
     </Box>

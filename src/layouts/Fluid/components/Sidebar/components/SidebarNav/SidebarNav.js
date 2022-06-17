@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -66,29 +65,7 @@ const SidebarNav = ({ pages, onClose }) => {
               </Grid>
             </Box>
           ))}
-        </Box>
-        <Box>
-          <Button
-            variant="outlined"
-            fullWidth
-            component="a"
-            href="/docs-introduction"
-          >
-            Documentation
-          </Button>
-        </Box>
-        <Box marginTop={1}>
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            component="a"
-            target="blank"
-            href="https://material-ui.com/store/items/webbee-landing-page/"
-          >
-            Purchase now
-          </Button>
-        </Box>
+        </Box>          
       </Box>
     </Box>
   );
