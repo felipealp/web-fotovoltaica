@@ -2,6 +2,7 @@ import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Container from 'common/Container';
+import { Grid, Link, Typography } from '@material-ui/core';
 
 const Docs = () => {
   const theme: any = useTheme();
@@ -147,7 +148,46 @@ const Docs = () => {
     <Box>
       <Box bgcolor={theme.palette.alternate.main}>
         <Container>
-          
+          <Box paddingX={2} paddingBottom={2}>
+            <Box>
+              {pages.map((item: any, i: React.Key | null | undefined) => (
+                <Box key={i} marginBottom={4}>
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      marginBottom: 1,
+                      display: 'block',
+                    }}
+                  >
+                    {item.title}
+                  </Typography>
+                  <Grid container spacing={1}>
+                    {item.pages.map((p: any, i: React.Key | null | undefined) => (
+                      <Grid item xs={6} key={i}>
+                        <Link
+                          variant="body2"
+                          component={'a'}
+                          href={p.href}
+                          color={'primary'}
+                          sx={{
+                            fontWeight: 400,
+                            '&:hover': {
+                              textDecoration: 'none',
+                              color: theme.palette.primary.dark,
+                            },
+                          }}
+                        >
+                          {p.title}
+                        </Link>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+              ))}
+            </Box>
+          </Box>
         </Container>
       </Box>
     </Box>
