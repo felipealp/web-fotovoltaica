@@ -50,7 +50,11 @@ import {
 //  ForgotPasswordSimple as ForgotPasswordSimpleView,
 //} from './views/authPages';
 
-import { Logout as LogoutView, Home as HomeSecureView } from './views/myPages';
+import { 
+  Logout as LogoutView,   
+  Home as MyHomeView,
+  Profile as MyProfileView 
+} from './views/myPages';
 
 // Documentation pages
 import {
@@ -566,15 +570,27 @@ const Routes = () => {
 
       <Route
         exact
-        path="/secure/home"
+        path="/home"
         render={(matchProps) => (
           <WithLayout
             {...matchProps}
-            component={HomeSecureView}
+            component={MyHomeView}
             layout={MainSecureLayout}
           />
         )}
       />
+
+      <Route
+        exact
+        path="/my-profile"
+        render={(matchProps) => (
+          <WithLayout
+            {...matchProps}
+            component={MyProfileView}
+            layout={MainSecureLayout}
+          />
+        )}
+      />    
 
       <Route
         exact

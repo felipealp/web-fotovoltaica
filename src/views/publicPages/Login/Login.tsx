@@ -19,7 +19,7 @@ class Login extends React.Component<ILogin, {}> {
   render() {
 
     if (this.state.action === 'redirect') {
-      window.location.href = '/secure/home';
+      window.location.href = '/home';
     }
 
     return (

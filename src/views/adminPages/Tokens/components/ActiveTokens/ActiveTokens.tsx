@@ -39,6 +39,10 @@ class ActiveTokens extends React.Component<IProps, {}> {
     const client: TokenAdminService = new TokenAdminService();
 
     client.List().then(async (response: IListTokensResponse) => {
+      if (response.messageCode === 500) {
+        window.location.href = './login';
+      }
+
       if (response.success) {
         this.setState({
           paging: {
@@ -62,6 +66,7 @@ class ActiveTokens extends React.Component<IProps, {}> {
     client.Delete(id).then(async (response: IApiResponse) => {
       if (response.success) {
         this.setState({ selectedTokenId: '', deletedTokenId: id });   
+        this.load_tokens();
       }
     }).catch((error: Error) => {
       console.log(error);

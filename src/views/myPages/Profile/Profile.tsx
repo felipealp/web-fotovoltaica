@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Container from '../../../common/Container';
-import { Hero } from './components';
+import { Hero, Form } from './components';
 
 const Profile = () => {
   const theme: any = useTheme();    
@@ -11,7 +11,7 @@ const Profile = () => {
     <Box>
       <Box bgcolor={theme.palette.alternate.main} position={'relative'}>
         <Container position="relative" zIndex={2}>
-          <Hero />
+          <Form />
         </Container>
       </Box>      
     </Box>
