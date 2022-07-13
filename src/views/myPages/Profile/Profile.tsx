@@ -13,8 +13,10 @@ const Profile = () => {
         <Container position="relative" zIndex={2}>
           <MyInformation theme={theme} />
         </Container>
+      </Box>
+      <Box>
         <Container position="relative" zIndex={2}>
-          <Avatar theme={theme} />
+          <Avatar name="Dan Hellem" role="admin"/>
         </Container>
       </Box>      
     </Box>
