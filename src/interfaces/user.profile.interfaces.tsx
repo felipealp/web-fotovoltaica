@@ -1,7 +1,7 @@
 import { IApiResponse } from "./api-response.interface";
 
 export interface IGetMyProfileResponse extends IApiResponse {
-	value: IMyProfile[];
+	value: IMyProfile;
 }
 
 export interface IMyProfile {	
@@ -11,3 +11,7 @@ export interface IMyProfile {
 	isLocked: boolean;
 }
 
+export interface IUpdateMyProfileRequest {
+	name: string,
+	email: string
+}
