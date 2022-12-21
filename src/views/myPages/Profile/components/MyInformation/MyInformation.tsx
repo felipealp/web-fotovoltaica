@@ -6,11 +6,12 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
 import { Theme } from '@material-ui/core/styles';
-import { Container, Skeleton } from '@material-ui/core';
+import { Alert, Container, Skeleton, Snackbar } from '@material-ui/core';
 import { IMyProfile, IUpdateMyProfileRequest } from 'interfaces/user.profile.interfaces';
 import ErrorMessage from 'common/components/ErrorMessage';
+import UserProfileService from 'services/user.profile.service';
+import { IApiResponse } from 'interfaces/api-response.interface';
 
 class MyInformation extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -18,10 +19,11 @@ class MyInformation extends React.Component<IProps, {}> {
   state: IForm = {
     name: '',
     email: '',
-    action: 'loading',
-    message: 'something went wrong',
+    action: 'normal',
+    status: 'loading',
+    message: '',
     blurErrors: [],
-    data: { name: '', email: '', avatar_url: '', isLocked: false },
+    data: { name: '', email: '', avatar_Url: '', isLocked: false },
   }
 
   componentDidMount() {
@@ -34,9 +36,9 @@ class MyInformation extends React.Component<IProps, {}> {
         data: this.props.data,
         name: this.props.data.name,
         email: this.props.data.email,
-        action: 'normal'
-      });
-      console.log(this.props.data);
+        status: 'normal',
+        message: '',
+      });      
     }
   }
 
@@ -64,16 +66,29 @@ class MyInformation extends React.Component<IProps, {}> {
   public handleSaveClick = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
+    if (!this.validateForm()) {
+      return;
+    }
+
+    this.setState({ action: 'saving' });
+
+    const client: UserProfileService = new UserProfileService();
+
     const body: IUpdateMyProfileRequest = {
       name: this.state.name,
       email: this.state.email
     };
 
-    console.log(body);
+    client.Update(body).then(async (response: IApiResponse) => {
+      if (response.success) {       
+        this.setState({ action: 'updated', message: '' });
+      } else {
+        this.setState({ action: 'failed', message: this.setErrorMessage(response.messageCode, response.message), email: this.props.data.email, name: this.props.data.name });
+      }
+    }).catch((error: Error) => {
+      this.setState({ action: 'failed', message: error.message });
+    });
 
-    if (!this.validateForm()) {
-      return;
-    }
   }
 
   private handleInputBlur = (e: React.FormEvent<HTMLInputElement>) => {
@@ -107,21 +122,39 @@ class MyInformation extends React.Component<IProps, {}> {
     }
   }
 
+  private setErrorMessage = (messageCode: number, msg: string = '') => {
+    switch (messageCode) {
+      case 402:
+        return 'Form values that were posted to the server are invalid.';
+      case 406:
+        return 'Email address already exists for another user. Please try with a different email address.';
+      case 600:
+        return 'There was an error on the server: ' + msg;
+      default:
+        return 'Unhandled exception thrown. Please contact us for support.';
+    }
+  }
+
   render() {
     return (
       <Box>
-        <Box justifyContent={'center'} sx={this.state.action === 'loading' ? { display: 'flex' } : { display: 'none' }}>
+        <Snackbar open={this.state.action === 'updated' ? true : false} autoHideDuration={4000} onClose={(e: any) => this.setState({ action: 'normal' })}>
+          <Alert severity="info" variant='filled' sx={{ minWidth: '400px' }}>
+            Your name and email have been updated successfully
+          </Alert>
+        </Snackbar>  
+        <Box justifyContent={'center'} sx={this.state.status === 'loading' ? { display: 'flex' } : { display: 'none' }}>
           <Box width={600} position="relative" zIndex={2}>
             <Box justifyContent={'center'} display={'flex'} sx={{ paddingBottom: '10px' }}>
               <Skeleton width={'50%'} height={40} />
             </Box>
             <Box justifyContent={'center'} display={'flex'}>
-              <Skeleton variant="rectangular" width={'100%'} height={300} />
+              <Skeleton variant="rectangular" width={'100%'} height={325} />
             </Box>
           </Box>
         </Box>
 
-        <Container sx={this.state.action === 'normal' ? { display: 'block' } : { display: 'none' }}>
+        <Container sx={this.state.status === 'normal' ? { display: 'block' } : { display: 'none' }}>
           <Box position="relative" zIndex={2}>
             <Typography
               sx={{
@@ -192,8 +225,9 @@ class MyInformation extends React.Component<IProps, {}> {
                     size="medium"
                     fullWidth
                     onClick={(e: any) => this.handleSaveClick(e)}
+                    disabled={this.state.action === 'saving' ? true : false}
                   >
-                    Save
+                    {this.state.action === 'saving' ? 'Saving, please wait...' : 'Save'}
                   </Button>
                   <Divider />
                 </Box>
@@ -218,6 +252,7 @@ interface IForm {
   name: string,
   email: string,
   action: string,
+  status: string,
   data: IMyProfile | null,
   message: string;
   blurErrors: string[],

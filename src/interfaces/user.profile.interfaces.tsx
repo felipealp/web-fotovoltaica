@@ -7,7 +7,7 @@ export interface IGetMyProfileResponse extends IApiResponse {
 export interface IMyProfile {	
 	name: string;
 	email: string;
-	avatar_url: string;	
+	avatar_Url: string;	
 	isLocked: boolean;
 }
 
@@ -15,3 +15,5 @@ export interface IUpdateMyProfileRequest {
 	name: string,
 	email: string
 }
+
+

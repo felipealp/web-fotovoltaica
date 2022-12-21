@@ -59,6 +59,7 @@ class Form extends React.Component<IFormProps, {}> {
     this.setState({ action: 'processing' });
 
     const userService: UserIdentityService = new UserIdentityService();
+    
     const body: ISignUpRequest = {
       name: this.state.name,
       email: this.state.email,
@@ -66,8 +67,7 @@ class Form extends React.Component<IFormProps, {}> {
       ipaddress: this.state.ipaddress
     };
 
-    userService.SignUp(body).then(async (response: IGetCodeResponse) => {
-      console.log(response);
+    userService.SignUp(body).then(async (response: IGetCodeResponse) => {     
       
       if (response.success) {
         this.props.callback();

@@ -8,14 +8,14 @@ import UserProfileService from 'services/user.profile.service';
 
 const Profile = () => {
   const theme: any = useTheme();
-  const [myProfileData, setMyPofileData] = useState({ name: '', email: '', avatar_url: '', isLocked: false } as IMyProfile);
+  const [myProfileData, setMyPofileData] = useState({ name: '', email: '', avatar_Url: '', isLocked: false } as IMyProfile);
 
   useEffect(() => {
     const client: UserProfileService = new UserProfileService();
 
     client.GetMyProfile().then(async (response: IGetMyProfileResponse) => {
       if (response.success) {           
-        setMyPofileData((myProfileData) => response.value);                 
+        setMyPofileData((myProfileData) => response.value);                  
       }
     }).catch((error: Error) => {
       console.log(error);
@@ -44,8 +44,8 @@ const Profile = () => {
       </Container>
     </Box>
     <Box>
-      <Container position="relative" zIndex={2}>
-        <Avatar name="Dan Hellem" />
+      <Container position="relative" zIndex={3}>
+        <Avatar name={myProfileData.name} url={myProfileData.avatar_Url} size={400} />
       </Container>
     </Box>
   </Box>
