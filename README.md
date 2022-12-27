@@ -38,10 +38,10 @@ Tracking the progress of the basic functionality of the application.
 | Sign up             | create an account, condirm account, forget password, reset password          | complete    |   ✅   |
 | Security (Basic)    | jwt tokens, login, logout, validate token, lock out users, login attempts    | complete    |   ✅   |
 | Security (Advanced) | security roles, role checks admin pages                                      | not started |        |
-| User Management     | user search, change roles, lock out user, delete user, restore, manage codes | in progress |   🚧   |
-| Sessions            | view current logged in users, kill session, view users current page          | not started |        |
+| User Management     | user search, change roles, lock out user, delete user, restore, manage codes | complete    |   ✅   |
+| Sessions            | view current logged in users, kill session, view users current page          | in progress |   🚧   |
 | Telemetry (Basic)   | track page accessed, structure to track more details like button clicks      | not started |        |
-| My Profile          | update my profile info, update my preferences, my avatar                     | not started |        |
+| My Profile          | update my profile info, update my preferences, my avatar                     | in progress |   🚧   |
 
 ### Other
 
