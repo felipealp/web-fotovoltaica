@@ -53,6 +53,7 @@ Tracking the progress of the basic functionality of the application.
 
 # Getting started
 
+- Install Node v14 (newer versions will not work)
 - Install dependencies: `yarn install`
 - Start the server: `yarn start`
 
