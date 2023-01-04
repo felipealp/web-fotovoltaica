@@ -1,6 +1,7 @@
 import React from 'react';
 import MyAvatar from 'common/components/Avatar/Avatar';
 import { Box, Button, Container, Input, Skeleton, Typography } from '@material-ui/core';
+import ErrorMessage from 'common/components/ErrorMessage';
 
 class Avatar extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -10,7 +11,9 @@ class Avatar extends React.Component<IProps, {}> {
     status: 'loading',
     name: '',
     url: '',
+    file: undefined,
     msg: '',
+    buttonText: 'Upload'
   }
 
   componentDidMount() {
@@ -24,16 +27,48 @@ class Avatar extends React.Component<IProps, {}> {
         url: this.props.url,
         status: 'normal'
       });
+
+      console.log(this.state.action);
     }
   }
 
-  handleFileChange(e: any) {
-    console.log(e.target.files[0]);
+  handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    var newFile = e.target.files !== undefined ? e.target.files?.item(0) : undefined;
+    this.setState({ action: 'fileselected', file: newFile });   
   }
 
-  handleClick(e: React.FormEvent<HTMLButtonElement>) {
-    console.log('change');
+  handleUploadClick(e: React.FormEvent<HTMLButtonElement>) {
+    this.setState({ action: 'uploading', buttonText: 'Uploading, please wait...' });
+    
+    var extensions: string[] = ['png', 'gif', 'jpeg'];
+    var index: number | undefined = -1;
+
+    // validate the file extension
+    for(let i = 0; i < extensions.length; i++) {
+      index = this.state.file !== undefined ? this.state.file.name.indexOf(extensions[i]) : -1;
+    
+      // if greater than zero, then we must have found a match
+      if (index > 0) break;
+    }
+
+    // if we did not find a valid file extension, then set msg for error control
+    if (index === -1) { 
+      this.setState({ msg: 'File extension not supported. File types must be png, gif, or jpeg.', buttonText: 'Upload failed'  });
+    }
+    else 
+    {
+      if (this.state.file !== undefined) {
+        var formData = new FormData();
+        formData.append('file', this.state.file);
+        formData.append('fileName', this.state.file.name);
+        console.log(formData);
+      }
+    }
   }
+  
+  handleCancelUploadClick(e: React.FormEvent<HTMLButtonElement>) {
+    this.setState({ file: undefined, action: 'normal', buttonText: 'Upload', msg: '' });    
+  }  
 
   handleChangeAvatarButtonClick(e: React.FormEvent<HTMLButtonElement>) {
     this.setState({ action: 'choosefile' });
@@ -74,21 +109,27 @@ class Avatar extends React.Component<IProps, {}> {
           <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
             <MyAvatar name={this.state.name} size={this.props.size} url={this.props.url} />
           </Box>
-          <Box alignItems={'center'} justifyContent={'center'} sx={this.state.action === 'choosefile' ? { display: 'none', paddingTop: '20px' } : { display: 'flex', paddingTop: '20px' }}>
+          <Box alignItems={'center'} justifyContent={'center'} sx={this.state.action !== 'normal' ? { display: 'none', paddingTop: '20px' } : { display: 'flex', paddingTop: '20px' }}>
             <Button variant="contained" component="span" onClick={(e: any) => this.handleChangeAvatarButtonClick(e)}>Change Avatar</Button>
           </Box>
-          <Box alignItems={'center'} justifyContent={'center'} sx={this.state.action === 'choosefile' ? { display: 'flex', paddingTop: '20px' } : { display: 'none', paddingTop: '20px' }}>
+          <Box alignItems={'center'} justifyContent={'center'} sx={this.state.action === 'choosefile' || this.state.action === 'fileselected' ? { display: 'flex', paddingTop: '20px' } : { display: 'none', paddingTop: '20px' }}>
             <label htmlFor="upload-photo">
               <Input
                 id="upload-photo"
-                name="upload-photo"
+                name="upload-photo"               
                 type="file"
-                onChange={(e: any) => this.handleFileChange(e)}
+                onChange={(e: any) => this.handleFileChange(e)}                
               />
             </label>
           </Box>
-          <Box alignItems={'center'} justifyContent={'center'} sx={this.state.action === 'choosefile' ? { display: 'flex', paddingTop: '20px' } : { display: 'none', paddingTop: '20px' }}>
-            <Button variant="contained" component="span" onClick={(e: any) => this.handleClick(e)}>Upload</Button>
+          <Box alignItems={'center'} justifyContent={'center'} sx={this.state.action === 'choosefile' || this.state.action === 'fileselected' || this.state.action === 'uploading' ? { display: 'flex', paddingTop: '20px' } : { display: 'none', paddingTop: '20px' }}>
+            <Button variant="contained" component="span" onClick={(e: any) => this.handleUploadClick(e)} disabled={this.state.action === 'choosefile' || this.state.action === 'uploading' ?  true : false}>{this.state.buttonText}</Button>&nbsp;
+            <Button component="span" onClick={(e: any) => this.handleCancelUploadClick(e)}>Cancel</Button>
+          </Box>
+          <Box display={'flex'} alignItems={'center'} justifyContent={'center'} sx={{paddingTop: '10px'}}>
+            <Box width={'48%'}>
+              <ErrorMessage message={this.state.msg} />
+            </Box>
           </Box>
         </Container>
       </Box>
@@ -107,7 +148,9 @@ interface IForm {
   status: string,
   name: string,
   url: string,
+  file: File | undefined,
   msg: string;
+  buttonText: string;
 }
 
 export default Avatar;

@@ -2,7 +2,7 @@
   "name": "myapp-web",
   "author": "danhellem",
   "email": "danhellem@outlook.com",
-  "version": "1.1.0",
+  "version": "1.1.2-preview",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
