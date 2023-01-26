@@ -2,6 +2,8 @@ import React from 'react';
 import MyAvatar from 'common/components/Avatar/Avatar';
 import { Box, Button, Container, Input, Skeleton, Typography } from '@material-ui/core';
 import ErrorMessage from 'common/components/ErrorMessage';
+import UserProfileService from 'services/user.profile.service';
+import { IAvatarUploadResponse } from 'interfaces/user.avatar.interfaces';
 
 class Avatar extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -45,7 +47,7 @@ class Avatar extends React.Component<IProps, {}> {
 
     // validate the file extension
     for(let i = 0; i < extensions.length; i++) {
-      index = this.state.file !== undefined ? this.state.file.name.indexOf(extensions[i]) : -1;
+      index = this.state.file !== undefined ? this.state.file.name.toLowerCase().indexOf(extensions[i]) : -1;
     
       // if greater than zero, then we must have found a match
       if (index > 0) break;
@@ -53,7 +55,7 @@ class Avatar extends React.Component<IProps, {}> {
 
     // if we did not find a valid file extension, then set msg for error control
     if (index === -1) { 
-      this.setState({ msg: 'File extension not supported. File types must be png, gif, or jpeg.', buttonText: 'Upload failed'  });
+      this.setState({ msg: 'File extension not supported. File type must be png, gif, or jpeg.', buttonText: 'Upload failed'  });
     }
     else 
     {
@@ -61,7 +63,15 @@ class Avatar extends React.Component<IProps, {}> {
         var formData = new FormData();
         formData.append('file', this.state.file);
         formData.append('fileName', this.state.file.name);
-        console.log(formData);
+        
+        const client: UserProfileService = new UserProfileService();
+
+        client.UploadAvatar(formData).then(async (response: IAvatarUploadResponse) => {
+          if (response.success) this.setState({url: response.value, action: 'normal'});
+        }).catch((error: Error) => {
+          console.log(error);
+        });
+
       }
     }
   }
@@ -107,7 +117,7 @@ class Avatar extends React.Component<IProps, {}> {
             </Typography>
           </Box>
           <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
-            <MyAvatar name={this.state.name} size={this.props.size} url={this.props.url} />
+            <MyAvatar name={this.state.name} size={this.props.size} url={this.state.url} />
           </Box>
           <Box alignItems={'center'} justifyContent={'center'} sx={this.state.action !== 'normal' ? { display: 'none', paddingTop: '20px' } : { display: 'flex', paddingTop: '20px' }}>
             <Button variant="contained" component="span" onClick={(e: any) => this.handleChangeAvatarButtonClick(e)}>Change Avatar</Button>

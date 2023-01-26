@@ -47,7 +47,30 @@ export class UserProfileService {
       return await Promise.reject(error);
     }
   }  
-  
+
+  async UploadAvatar(body: FormData): Promise<IStandardApiResponse> {
+
+    const jwt: string | null = fetchJwt();
+
+    try {
+      const response = await fetch(userServiceUrl + '/api/profile/avatar', {
+        method: 'POST',
+        headers: new Headers({         
+          'X-Authorization': `Bearer ${jwt}`,
+          //'Access-Control-Allow-Origin': 'http://localhost:3000',
+          //'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept' ,      
+          //'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+        }),
+        body: body,
+      });
+
+      const results = await Promise.resolve(response);
+      return await results.json();
+    } catch (error) {
+      return await Promise.reject(error);
+    }
+    
+  }    
 }
 
 export default UserProfileService;
