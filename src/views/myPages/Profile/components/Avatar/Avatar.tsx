@@ -1,9 +1,10 @@
 import React from 'react';
 import MyAvatar from 'common/components/Avatar/Avatar';
-import { Box, Button, Container, Input, Skeleton, Typography } from '@material-ui/core';
+import { Box, Button, Container, Input, Skeleton, Typography, Snackbar, Alert } from '@material-ui/core';
 import ErrorMessage from 'common/components/ErrorMessage';
 import UserProfileService from 'services/user.profile.service';
 import { IAvatarUploadResponse } from 'interfaces/user.avatar.interfaces';
+import { MessageCode } from 'helpers/enums';
 
 class Avatar extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -15,7 +16,8 @@ class Avatar extends React.Component<IProps, {}> {
     url: '',
     file: undefined,
     msg: '',
-    buttonText: 'Upload'
+    buttonText: 'Upload',
+    success: false,
   }
 
   componentDidMount() {
@@ -67,11 +69,13 @@ class Avatar extends React.Component<IProps, {}> {
         const client: UserProfileService = new UserProfileService();
 
         client.UploadAvatar(formData).then(async (response: IAvatarUploadResponse) => {
-          if (response.success) this.setState({url: response.value, action: 'normal'});
+          if (response.messageCode === MessageCode.PartialFailure) { console.log(response.message); }
+          if (response.success) {             
+            this.setState({ url: response.value, action: 'normal', success: true, buttonText: 'Upload' });
+          }
         }).catch((error: Error) => {
           console.log(error);
         });
-
       }
     }
   }
@@ -87,6 +91,12 @@ class Avatar extends React.Component<IProps, {}> {
   render() {
     return (
       <Box>
+        <Snackbar open={this.state.success ? true : false} autoHideDuration={4000} onClose={(e: any) => this.setState({ success: false })}>
+          <Alert severity="info" variant='filled' sx={{ minWidth: '400px' }}>
+            Your new avatar has been uploaded and your profile updated
+          </Alert>
+        </Snackbar>  
+
         <Box justifyContent={'center'} sx={this.state.status === 'loading' ? { display: 'flex' } : { display: 'none' }}>
           <Box width={600} position="relative" zIndex={2}>
             <Box justifyContent={'center'} display={'flex'} sx={{ paddingBottom: '20px' }}>
@@ -161,6 +171,7 @@ interface IForm {
   file: File | undefined,
   msg: string;
   buttonText: string;
+  success: boolean;
 }
 
 export default Avatar;

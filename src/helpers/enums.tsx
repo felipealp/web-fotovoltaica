@@ -7,7 +7,7 @@ export enum UserStatus {
     NotConfirmed = 0,
     Okay = 1,
     ForgotPassword = 2,
-    BlockedExceededLoginAttempts = 3,  
+    BlockedExceededLoginAttempts = 3,
 }
 
 export enum MessageCode {
@@ -24,9 +24,12 @@ export enum MessageCode {
     AlreadyExists = 406,
     NullValue = 407,
     NotOkay = 408,
-    Failed = 600,           
+    BlogStorageFailure = 409,
+    Failed = 600,
     InvalidParamValue = 601,
     Throttled = 602,
+    FailedToSendMessage = 603,
+    PartialFailure = 604,
     ExceptionThrown = 501,
     AuthFailed = 500
 }
