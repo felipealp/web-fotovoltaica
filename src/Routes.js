@@ -16,7 +16,7 @@ import {
   PaymentApp as PaymentAppView,
   Marketing as MarketingView,
   Software as SoftwareView,
-  Course as CourseView,
+  Course as OgCourseView,
   Crypto as CryptoView,
   DesignAgency as DesignAgencyView,
   Consulting as ConsultingView,
@@ -92,6 +92,9 @@ import {
   Docs as DocsAdminView,
 } from './views/adminPages';
 
+// course pages
+import { Course as CourseView } from './views/coursePages';
+
 const Routes = () => {
   return (
     <Switch>
@@ -156,7 +159,7 @@ const Routes = () => {
         render={(matchProps) => (
           <WithLayout
             {...matchProps}
-            component={CourseView}
+            component={OgCourseView}
             layout={MainLayout}
           />
         )}
@@ -623,6 +626,18 @@ const Routes = () => {
           <WithLayout
             {...matchProps}
             component={DocsAdminView}
+            layout={MainSecureLayout}
+          />
+        )}
+      />
+
+      <Route
+        exact
+        path="/course/:id"
+        render={(matchProps) => (
+          <WithLayout
+            {...matchProps}
+            component={CourseView}
             layout={MainSecureLayout}
           />
         )}
