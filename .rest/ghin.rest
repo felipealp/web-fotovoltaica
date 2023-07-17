@@ -1,0 +1,19 @@
+### Login to GHIN
+POST https://api2.ghin.com/api/v1/golfer_login.json HTTP/1.1
+content-type: application/json
+
+{
+    "user": {
+        "password": "margo69001",
+        "email_or_ghin": "dan.hellem@outlook.com",
+        "remember_me": true
+    },
+    "token": "X6BFRjR3bh+m3RYkOzUavVqolMYd3xkIohoBXavjMVYM/WgYiAgHcmcL+G/Vyhmd5X2oRqsGwkP5lIZIybASA1JbrldWVhFgEqKdxSUtf9PAc7btzLTZTUR4VCp2xFEvU+8lpuhwWw25KUlZbGHPr5coH3zVnHKBH1CIEWawq5HPL9Dn3d6gZnPEEahAskTl+sTc/BnwwADiPY+YdC8jiyvihVuPXtfkeBdSHbCRbS9aPPoeuE5e/GdMhguP3OAA6wH6G2RZEJ+xLZMqADUF6L5PSUP6j3SdX1Y/wWu9mOkEH9cphTBo85mWkOXTDLRyD611M3WImxRudvnyrfr2IWc1jOb2mykx3SNeInfXMjipL7uPs40m+yX6xLiWP8y/y5EQPmj9e0jiLIGcx6rpczcPTMcJNUtB4oL3TbEmV1cBgp0WHr99IsTxahnriLGkPpalGcHIbvW+QUFUBC1p9jb823P76A6wQRGk+bB9Pwt9PoO6EFUgDdVihcUC+on+PslWLNlh7g5xsVda96PeV1bg0YNSrK2ZMw9TX36RIG9d1/4LRSE0Vxwx4WDqtj82xmTWPfdmpgO9S/bKvGLVjqNS1q1bSnrjQUgVmBdGueazRRHyujp7YMdcCGnAHjvi5+Fj1mPs3QRuTpdEbBbpp9fbsVgE2+o8Y2o9s/5coQA=",
+    "user_token": "03AFY_a8XPSQMliaGS6BEPbkaHmh-NjZOnQ8xUbn6x6om1n7DIT9dCrKJ62olF8zUEDyaK1DKg8CyqGxH88lURXz739js022ngbcKmxMjg0qWxQov53RocHs7TsWjyFdRGbvbYRD8wq-QCchxd57KwHFEd8J6RqeL8kMxhW7rVMcQlWrQVg6nTYDjCDsw9-dB2C_a6jy6C4Z2CCvoSnF3Eflcl2KyxnCIVIi6i_9ZgYNTZF5wEB83jghxZQisbmCcmhGKDr9MQIhZW9l0oFutxpZYQcFhMWFdjTVnDu7qPB6N-fi-Oj8BPm9GFRfm1GYK9pqkPOFllHIUSXpc6LFZhow35bHapYyWABGj-CCHgy7jaET60CFf_NiQ7ilKE0PStGs0jB7IM1rZLA0IB5K45o6U17J1rwJ4LLY65nXKwF4Q-2R2zp2ZJxgljbEc3jkeXgZ-TCs1DIaXH2MoqTCNpgGnlm7IUh95FC9LZGZKqR7mabSy59pkC4antDyTCYLvp7v6hJXLqRTg8",
+    "source": "localhost"
+}
+
+### select course
+GET https://api2.ghin.com/api/v1/crsCourseMethods.asmx/SearchCourses.json?country=USA&state=US-WY&source=GHINcom HTTP/1.1
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNzQ3ODcyIiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjc1Mjk3MDUzLCJleHAiOjE2NzUzNDAyNTMsImp0aSI6ImMwYWRiYmUwLTQwMWUtNDE1My04NjQ3LWI1MGM5MWJjNzBlMyJ9.bjDOopXIhLCFNizDPRIjhBo65M81fEBKAhnslAdsfLM
