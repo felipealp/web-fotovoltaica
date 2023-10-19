@@ -84,7 +84,7 @@ const Topbar = ({
         <Box sx={{ display: { xs: 'none', md: 'flex' } }} alignItems={'center'}>
           <Box>
             <Link underline="none" component="a" href="/" color="textPrimary">
-              Home
+              Início
             </Link>
           </Box>         
         </Box>
