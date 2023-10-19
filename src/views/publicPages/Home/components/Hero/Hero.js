@@ -27,7 +27,7 @@ const Hero = () => {
                 fontWeight: 700,
               }}
             >
-              Turn your ideas
+              Turn your ideassss
               <br />
               into a{' '}
               <Typography

@@ -74,7 +74,6 @@ const Layouts = () => {
                   },
                 }}
               >
-                Fixed layout: <code>src/layouts/Fixed</code>
               </Typography>
             </Box>
           </ul>

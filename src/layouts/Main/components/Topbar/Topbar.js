@@ -25,11 +25,6 @@ const Topbar = ({
       width={'100%'}
     >
       <Box display={'flex'} alignItems={'center'}>
-        <Box marginRight={{ xs: 1, sm: 2 }}>
-          <IconButton onClick={onSidebarOpen} aria-label="Menu">
-            <MenuIcon />
-          </IconButton>
-        </Box>
         <Box
           display={'flex'}
           alignItems="baseline"
