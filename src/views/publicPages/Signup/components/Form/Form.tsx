@@ -152,7 +152,7 @@ class Form extends React.Component<IFormProps, {}> {
                     fontWeight: 900,
                   }}
                 >
-                  Sign me up!
+                  Sign me uaaaap!
                 </Typography>
                 <Box marginBottom={4}>
                   <Typography

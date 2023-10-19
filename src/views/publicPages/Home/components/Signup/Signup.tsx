@@ -163,7 +163,7 @@ class SignUp extends React.Component<ISignUpFormProps, {}> {
                       fontWeight: 900,
                     }}
                   >
-                    Sign me up!
+                    Sign me upgfdg!
                   </Typography>
                   <Box marginBottom={4}>
                     <Typography

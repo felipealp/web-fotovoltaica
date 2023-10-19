@@ -27,16 +27,16 @@ const Hero = () => {
                 fontWeight: 700,
               }}
             >
-              Turn your ideassss
+              Energia fotovoltaica te fornecendo
               <br />
-              into a{' '}
+              {' '}
               <Typography
                 color={'primary'}
                 component={'span'}
                 variant={'inherit'}
               >
                 <Typed
-                  strings={['startup.', 'future.', 'success.']}
+                  strings={['economia.', 'sustentabilidade.', 'qualidade.']}
                   typeSpeed={80}
                   loop={true}
                 />
@@ -50,8 +50,7 @@ const Hero = () => {
               color="textSecondary"
               sx={{ fontWeight: 400 }}
             >
-              Webbee will make your product look modern and professional while
-              saving you precious time.
+              Cadastre-se e faça sua simulação.
             </Typography>
           </Box>
           <Box
@@ -66,11 +65,10 @@ const Hero = () => {
               size="large"
               fullWidth={isMd ? false : true}
               href={
-                'https://material-ui.com/store/items/webbee-landing-page/'
+                '/signup'
               }
-              target={'_blank'}
             >
-              Purchase now
+              Cadastre-se
             </Button>
             <Box
               marginTop={{ xs: 2, sm: 0 }}
@@ -79,13 +77,13 @@ const Hero = () => {
             >
               <Button
                 component={'a'}
-                href={'/docs-introduction'}
+                href={'/'}
                 variant="outlined"
                 color="primary"
                 size="large"
                 fullWidth={isMd ? false : true}
               >
-                View documentation
+                Saiba as vantagens
               </Button>
             </Box>
           </Box>
