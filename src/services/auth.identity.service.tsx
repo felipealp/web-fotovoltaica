@@ -1,10 +1,10 @@
 import jwt_decode from 'jwt-decode';
 
-import { identityServiceUrl, apiKey } from '../helpers/urls.helper';
-import { ILoginRequest } from '../interfaces/login.interfaces';
-import { IAuthApiResponse, IStandardApiResponse } from '../interfaces/api-response.interface';
-import { IJwt } from '../interfaces/jwt.interfaces';
-import { fetchJwt } from '../helpers/jwt.helper';
+import { identityServiceUrl, apiKey } from './helpers/urls.helper';
+import { ILoginRequest } from './interfaces/login.interfaces';
+import { IAuthApiResponse, IStandardApiResponse } from './interfaces/api-response.interface';
+import { IJwt } from './interfaces/jwt.interfaces';
+import { fetchJwt } from './helpers/jwt.helper';
 
 export class LoginRequest implements ILoginRequest {
   login: string;

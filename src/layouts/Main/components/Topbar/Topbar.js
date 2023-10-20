@@ -6,8 +6,7 @@ import { useTheme } from '@material-ui/core/styles';
 import { colors } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import WebbeeLogo from '../../../../svg/logos/Webbee';
-import paletteTypes from '../../../../common/paletteTypes';
+import WebbeeLogo from '../../../svg/logos/Webbee';
 
 const Topbar = ({
   themeMode,
@@ -81,12 +80,19 @@ const Topbar = ({
             )}
           </IconButton>
         </Box>
-        <Box sx={{ display: { xs: 'none', md: 'flex' } }} alignItems={'center'}>
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, margin: '0 1rem' }} alignItems={'center'}>
           <Box>
             <Link underline="none" component="a" href="/" color="textPrimary">
               Início
             </Link>
-          </Box>         
+          </Box>        
+        </Box>
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, margin: '0 2rem' }} alignItems={'center'}>
+          <Box>
+            <Link underline="none" component="a" href="/login" color="textPrimary">
+              Login
+            </Link>
+          </Box>        
         </Box>
       </Box>
     </Box>

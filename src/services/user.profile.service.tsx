@@ -1,7 +1,7 @@
-import { userServiceUrl } from '../helpers/urls.helper';
-import { fetchJwt } from '../helpers/jwt.helper'; 
-import { IGetMyProfileResponse,  IUpdateMyProfileRequest } from 'interfaces/user.profile.interfaces';
-import { IStandardApiResponse } from 'interfaces/api-response.interface';
+import { userServiceUrl } from './helpers/urls.helper';
+import { fetchJwt } from './helpers/jwt.helper'; 
+import { IGetMyProfileResponse,  IUpdateMyProfileRequest } from 'services/interfaces/user.profile.interfaces';
+import { IStandardApiResponse } from 'services/interfaces/api-response.interface';
 
 export class UserProfileService {
   

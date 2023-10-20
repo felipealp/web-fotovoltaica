@@ -7,68 +7,6 @@ import {
   Main as MainLayout
 } from './layouts';
 
-// Landing pages
-import {
-  Advertisement as AdvertisementView,
-  PaymentApp as PaymentAppView,
-  Marketing as MarketingView,
-  Software as SoftwareView,
-  Course as OgCourseView,
-  Crypto as CryptoView,
-  DesignAgency as DesignAgencyView,
-  Consulting as ConsultingView,
-  Application as ApplicationView,
-  DomainHosting as DomainHostingView,
-  Travel as TravelView,
-  Event as EventView,
-} from './views/landingPages';
-
-// Supporting pages
-import {
-  Services as ServicesView,
-  Pricing as PricingView,
-  Customers as CustomersView,
-  HireUs as HireUsView,
-  Faq as FaqView,
-  Privacy as PrivacyView,
-  ComingSoon as ComingSoonView,
-  MaintenanceMode as MaintenanceModeView,
-  Cover as CoverView,
-  NotFound as NotFoundView,
-} from './views/supportingPages';
-
-// Authentication pages
-//import {
-//  Login as LoginView,
-//  LoginSimple as LoginSimpleView,
-//  Signup as SignupView,
-//  SignupSimple as SignupSimpleView,
-//  ForgotPassword as ForgotPasswordView,
-//  ForgotPasswordSimple as ForgotPasswordSimpleView,
-//} from './views/authPages';
-
-import { 
-  Logout as LogoutView,   
-  Home as MyHomeView,
-  Profile as MyProfileView 
-} from './views/myPages';
-
-// Documentation pages
-import {
-  Introduction as IntroductionView,
-  QuickStart as QuickStartView,
-  Colors as ColorsView,
-  TypographyComponent as TypographyComponentView,
-  Shadows as ShadowsView,
-  ContainerComponent as ContainerComponentView,
-  Layouts as LayoutsView,
-  Plugins as PluginsView,
-  Support as SupportView,
-  Icons as IconsView,
-  Illustrations as IllustrationsView,
-  ChangeLog as ChangeLogView,
-} from './views/docs';
-
 // public pages
 import {
   Home as HomeView,
@@ -80,18 +18,8 @@ import {
   SendCode as SendCodeView,
   ForgotPassword as ForgotPasswordView,
   ResetPassword as ResetPasswordView,
-} from './views/publicPages';
+} from './views';
 
-// admin pages
-import {
-  Users as UsersAdminView,
-  Tokens as TokensAdminView,
-  Docs as DocsAdminView,
-  Courses as CoursesAdminView,
-} from './views/adminPages';
-
-// course pages
-import { Course as CourseView } from './views/coursePages';
 
 const Routes = () => {
   return (
@@ -107,234 +35,7 @@ const Routes = () => {
           />
         )}
       />
-      <Route
-        exact
-        path="/landing-advertisement"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={AdvertisementView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/landing-payment-app"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={PaymentAppView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/landing-marketing"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={MarketingView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/landing-software-company"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={SoftwareView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/landing-course"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={OgCourseView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/landing-crypto"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={CryptoView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/landing-design-agency"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={DesignAgencyView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/landing-consulting"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={ConsultingView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/landing-application"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={ApplicationView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/landing-domain-hosting"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={DomainHostingView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/landing-travel"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={TravelView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/landing-event"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={EventView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/page-services"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={ServicesView}
-            layout={MainLayout}
-          />
-        )}
-      />
 
-      <Route
-        exact
-        path="/page-pricing"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={PricingView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/page-customers"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={CustomersView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/page-hire-us"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={HireUsView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/page-faq"
-        render={(matchProps) => (
-          <WithLayout {...matchProps} component={FaqView} layout={MainLayout} />
-        )}
-      />
-      <Route
-        exact
-        path="/page-privacy"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={PrivacyView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/page-coming-soon"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={ComingSoonView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/page-maintenance-mode"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={MaintenanceModeView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/page-cover"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={CoverView}
-            layout={MainLayout}
-          />
-        )}
-      />
       <Route
         exact
         path="/login"
@@ -346,6 +47,7 @@ const Routes = () => {
           />
         )}
       />
+
       <Route
         exact
         path="/signup"
@@ -424,32 +126,8 @@ const Routes = () => {
           />
         )}
       />
-
-      <Route
-        exact
-        path="/logout"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={LogoutView}
-            layout={MainLayout}
-          />
-        )}
-      />
   
 
-
-      <Route
-        exact
-        path="/page-not-found"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={NotFoundView}
-            layout={MainLayout}
-          />
-        )}
-      />
       <Redirect to="/page-not-found" />
     </Switch>
   );

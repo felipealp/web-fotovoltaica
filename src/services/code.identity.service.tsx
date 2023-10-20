@@ -1,5 +1,5 @@
-import { identityServiceUrl } from '../helpers/urls.helper';
-import { IGetCodeResponse, IValidateCodeRequest } from 'interfaces/user.identity.interfaces';
+import { identityServiceUrl } from './helpers/urls.helper';
+import { IGetCodeResponse, IValidateCodeRequest } from 'services/interfaces/user.identity.interfaces';
 
 export class CodeIdentityService {
   

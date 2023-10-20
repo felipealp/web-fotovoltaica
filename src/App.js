@@ -8,8 +8,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'aos/dist/aos.css';
 
-import './scss/react-images.scss';
-import './scss/slick-slider.scss';
+import './layouts/scss/react-images.scss';
+import './layouts/scss/slick-slider.scss';
 
 const browserHistory = createBrowserHistory();
 

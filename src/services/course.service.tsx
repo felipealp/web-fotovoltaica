@@ -1,7 +1,7 @@
-import { courseServiceUrl } from '../helpers/urls.helper';
-import { fetchJwt } from '../helpers/jwt.helper'; 
-import { IStandardApiResponse } from 'interfaces/api-response.interface';
-import { IListCoursesResponse } from 'interfaces/course.interfaces';
+import { courseServiceUrl } from './helpers/urls.helper';
+import { fetchJwt } from './helpers/jwt.helper'; 
+import { IStandardApiResponse } from 'services/interfaces/api-response.interface';
+import { IListCoursesResponse } from 'services/interfaces/course.interfaces';
 
 export class CourseService {
   

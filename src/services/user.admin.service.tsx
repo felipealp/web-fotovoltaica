@@ -1,7 +1,7 @@
-import { adminServiceUrl } from '../helpers/urls.helper';
-import { fetchJwt } from '../helpers/jwt.helper'; 
-import { IListUsersResponse, IListUsersRequest, IUserUpdatePatch } from 'interfaces/user.admin.interfaces';
-import { IStandardApiResponse } from 'interfaces/api-response.interface';
+import { adminServiceUrl } from './helpers/urls.helper';
+import { fetchJwt } from './helpers/jwt.helper'; 
+import { IListUsersResponse, IListUsersRequest, IUserUpdatePatch } from 'services/interfaces/user.admin.interfaces';
+import { IStandardApiResponse } from 'services/interfaces/api-response.interface';
 
 export class UserAdminService {
   

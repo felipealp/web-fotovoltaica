@@ -1,6 +1,6 @@
-import { identityServiceUrl } from '../helpers/urls.helper';
-import { IForgotPasswordRequest, IResendCodeRequest, IGetCodeResponse, ISignUpRequest, IResetPasswordRequest } from 'interfaces/user.identity.interfaces';
-import { IStandardApiResponse } from 'interfaces/api-response.interface';
+import { identityServiceUrl } from './helpers/urls.helper';
+import { IForgotPasswordRequest, IResendCodeRequest, IGetCodeResponse, ISignUpRequest, IResetPasswordRequest } from 'services/interfaces/user.identity.interfaces';
+import { IStandardApiResponse } from 'services/interfaces/api-response.interface';
 
 export class UserIdentityService {
   

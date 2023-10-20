@@ -7,11 +7,11 @@ import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import Slide from '@material-ui/core/Slide';
 import { Topbar, Sidebar, Footer } from './components';
-import Container from '../../common/Container';
+import Container from '../common/Container';
 import { pages } from '../navigation';
 
 import AuthIdentityService from 'services/auth.identity.service';
-import { fetchJwt } from 'helpers/jwt.helper';
+import { fetchJwt } from 'services/helpers/jwt.helper';
 
 let auth = { isAuthenticated: false, permissions: [] };
 const authService = new AuthIdentityService();
