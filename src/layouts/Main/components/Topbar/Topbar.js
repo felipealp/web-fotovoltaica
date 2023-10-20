@@ -90,7 +90,8 @@ const Topbar = ({
                 underline="none"
                 component="a"
                 color="textPrimary"
-                onClick={() => {localStorage.removeItem('token');}}
+                href="/login"
+                onClick={() => {localStorage.removeItem('token_api');}}
               >
                 Sair
               </Link>
