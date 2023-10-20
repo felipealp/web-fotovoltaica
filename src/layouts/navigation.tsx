@@ -16,12 +16,7 @@ export const pages = [
         title: 'Search',
         href: '/search',
         authHide: false,
-      },
-      {
-        title: 'Contact',
-        href: '/contact',
-        authHide: false,
-      },      
+      },  
       {
         title: 'Login',
         href: '/login',

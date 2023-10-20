@@ -10,7 +10,6 @@ import {
 // public pages
 import {
   Home as HomeView,
-  Contact as ContactView,
   About as AboutView,
   Login as LoginView,
   Simulator as SimulatorView,
@@ -66,17 +65,6 @@ const Routes = () => {
         )}
       />
 
-      <Route
-        exact
-        path="/contact"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={ContactView}
-            layout={MainLayout}
-          />
-        )}
-      />
       <Route
         exact
         path="/about"

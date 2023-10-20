@@ -5,13 +5,60 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import Switch from '@material-ui/core/Switch';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+import MenuItem from '@material-ui/core/MenuItem';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+
+import ResultModal from './ResultModal';
 
 import { base64EncodeString } from 'services/helpers/security.helper';
 import AuthIdentityService from 'services/auth.identity.service';
 import { AuthMessageCode, FormCode } from 'services/helpers/enums';
 import { IAuthApiResponse } from 'services/interfaces/api-response.interface';
 import { ErrorMessage } from 'layouts/common/components';
+
+const estadosBrasil = [
+  'Acre', 'Alagoas', 'Amapá', 'Amazonas', 'Bahia', 'Ceará', 'Distrito Federal', 'Espírito Santo', 'Goiás',
+  'Maranhão', 'Mato Grosso', 'Mato Grosso do Sul', 'Minas Gerais', 'Pará', 'Paraíba', 'Paraná', 'Pernambuco',
+  'Piauí', 'Rio de Janeiro', 'Rio Grande do Norte', 'Rio Grande do Sul', 'Rondônia', 'Roraima', 'Santa Catarina',
+  'São Paulo', 'Sergipe', 'Tocantins'
+];
+
+const cidadesEstado = {
+  'Acre': ['Rio Branco', 'Cruzeiro do Sul', 'Sena Madureira', 'Tarauacá', 'Feijó'],
+  'Alagoas': ['Maceió', 'Arapiraca', 'Palmeira dos Índios', 'Rio Largo', 'Marechal Deodoro'],
+  'Amapá': ['Macapá', 'Santana', 'Laranjal do Jari', 'Oiapoque', 'Pedra Branca do Amapari'],
+  'Amazonas': ['Manaus', 'Parintins', 'Itacoatiara', 'Manacapuru', 'Coari'],
+  'Bahia': ['Salvador', 'Feira de Santana', 'Vitória da Conquista', 'Camaçari', 'Itabuna'],
+  'Ceará': ['Fortaleza', 'Caucaia', 'Juazeiro do Norte', 'Maracanaú', 'Sobral'],
+  'Distrito Federal': ['Brasília'],
+  'Espírito Santo': ['Vitória', 'Vila Velha', 'Serra', 'Cariacica', 'Linhares'],
+  'Goiás': ['Goiânia', 'Aparecida de Goiânia', 'Anápolis', 'Rio Verde', 'Luziânia'],
+  'Maranhão': ['São Luís', 'Imperatriz', 'São José de Ribamar', 'Timon', 'Caxias'],
+  'Mato Grosso': ['Cuiabá', 'Várzea Grande', 'Rondonópolis', 'Sinop', 'Tangará da Serra'],
+  'Mato Grosso do Sul': ['Campo Grande', 'Dourados', 'Três Lagoas', 'Corumbá', 'Ponta Porã'],
+  'Minas Gerais': ['Belo Horizonte', 'Uberlândia', 'Contagem', 'Belo Horizonte', 'Montes Claros'],
+  'Pará': ['Belém', 'Ananindeua', 'Santarém', 'Marabá', 'Castanhal'],
+  'Paraíba': ['João Pessoa', 'Campina Grande', 'Santa Rita', 'Patos', 'Bayeux'],
+  'Paraná': ['Curitiba', 'Londrina', 'Maringá', 'Ponta Grossa', 'Cascavel'],
+  'Pernambuco': ['Recife', 'Jaboatão dos Guararapes', 'Olinda', 'Caruaru', 'Petrolina'],
+  'Piauí': ['Teresina', 'Parnaíba', 'Picos', 'Floriano', 'Piripiri'],
+  'Rio de Janeiro': ['Rio de Janeiro', 'São Gonçalo', 'Duque de Caxias', 'Nova Iguaçu', 'Niterói'],
+  'Rio Grande do Norte': ['Natal', 'Mossoró', 'Parnamirim', 'São Gonçalo do Amarante', 'Ceará-Mirim'],
+  'Rio Grande do Sul': ['Porto Alegre', 'Caxias do Sul', 'Canoas', 'Pelotas', 'Santa Maria'],
+  'Rondônia': ['Porto Velho', 'Ji-Paraná', 'Ariquemes', 'Vilhena', 'Cacoal'],
+  'Roraima': ['Boa Vista', 'Caracaraí', 'Rorainópolis', 'São Luiz', 'Caroebe'],
+  'Santa Catarina': ['Joinville', 'Florianópolis', 'Blumenau', 'São José', 'Criciúma'],
+  'São Paulo': ['São Paulo', 'Guarulhos', 'Campinas', 'São Bernardo do Campo', 'Santo André'],
+  'Sergipe': ['Aracaju', 'Nossa Senhora do Socorro', 'Lagarto', 'Itabaiana', 'Estância'],
+  'Tocantins': ['Palmas', 'Araguaína', 'Gurupi', 'Porto Nacional', 'Paraíso do Tocantins']
+};
 
 class Form extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
@@ -25,13 +72,31 @@ class Form extends React.Component<IProps, {}> {
     messageCode: AuthMessageCode.Failed,
     loginText: 'Login',
     blurErrors: [],
-    electricityAccess: '',
+    electricityAccess: true,
     state: '',
     city: '',
     locationType: '',
     tariffAdjustment: 0,
-    monthlyEnergyCost: 0
+    monthlyEnergyCost: null,
+    showModal: false, // Estado para controlar a visibilidade do modal
+    simulationData: null, // Estado para armazenar os dados da simulação
   }   
+
+  handleSimulation = () => {
+    // Realize os cálculos da simulação e atualize o estado simulationData
+    const simulationData = {
+      investmentRange: [516639.11, 688852.15],
+      monthlySavings: 7514,
+      totalSavings: 8226476.6,
+      // Outras informações simuladas
+    };
+
+    this.setState({ simulationData, showModal: true });
+  };
+
+  closeModal = () => {
+    this.setState({ showModal: false });
+  };
 
   public validateForm() {
     this.setState({ action: 'normal', blurErrors: []});
@@ -49,6 +114,8 @@ class Form extends React.Component<IProps, {}> {
   }
 
   public handleClick = async (e: React.FormEvent<HTMLButtonElement>) => {
+    console.log('simulaaaaaaa', this.state);
+    this.handleSimulation();
     e.preventDefault();
 
     if (!this.validateForm()) {
@@ -73,10 +140,20 @@ class Form extends React.Component<IProps, {}> {
     });
   }
 
-  private handleInputChanges = (e: React.FormEvent<HTMLInputElement>, text: any) => {
+  private handleInputChanges = (e: React.FormEvent<HTMLInputElement>, elementName: any) => {
     e.preventDefault();
-
     this.setState({ [e.currentTarget.name]: e.currentTarget.value } as unknown as Pick<IForm, keyof IForm>);
+  };
+
+  private handleToggleChange = (e: React.ChangeEvent<HTMLInputElement>, elementName: any) => {
+    e.preventDefault();
+    this.setState({ [elementName]: e.target.checked } as unknown as Pick<IForm, keyof IForm>);
+  };
+
+  private handleSelectChanges = (e: any, elementName: any) => {
+    e.preventDefault();
+    console.log(e);
+    this.setState({ [elementName]: e.target.value || '' } as unknown as Pick<IForm, keyof IForm>);
   };
 
   // form onBlur validation
@@ -167,67 +244,76 @@ class Form extends React.Component<IProps, {}> {
               <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
                 1. O LOCAL POSSUI ACESSO À REDE ELÉTRICA?
               </Typography>
-              <TextField
-                label="SIM / NÃO"
-                variant="outlined"
-                name="electricityAccess" // Nome do campo para acesso à rede elétrica
-                fullWidth
-                value={this.state.electricityAccess} // Valor do campo
-                onChange={(e: any) => this.handleInputChanges(e, 'electricityAccess')} // Handler
-              />
+              <Box display="flex" alignItems="center">
+                <Switch
+                  name="electricityAccess"
+                  checked={this.state.electricityAccess}
+                  onChange={(e) => this.handleToggleChange(e, 'electricityAccess')} // Usaremos uma nova função para lidar com toogle
+                />
+                <Typography >
+                  {this.state.electricityAccess ? 'SIM' : 'NÃO'}
+                </Typography>
+              </Box>
             </Grid>
             <Grid item xs={12}>
               <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
                 2. ONDE PRETENDE REALIZAR A INSTALAÇÃO?
               </Typography>
-              <TextField
-                label="ESTADO"
-                variant="outlined"
-                name="state" // Nome do campo para estado
-                fullWidth
-                value={this.state.state} // Valor do campo
-                onChange={(e: any) => this.handleInputChanges(e, 'state')} // Handler
-              />
+              <FormControl fullWidth>
+                <InputLabel id="select-state">Estado</InputLabel>
+                <Select
+                  labelId="select-state"
+                  label="Estado"
+                  variant="outlined"
+                  name="state"
+                  fullWidth
+                  value={this.state.state}
+                  onChange={(e: any) => this.handleSelectChanges(e, 'state')}
+                >
+                  {estadosBrasil.map((estado) => (
+                    <MenuItem key={estado} value={estado}>
+                      {estado}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="CIDADE"
+
+            <Grid item xs={12} sx={this.state.state ? { display: '' } : { display: 'none' }}>
+              <InputLabel id="select-city">Cidade</InputLabel>
+              <Select
+                labelId="select-city"
+                label="Cidade"
                 variant="outlined"
-                name="city" // Nome do campo para cidade
+                name="city"
                 fullWidth
-                value={this.state.city} // Valor do campo
-                onChange={(e: any) => this.handleInputChanges(e, 'city')} // Handler
-              />
+                value={this.state.city}
+                onChange={(e: any) => this.handleSelectChanges(e, 'city')}
+              >
+                {cidadesEstado[this.state.state as keyof typeof cidadesEstado]?.map((cidade) => (
+                  <MenuItem key={cidade} value={cidade}>
+                    {cidade}
+                  </MenuItem>
+                ))}
+              </Select>
             </Grid>
             <Grid item xs={12}>
               <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
                 3. QUAL O TIPO DE LOCAL?
               </Typography>
-              <TextField
-                label="RESIDENCIAL / EMPRESARIAL / OUTRO"
-                variant="outlined"
-                name="locationType" // Nome do campo para tipo de local
-                fullWidth
-                value={this.state.locationType} // Valor do campo
-                onChange={(e: any) => this.handleInputChanges(e, 'locationType')} // Handler
-              />
+              <RadioGroup
+                name="locationType"
+                value={this.state.locationType}
+                onChange={(e) => this.handleInputChanges(e, 'locationType')} // Use uma nova função para lidar com radio buttons
+              >
+                <FormControlLabel value="residencial" control={<Radio />} label="RESIDENCIAL" />
+                <FormControlLabel value="empresarial" control={<Radio />} label="EMPRESARIAL" />
+                <FormControlLabel value="outro" control={<Radio />} label="OUTRO" />
+              </RadioGroup>
             </Grid>
             <Grid item xs={12}>
               <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
-                4. AJUSTE DE TARIFA (R$)
-              </Typography>
-              <TextField
-                label="Ajuste de tarifa"
-                variant="outlined"
-                name="tariffAdjustment" // Nome do campo para ajuste de tarifa
-                fullWidth
-                value={this.state.tariffAdjustment} // Valor do campo
-                onChange={(e: any) => this.handleInputChanges(e, 'tariffAdjustment')} // Handler
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
-                5. QUANTO VOCÊ PAGA EM ENERGIA NO MÊS?
+                4. QUANTO VOCÊ PAGA EM ENERGIA NO MÊS?
               </Typography>
               <TextField
                 label="Custo mensal de energia (R$)"
@@ -239,12 +325,32 @@ class Form extends React.Component<IProps, {}> {
               />
             </Grid>
             {/* Restante do código permanece o mesmo */}
+            <Grid item xs={12}>
+              <Box>
+                <Button
+                  sx={{ height: 54 }}
+                  variant="contained"
+                  size={'large'}
+                  color="primary"
+                  fullWidth
+                  onClick={(e: any) => this.handleClick(e)}
+                  disabled={this.state.action === 'processing' ? true : false}
+                >
+                  {this.state.action === 'processing' ? 'Cálculo em andamento, aguarde...' : 'Simular'}
+                </Button>
+              </Box>
+              {this.state.showModal && this.state.simulationData && (
+                <ResultModal data={this.state} onClose={this.closeModal} />
+              )}
+            </Grid>
           </Grid>
         </form>
       </Box>
     );
   }
 }
+
+// faça tudo aqui só se preocupar em add os campos e fazer o calculo
 
 interface IProps {	
 	callback: () => void;
@@ -259,12 +365,14 @@ interface IForm {
   messageCode: AuthMessageCode;
   loginText: string,
   blurErrors: string[],
-  electricityAccess: string,
+  electricityAccess: boolean,
   state: string,
   city: string,
   locationType: string,
   tariffAdjustment: number,
-  monthlyEnergyCost: number
+  monthlyEnergyCost: any,
+  showModal: boolean; // Estado para controlar a visibilidade do modal
+  simulationData: any; // Estado para armazenar os dados da simulação
 }
 
 export default Form;
