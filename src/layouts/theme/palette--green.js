@@ -5,6 +5,10 @@ export const light = {
   },
   cardShadow: 'rgba(23, 70, 161, .11)',
   mode: 'light',
+  common: {
+    white: '#2d3748',
+    black: '#fff',
+  },
   primary: {
     main: '#00AB55',
     light: '#33CC70',

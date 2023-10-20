@@ -13,11 +13,8 @@ import {
   Contact as ContactView,
   About as AboutView,
   Login as LoginView,
+  Simulator as SimulatorView,
   Signup as SignUpView,
-  ConfirmSignup as ConfirmSignUpView,
-  SendCode as SendCodeView,
-  ForgotPassword as ForgotPasswordView,
-  ResetPassword as ResetPasswordView,
 } from './views';
 
 
@@ -35,7 +32,6 @@ const Routes = () => {
           />
         )}
       />
-
       <Route
         exact
         path="/login"
@@ -47,7 +43,17 @@ const Routes = () => {
           />
         )}
       />
-
+      <Route
+        exact
+        path="/simulator"
+        render={(matchProps) => (
+          <WithLayout
+            {...matchProps}
+            component={SimulatorView}
+            layout={MainLayout}
+          />
+        )}
+      />
       <Route
         exact
         path="/signup"
@@ -55,50 +61,6 @@ const Routes = () => {
           <WithLayout
             {...matchProps}
             component={SignUpView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/confirm-signup/:id"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={ConfirmSignUpView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/send-code"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={SendCodeView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/forgot-password"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={ForgotPasswordView}
-            layout={MainLayout}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/reset-password/:code"
-        render={(matchProps) => (
-          <WithLayout
-            {...matchProps}
-            component={ResetPasswordView}
             layout={MainLayout}
           />
         )}

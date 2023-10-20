@@ -19,14 +19,15 @@ const Signup = () => {
       display={'flex'}
       alignItems={'center'}
       justifyContent={'center'}
-      height={'100%'}
+      height={'80%'}
+      width={'100%'}
     >
       <Container sx={isSuccess ? { display: 'none' } : { display: 'flex' }}>
         <Form callback={callbackSuccess} theme={theme} />
       </Container>  
-      <Container sx={isSuccess ? { display: 'flex' } : { display: 'none' }}>
+      <Box padding={'4rem 0'} sx={isSuccess ? { display: 'flex' } : { display: 'none' }}>
         <Success theme={theme} />
-      </Container>  
+      </Box>  
     </Box>
   );
 };

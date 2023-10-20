@@ -7,9 +7,9 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
+import axios from 'axios';
 
-import { UserIdentityService } from 'services/user.identity.service';
-import { ISignUpRequest, IGetCodeResponse } from 'services/interfaces/user.identity.interfaces';
+import { ISignUpRequest } from 'services/interfaces/user.identity.interfaces';
 import { fetchIpAddress } from 'services/helpers/network.helper';
 import { ErrorMessage } from 'layouts/common/components';
 
@@ -57,26 +57,31 @@ class Form extends React.Component<IFormProps, {}> {
     }
 
     this.setState({ action: 'processing' });
-
-    const userService: UserIdentityService = new UserIdentityService();
     
     const body: ISignUpRequest = {
       name: this.state.name,
       email: this.state.email,
-      password: this.state.password,
+      senha: this.state.password,
       ipaddress: this.state.ipaddress
     };
 
-    userService.SignUp(body).then(async (response: IGetCodeResponse) => {     
-      
-      if (response.success) {
-        this.props.callback();
-      } else {
-        this.setState({ action: 'failed', password: '',  message: this.setErrorMessage(response.messageCode, response.message) });
-      }
-    }).catch((error: Error) => {
-      this.setState({ action: 'failed', message: error.message });
-    });
+    axios
+      .post('http://localhost:3001/api/users', body)
+      .then((response: any) => {
+        console.log(response);
+        if (response.data) {
+          this.props.callback();
+        } else {
+          this.setState({
+            action: 'failed',
+            password: '',
+            message: this.setErrorMessage(response.data.messageCode, response.data.message),
+          });
+        }
+      })
+      .catch((error: any) => {
+        this.setState({ action: 'failed', message: error.message });
+      });
   }
 
   private handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
@@ -113,11 +118,11 @@ class Form extends React.Component<IFormProps, {}> {
   private setHelperTextMessage = (field: string) => {
     switch (field) {
       case 'name':
-        return this.state.blurErrors.includes('name') ? 'name is required' : ' ';
+        return this.state.blurErrors.includes('name') ? 'O nome deve ser válido' : ' ';
       case 'email':
-        return this.state.blurErrors.includes('email') ? 'email is required' : ' ';
+        return this.state.blurErrors.includes('email') ? 'O email deve ser válido' : ' ';
       case 'password':
-        return this.state.blurErrors.includes('password') ? 'password is required' : ' ';     
+        return this.state.blurErrors.includes('password') ? 'A senha deve ser válida' : ' ';     
       default:
         return ' ';
     }
@@ -126,22 +131,22 @@ class Form extends React.Component<IFormProps, {}> {
   private setErrorMessage = (messageCode: number, msg: string = '') => {
     switch (messageCode) {
       case 402:
-        return 'Form values that were posted to the server are invalid.';
+        return 'Os valores de formulário que foram informados no servidor são inválidos.';
       case 406:
-        return 'Email address already exists for another user. Please try with a different email or <a href="./forgot-password" style="color: ' + this.props.theme.palette.common.white + '">click here</a> to recover your account.';
+        return 'O endereço de e-mail já existe para outro usuário. Tente com um e-mail diferente ou <a href="./forgot-password" style="color: ' + this.props.theme.palette.common.white + '">clique aqui</a> para recuperar sua conta.';
       case 600:
-        return 'There was an error on the server: ' + msg;
+        return 'Houve um erro no servidor: ' + msg;
       default:
-        return 'Unhandled exception thrown. Please contact us for support.';
+        return 'Falha ao realizar requisição, entre em contato.';
     }
   }
 
   render() {
     return (
       <Box >
-        <Grid container spacing={4}>
+        <Grid container spacing={8}>
           <Grid item xs={12} md={6}>
-            <Box width={1} height="100%" display="flex" alignItems="center">
+            <Box width={1} height="90%" display="flex" alignItems="center">
               <Box>
                 <Typography
                   variant="h2"
@@ -152,7 +157,7 @@ class Form extends React.Component<IFormProps, {}> {
                     fontWeight: 900,
                   }}
                 >
-                  Sign me uaaaap!
+                  Cadastre-se aqui!
                 </Typography>
                 <Box marginBottom={4}>
                   <Typography
@@ -163,14 +168,14 @@ class Form extends React.Component<IFormProps, {}> {
                       fontWeight: 400,
                     }}
                   >
-                    To get started, sign up with us. We will do great things together.
+                    Para começar, inscreva-se conosco. Faremos grandes coisas juntos.
                   </Typography>
                 </Box>
               </Box>
             </Box>            
           </Grid>
           <Grid item xs={12} md={6}>
-            <Box width={1} height="100%" alignItems="center">
+            <Box width={1} height="80%" alignItems="center">
               <Box>
                 <ErrorMessage message={this.state.message} />
               </Box>
@@ -186,7 +191,7 @@ class Form extends React.Component<IFormProps, {}> {
                     <Box marginBottom={2}>
                       <TextField
                         type="text"
-                        label="Name *"
+                        label="Nome *"
                         variant="outlined"
                         color="primary"
                         fullWidth
@@ -215,7 +220,7 @@ class Form extends React.Component<IFormProps, {}> {
                     </Box>
                     <Box marginBottom={2}>
                       <TextField
-                        label="Password *"
+                        label="Senha *"
                         variant="outlined"
                         name={'password'}
                         type={'password'}
@@ -237,7 +242,7 @@ class Form extends React.Component<IFormProps, {}> {
                         onClick={(e: any) => this.handleClick(e)}
                         disabled={this.state.action === 'processing' ? true : false}
                       >
-                        {this.state.action === 'processing' ? 'Signing you up, please wait...' : 'Sign me up'}
+                        {this.state.action === 'processing' ? 'Cadastro em andamento, aguarde...' : 'Cadastrar'}
                       </Button>
                     </Box>
                   </Box>

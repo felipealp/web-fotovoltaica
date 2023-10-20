@@ -2,10 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
-import { useTheme } from '@material-ui/core/styles';
-import { colors } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import WebbeeLogo from '../../../svg/logos/Webbee';
 
 const Topbar = ({
@@ -15,7 +12,6 @@ const Topbar = ({
   onSidebarOpen,
   paletteType,
 }) => {
-  const theme = useTheme();
   return (
     <Box
       display={'flex'}
@@ -89,10 +85,26 @@ const Topbar = ({
         </Box>
         <Box sx={{ display: { xs: 'none', md: 'flex' }, margin: '0 2rem' }} alignItems={'center'}>
           <Box>
-            <Link underline="none" component="a" href="/login" color="textPrimary">
-              Login
-            </Link>
-          </Box>        
+            {localStorage.getItem('token_api') ? (
+              <Link
+                underline="none"
+                component="a"
+                color="textPrimary"
+                onClick={() => {localStorage.removeItem('token');}}
+              >
+                Sair
+              </Link>
+            ) : (
+              <Link
+                underline="none"
+                component="a"
+                href="/login"
+                color="textPrimary"
+              >
+                Login
+              </Link>
+            )}
+          </Box>       
         </Box>
       </Box>
     </Box>

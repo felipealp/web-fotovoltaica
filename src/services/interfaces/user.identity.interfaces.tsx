@@ -8,7 +8,7 @@ export interface IGetCodeResponse extends IApiResponse {
 export interface ISignUpRequest {
 	name: string;
 	email: string;
-	password: string;
+	senha: string;
 	ipaddress: string;
 }
 

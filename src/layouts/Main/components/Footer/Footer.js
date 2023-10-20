@@ -9,7 +9,6 @@ const Footer = () => (
     <Grid item xs={12}>
       <Box
         display={'flex'}
-        justifyContent={'space-between'}
         alignItems={'center'}
         width={'100%'}
         flexDirection={{ xs: 'column', sm: 'row' }}
@@ -24,18 +23,18 @@ const Footer = () => (
           width={35}
         >
           <WebbeeLogo height={'100%'} width={'100%'} />
-        </Box>        
-      </Box>
-    </Grid>
-    <Grid item xs={12}>
-      <Typography
-        align={'center'}
-        variant={'subtitle2'}
-        color="textSecondary"
-        gutterBottom
-      >
-        &copy; My-App. 2021, Apps. All rights reserved
-      </Typography>      
+        </Box>
+
+        <Typography
+          margin="0 auto"
+          align={'center'}
+          variant={'subtitle2'}
+          color="textSecondary"
+          gutterBottom
+        >
+          &copy; Fotovoltaica, 2023. Todos os direitos reservados
+        </Typography>         
+      </Box>     
     </Grid>
   </Grid>
 );

@@ -6,14 +6,16 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
-import axios from 'axios';
 
+import { base64EncodeString } from 'services/helpers/security.helper';
+import AuthIdentityService from 'services/auth.identity.service';
 import { AuthMessageCode, FormCode } from 'services/helpers/enums';
+import { IAuthApiResponse } from 'services/interfaces/api-response.interface';
 import { ErrorMessage } from 'layouts/common/components';
 
 class Form extends React.Component<IProps, {}> {
   static defaultProps: Partial<IProps> = {};
-
+  
   state: IForm = {
     email: '',
     password: '',
@@ -23,7 +25,7 @@ class Form extends React.Component<IProps, {}> {
     messageCode: AuthMessageCode.Failed,
     loginText: 'Login',
     blurErrors: []   
-  }
+  }   
 
   public validateForm() {
     this.setState({ action: 'normal', blurErrors: []});
@@ -49,21 +51,20 @@ class Form extends React.Component<IProps, {}> {
 
     this.setState({ action: 'busy', loginText: 'Logging in, please wait...' });
 
-    axios.get('http://localhost:3001/api/users')
-      .then((response: any) => {
-        console.log(response.data);
-        const user = response.data.find((user: any) => user.email === this.state.email && user.senha === this.state.password);
-        console.log(user);
-        if (user) {
-          localStorage.setItem('token_api', 'd452d41f21sd2f41ds2f41dsa2f412ds3a41f32dsa41f23');
-          window.location.href = '/simulator';
-        } else {
-          this.setState({ action: 'failed', loginText: 'Login', formCode: FormCode.ApiFail, message: 'credênciais inválidas', messageCode: 400 });
-        }
-      })
-      .catch((error: any) => {
-        this.setState({ action: 'failed', loginText: 'Login', formCode: FormCode.ApiFail, message: error});
-      });
+    const loginString = this.state.email + ':' + this.state.password;
+    const hashed: string = base64EncodeString(loginString);
+    const auth: AuthIdentityService = new AuthIdentityService();
+
+    auth.Login(hashed).then(async(response: IAuthApiResponse) => {      
+      if (response.success) {
+        // set jwt to local storage item
+        await localStorage.setItem('myapp.jwt', response.value);     
+        this.props.callback();
+      }
+      else {
+        this.setState({ action: 'failed', loginText: 'Login', formCode: FormCode.ApiFail, message: response.message, messageCode: response.messageCode });
+      }
+    });
   }
 
   private handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
@@ -94,10 +95,9 @@ class Form extends React.Component<IProps, {}> {
   }
 
   private setErrorMessage = (authMessageCode: AuthMessageCode, msg: string = '') => {
-    console.log('setErrorMessage ', authMessageCode, msg);
     switch (authMessageCode) {
       case (AuthMessageCode.InvalidFormat):
-        return 'Credênciais inválidas. Tente Novamente.';    
+        return 'Invalid email address or password. Please try again.';    
       case (AuthMessageCode.NotFound):
         return 'Email address not found. Please try a differnt email or create a new account.';
       case (AuthMessageCode.Blocked):
@@ -120,9 +120,9 @@ class Form extends React.Component<IProps, {}> {
   private setHelperTextMessage = (field: string) => {
     switch(field) {
       case 'email':
-        return this.state.blurErrors.includes('email') ? 'O email deve ser válido' : ' ';
+        return this.state.blurErrors.includes('email') ? 'valid email address is required' : ' ';
       case 'password':
-        return this.state.blurErrors.includes('password') ? 'A senha deve ser válida' : ' ';
+        return this.state.blurErrors.includes('password') ? 'password is required' : ' ';
       default:
         return ' ';       
     }
@@ -131,7 +131,7 @@ class Form extends React.Component<IProps, {}> {
   render() {
     return (
       <Box>
-        <Box marginBottom={3}>
+        <Box marginBottom={4}>
           <Typography
             sx={{
               textTransform: 'uppercase',
@@ -148,18 +148,18 @@ class Form extends React.Component<IProps, {}> {
               fontWeight: 700,
             }}
           >
-            Bem-vindo de volta
+            Welcome back
           </Typography>
           <Typography color="text.secondary">
-            Faça login para acessar o simulador.
+            Login to manage your account.
           </Typography>
         </Box>
         <ErrorMessage message={this.setErrorMessage(this.state.messageCode, this.state.message)} />
         <form>
-          <Grid container spacing={1}>
+          <Grid container spacing={4}>
             <Grid item xs={12}>
-              <Typography variant={'subtitle2'} marginBottom={2}>
-                Insira seu email
+              <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
+                Enter your email
               </Typography>
               <TextField
                 label="Email *"
@@ -175,21 +175,21 @@ class Form extends React.Component<IProps, {}> {
             </Grid>
             <Grid item xs={12}>
               <Box
-                marginBottom={2}
                 display="flex"
                 flexDirection={{ xs: 'column', sm: 'row' }}
                 alignItems={{ xs: 'stretched', sm: 'center' }}
                 justifyContent={'space-between'}
                 width={'100%'}
+                marginBottom={2}
               >
                 <Box marginBottom={{ xs: 1, sm: 0 }}>
                   <Typography variant={'subtitle2'}>
-                    Insira sua senha
+                    Enter your password
                   </Typography>
                 </Box>
               </Box>
               <TextField
-                label="Senha *"
+                label="Password *"
                 variant="outlined"
                 name={'password'}
                 type={'password'}
@@ -213,14 +213,14 @@ class Form extends React.Component<IProps, {}> {
               >
                 <Box marginBottom={{ xs: 1, sm: 0 }}>
                   <Typography variant={'subtitle2'}>
-                    Ainda não tá cadastrado?{' '}
+                    Don't have an account yet?{' '}
                     <Link
                       component={'a'}
                       color={'primary'}
                       href={'/signup'}
                       underline={'none'}
                     >
-                      Registre-se aqui.
+                      Sign up here.
                     </Link>
                   </Typography>
                 </Box>

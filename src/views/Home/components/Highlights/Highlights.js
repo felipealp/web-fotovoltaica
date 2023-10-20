@@ -12,9 +12,9 @@ const Highlights = () => {
       <Grid container spacing={2}>
         {[
           {
-            title: 'Built for developers',
+            title: 'Residências e Empresas',
             subtitle:
-              'Webbee is built to make your life easier. Variables, build tooling, documentation, and reusable components.',
+              'Se você está pensando em instalar painéis solares em sua casa ou empresa, um simulador de energia fotovoltaica pode ajudá-lo a entender melhor os benefícios. Ele permite estimar quanto poderia economizar em suas contas de eletricidade e o tempo necessário para recuperar seu investimento.',
             icon: (
               <svg
                 height={24}
@@ -34,9 +34,9 @@ const Highlights = () => {
             ),
           },
           {
-            title: 'Designed to be modern',
+            title: 'Empresas de Energia e Fornecedores',
             subtitle:
-              'Designed with the latest design trends in mind. Webbee feels modern, minimal, and beautiful.',
+              'Se você trabalha em uma empresa de energia ou fornece serviços energéticos, um simulador de energia fotovoltaica pode ser uma ferramenta valiosa. Ele o auxilia na análise e projeção da geração de energia solar em uma escala regional ou de rede, apoiando a tomada de decisões estratégicas.',
             icon: (
               <svg
                 height={24}
@@ -56,9 +56,9 @@ const Highlights = () => {
             ),
           },
           {
-            title: 'Documentation for everything',
+            title: 'Instaladores de Sistemas Fotovoltaicos',
             subtitle:
-              'We\'ve written extensive documentation for components and tools, so you never have to reverse engineer anything.',
+              'Se você é um instalador de sistemas solares, o uso de um simulador pode ser uma maneira eficaz de conquistar a confiança dos clientes. Ele permite fornecer estimativas precisas sobre os benefícios da instalação de energia solar em suas propriedades.',
             icon: (
               <svg
                 height={24}

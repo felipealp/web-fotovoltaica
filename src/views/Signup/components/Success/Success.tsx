@@ -13,15 +13,16 @@ class Success extends React.Component<IProps, {}> {
 
   render() {
     return (
-      <Box marginBottom={4}>
+      <Box>
         <Box
           component={Typography}
           fontWeight={700}
           variant={'h3'}
           gutterBottom
           align={'center'}
+          textAlign={'center'}
         >
-          Thank you for signing up
+          Obrigado por inscrever-se
         </Box>
         <Typography
           variant={'h6'}
@@ -29,7 +30,7 @@ class Success extends React.Component<IProps, {}> {
           color={'textSecondary'}
           align={'center'}
         >
-          We are sending you an email to confirm that you are you. Click that link to finalize the sign up process and get started.  
+          Para prosseguir com simulador de energia solar realize o login com os dados registrados.  
         </Typography>
         <Box
           display={'flex'}
@@ -38,8 +39,8 @@ class Success extends React.Component<IProps, {}> {
           marginBottom={4}
           marginTop={4}
         >
-          <Box height={'100%'} width={'100%'} maxWidth={600}>
-            <GlobeIllustration height={'100%'} width={'100%'} />
+          <Box height={'100%'} width={'100%'} maxWidth={230}>
+            <GlobeIllustration height={'80%'} width={'100%'} />
           </Box>
         </Box>
         <Box marginTop={3} display={'flex'} justifyContent={'center'}>
@@ -47,9 +48,9 @@ class Success extends React.Component<IProps, {}> {
             size={'large'}
             variant={'contained'}
             component={Link}
-            href={'../secure/home'}
+            href={'/login'}
           >
-            Back to home page
+            Realizar Login
           </Button>
         </Box>
       </Box>

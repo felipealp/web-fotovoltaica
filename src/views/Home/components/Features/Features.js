@@ -24,7 +24,7 @@ const Features = () => {
             color={'textSecondary'}
             align={'center'}
           >
-            Features
+            Benefícios
           </Typography>
           <Box
             component={Typography}
@@ -33,9 +33,9 @@ const Features = () => {
             gutterBottom
             align={'center'}
           >
-            The powerful and flexible theme
+            A energia solar é uma
             <br />
-            for all kinds of businesses
+            escolha inteligente e sustentável.
           </Box>
           <Typography
             variant={'h6'}
@@ -43,16 +43,14 @@ const Features = () => {
             color={'textSecondary'}
             align={'center'}
           >
-            Build a beautiful, modern website with flexible, fully customizable,
-            atomic Material-UI components.
+            Oferece uma série de benefícios, incluindo a redução de custos, a proteção do meio ambiente e 
+            a independência energética.
             <br />
-            An experience you'd expect from a design system.
           </Typography>
           <Box marginTop={3} display={'flex'} justifyContent={'center'}>
             <Button
               component={'a'}
-              href={'https://material-ui.com/store/items/webbee-landing-page/'}
-              target={'_blank'}
+              href={'/signup'}
               variant="contained"
               color="primary"
               size="large"
@@ -74,7 +72,7 @@ const Features = () => {
                 </svg>
               }
             >
-              Purchase now
+              Cadastre-se e Simule
             </Button>
           </Box>
         </Box>
@@ -92,9 +90,9 @@ const Features = () => {
           <Grid container spacing={4}>
             {[
               {
-                title: 'Themeable',
+                title: 'Energia Limpa e Sustentável',
                 subtitle:
-                  'Customize any part of our components to match your design needs.',
+                  'A energia solar é uma fonte de energia renovável e inesgotável. Ela não emite poluentes atmosféricos nem gases de efeito estufa, o que a torna uma opção amigável ao meio ambiente. Contribui para a redução da pegada de carbono e combate as mudanças climáticas.',
                 icon: (
                   <svg
                     height={24}
@@ -114,9 +112,9 @@ const Features = () => {
                 ),
               },
               {
-                title: 'Light and Dark UI',
+                title: 'Economia de Custos a Longo Prazo',
                 subtitle:
-                  'Optimized for multiple color modes. Use light or dark, your choice.',
+                  'Uma vez instalado, um sistema solar pode gerar eletricidade de forma gratuita por muitas décadas. Isso pode levar a uma significativa redução nas contas de eletricidade ao longo do tempo, oferecendo um retorno sólido sobre o investimento.',
                 icon: (
                   <svg
                     height={24}
@@ -136,9 +134,9 @@ const Features = () => {
                 ),
               },
               {
-                title: 'Composable',
+                title: 'Redução na Dependência de Combustíveis Fósseis',
                 subtitle:
-                  'Designed with composition in mind. Compose new components with ease.',
+                  'A energia solar ajuda a diminuir a dependência de combustíveis fósseis, como o carvão e o petróleo. Isso fortalece a segurança energética e reduz a vulnerabilidade a flutuações nos preços dos combustíveis.',
                 icon: (
                   <svg
                     height={24}
@@ -158,9 +156,9 @@ const Features = () => {
                 ),
               },
               {
-                title: 'Developer Experience',
+                title: 'Baixa Manutenção e Durabilidade',
                 subtitle:
-                  'Guaranteed to boost your productivity when building your app or website.',
+                  'Os sistemas solares requerem pouca manutenção e têm uma vida útil de 25 anos ou mais. Eles são construídos para resistir a condições climáticas adversas, tornando-os confiáveis a longo prazo.',
                 icon: (
                   <svg
                     height={24}
@@ -180,9 +178,9 @@ const Features = () => {
                 ),
               },
               {
-                title: 'Continuous Updates',
+                title: 'Valorização do Imóvel',
                 subtitle:
-                  'We continually deploy improvements and new updates to Webbee.',
+                  'A instalação de um sistema solar aumenta o valor de propriedades residenciais e comerciais. Compradores estão dispostos a pagar mais por imóveis com eficiência energética e sistemas solares já instalados.',
                 icon: (
                   <svg
                     height={24}
@@ -202,9 +200,9 @@ const Features = () => {
                 ),
               },
               {
-                title: 'Free support',
+                title: 'Acesso a Incentivos e Subsídios',
                 subtitle:
-                  '6 months of free technical support to help you build your website faster.',
+                  'Muitas regiões oferecem incentivos financeiros, subsídios e créditos fiscais para encorajar a adoção de sistemas solares. Isso torna a instalação mais acessível e atrativa.',
                 icon: (
                   <svg
                     height={24}
