@@ -5,8 +5,8 @@ import Container from '../../layouts/common/Container';
 
 import { Form } from './components';
 
-class Simulator extends React.Component<ILogin, {}> {
-  state: ILogin = {
+class Simulator extends React.Component<ISimulator, {}> {
+  state: ISimulator = {
     action: 'normal'
   };
 
@@ -35,7 +35,6 @@ class Simulator extends React.Component<ILogin, {}> {
         justifyContent={'center'}
         height={'100%'}
       >
-        SIMULADORRRRRRRRRRR
         <Container maxWidth={600}>
           <Form callback={this.callbackLoginSuccessfull} />
         </Container>
@@ -44,7 +43,7 @@ class Simulator extends React.Component<ILogin, {}> {
   }
 }
 
-export interface ILogin {
+export interface ISimulator {
   action: string;  
 }
 

@@ -24,7 +24,13 @@ class Form extends React.Component<IProps, {}> {
     message: '',
     messageCode: AuthMessageCode.Failed,
     loginText: 'Login',
-    blurErrors: []   
+    blurErrors: [],
+    electricityAccess: '',
+    state: '',
+    city: '',
+    locationType: '',
+    tariffAdjustment: 0,
+    monthlyEnergyCost: 0
   }   
 
   public validateForm() {
@@ -67,7 +73,7 @@ class Form extends React.Component<IProps, {}> {
     });
   }
 
-  private handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
+  private handleInputChanges = (e: React.FormEvent<HTMLInputElement>, text: any) => {
     e.preventDefault();
 
     this.setState({ [e.currentTarget.name]: e.currentTarget.value } as unknown as Pick<IForm, keyof IForm>);
@@ -140,7 +146,7 @@ class Form extends React.Component<IProps, {}> {
             gutterBottom
             color={'textSecondary'}
           >
-            Login
+            SIMULADOR
           </Typography>
           <Typography
             variant="h4"
@@ -148,10 +154,10 @@ class Form extends React.Component<IProps, {}> {
               fontWeight: 700,
             }}
           >
-            Welcome back
+            Bem-vindo
           </Typography>
           <Typography color="text.secondary">
-            Login to manage your account.
+            {/* Texto de boas-vindas */}
           </Typography>
         </Box>
         <ErrorMessage message={this.setErrorMessage(this.state.messageCode, this.state.message)} />
@@ -159,76 +165,80 @@ class Form extends React.Component<IProps, {}> {
           <Grid container spacing={4}>
             <Grid item xs={12}>
               <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
-                Enter your email
+                1. O LOCAL POSSUI ACESSO À REDE ELÉTRICA?
               </Typography>
               <TextField
-                label="Email *"
+                label="SIM / NÃO"
                 variant="outlined"
-                name={'email'}
+                name="electricityAccess" // Nome do campo para acesso à rede elétrica
                 fullWidth
-                value={this.state.email}
-                onChange={(e: any) => this.handleInputChanges(e)}
-                onBlur={(e: any) => this.handleInputBlur(e)}
-                error={this.state.blurErrors.includes('email') ? true : false}
-                helperText={this.setHelperTextMessage('email')}
+                value={this.state.electricityAccess} // Valor do campo
+                onChange={(e: any) => this.handleInputChanges(e, 'electricityAccess')} // Handler
               />
             </Grid>
             <Grid item xs={12}>
-              <Box
-                display="flex"
-                flexDirection={{ xs: 'column', sm: 'row' }}
-                alignItems={{ xs: 'stretched', sm: 'center' }}
-                justifyContent={'space-between'}
-                width={'100%'}
-                marginBottom={2}
-              >
-                <Box marginBottom={{ xs: 1, sm: 0 }}>
-                  <Typography variant={'subtitle2'}>
-                    Enter your password
-                  </Typography>
-                </Box>
-              </Box>
+              <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
+                2. ONDE PRETENDE REALIZAR A INSTALAÇÃO?
+              </Typography>
               <TextField
-                label="Password *"
+                label="ESTADO"
                 variant="outlined"
-                name={'password'}
-                type={'password'}
+                name="state" // Nome do campo para estado
                 fullWidth
-                value={this.state.password}
-                onChange={(e: any) => this.handleInputChanges(e)}
-                onBlur={(e: any) => this.handleInputBlur(e)}
-                error={this.state.blurErrors.includes('password') ? true : false}
-                helperText={this.setHelperTextMessage('password')}
+                value={this.state.state} // Valor do campo
+                onChange={(e: any) => this.handleInputChanges(e, 'state')} // Handler
               />
             </Grid>
-            <Grid item container xs={12}>
-              <Box
-                display="flex"
-                flexDirection={{ xs: 'column', sm: 'row' }}
-                alignItems={{ xs: 'stretched', sm: 'center' }}
-                justifyContent={'space-between'}
-                width={'100%'}
-                maxWidth={600}
-                margin={'0 auto'}
-              >
-                <Box marginBottom={{ xs: 1, sm: 0 }}>
-                  <Typography variant={'subtitle2'}>
-                    Don't have an account yet?{' '}
-                    <Link
-                      component={'a'}
-                      color={'primary'}
-                      href={'/signup'}
-                      underline={'none'}
-                    >
-                      Sign up here.
-                    </Link>
-                  </Typography>
-                </Box>
-                <Button size={'large'} variant={'contained'} type={'submit'} onClick={(e: any) => this.handleClick(e)} disabled={this.state.blurErrors.length > 0 || this.state.action === 'busy' ? true : false}>
-                  {this.state.loginText}
-                </Button>
-              </Box>
+            <Grid item xs={12}>
+              <TextField
+                label="CIDADE"
+                variant="outlined"
+                name="city" // Nome do campo para cidade
+                fullWidth
+                value={this.state.city} // Valor do campo
+                onChange={(e: any) => this.handleInputChanges(e, 'city')} // Handler
+              />
             </Grid>
+            <Grid item xs={12}>
+              <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
+                3. QUAL O TIPO DE LOCAL?
+              </Typography>
+              <TextField
+                label="RESIDENCIAL / EMPRESARIAL / OUTRO"
+                variant="outlined"
+                name="locationType" // Nome do campo para tipo de local
+                fullWidth
+                value={this.state.locationType} // Valor do campo
+                onChange={(e: any) => this.handleInputChanges(e, 'locationType')} // Handler
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
+                4. AJUSTE DE TARIFA (R$)
+              </Typography>
+              <TextField
+                label="Ajuste de tarifa"
+                variant="outlined"
+                name="tariffAdjustment" // Nome do campo para ajuste de tarifa
+                fullWidth
+                value={this.state.tariffAdjustment} // Valor do campo
+                onChange={(e: any) => this.handleInputChanges(e, 'tariffAdjustment')} // Handler
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant={'subtitle2'} sx={{ marginBottom: 2 }}>
+                5. QUANTO VOCÊ PAGA EM ENERGIA NO MÊS?
+              </Typography>
+              <TextField
+                label="Custo mensal de energia (R$)"
+                variant="outlined"
+                name="monthlyEnergyCost" // Nome do campo para custo mensal de energia
+                fullWidth
+                value={this.state.monthlyEnergyCost} // Valor do campo
+                onChange={(e: any) => this.handleInputChanges(e, 'monthlyEnergyCost')} // Handler
+              />
+            </Grid>
+            {/* Restante do código permanece o mesmo */}
           </Grid>
         </form>
       </Box>
@@ -249,6 +259,12 @@ interface IForm {
   messageCode: AuthMessageCode;
   loginText: string,
   blurErrors: string[],
+  electricityAccess: string,
+  state: string,
+  city: string,
+  locationType: string,
+  tariffAdjustment: number,
+  monthlyEnergyCost: number
 }
 
 export default Form;
